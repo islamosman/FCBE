@@ -58,8 +58,8 @@ namespace Fly.Controllers
         }
 
 
-        public  IHttpActionResult RefreshToken(string url,string refreshToken)
-        {
+        //public  IHttpActionResult RefreshToken(string url,string refreshToken)
+        //{
 
             //var pairs = new List<KeyValuePair<string, string>>
             //        {
@@ -91,7 +91,7 @@ namespace Fly.Controllers
 
             //    return Ok(response);
 
-        }
+       // }
     }
 
     public class Token

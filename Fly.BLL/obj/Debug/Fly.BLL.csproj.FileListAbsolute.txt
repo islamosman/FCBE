@@ -1,0 +1,9 @@
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.BLL.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.BLL.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\EntityFramework.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.DAL.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.DAL.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\EntityFramework.xml
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Debug\Fly.BLL.csprojResolveAssemblyReference.cache
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Debug\Fly.BLL.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Debug\Fly.BLL.pdb

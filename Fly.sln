@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly", "Fly\Fly.csproj", "{9EDE0759-AEFE-4A4C-8E21-A474FD4A36A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.DAL", "Fly.DAL\Fly.DAL.csproj", "{CF673E21-FB74-4032-8C04-7E69A8890E9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.BLL", "Fly.BLL\Fly.BLL.csproj", "{16F2AEC4-4FD6-4E5B-9F63-11C31F0CE916}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{9EDE0759-AEFE-4A4C-8E21-A474FD4A36A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EDE0759-AEFE-4A4C-8E21-A474FD4A36A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EDE0759-AEFE-4A4C-8E21-A474FD4A36A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF673E21-FB74-4032-8C04-7E69A8890E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF673E21-FB74-4032-8C04-7E69A8890E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF673E21-FB74-4032-8C04-7E69A8890E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF673E21-FB74-4032-8C04-7E69A8890E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16F2AEC4-4FD6-4E5B-9F63-11C31F0CE916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16F2AEC4-4FD6-4E5B-9F63-11C31F0CE916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16F2AEC4-4FD6-4E5B-9F63-11C31F0CE916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16F2AEC4-4FD6-4E5B-9F63-11C31F0CE916}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

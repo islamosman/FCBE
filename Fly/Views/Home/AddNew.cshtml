@@ -1,0 +1,151 @@
+﻿@model Fly.DAL.Scotter
+
+@{
+    ViewBag.Title = "AddNew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    
+<label>Name</label>
+<input type="text"  name="Name" />
+<br />
+<label>Long</label>
+<input type="text" name="LongV" id="longTxt"/>
+<br />
+<label>Lat</label>
+<input type="text" name="LatV" id="latTxt" />
+<br />
+    <label>mapBounds</label>
+    <textarea id="mapBounds" cols="10" rows="4"></textarea>
+    <br />
+    <label>Polly</label>
+    <div id="ployy" ></div>
+    <br />
+<input type="submit" value="save" />
+}
+
+<div id="googleMap" style="height:400px;width:100%;"></div>  
+<script>
+    var map;
+    var marker;
+    var polygonArray;
+    function myMap() {
+        if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function (pos) {
+            var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            
+            var myCenter = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);//new google.maps.LatLng(20.296100, 85.824500);
+            var mapProp = { center: myCenter, zoom: 16, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
+             map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+             marker = new google.maps.Marker({ position: myCenter, draggable: true });
+
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                document.getElementById("latTxt").value = event.latLng.lat();
+                document.getElementById("longTxt").value = event.latLng.lng();
+            });
+
+            marker.setMap(map);
+
+            google.maps.event.addListener(map, 'bounds_changed', function () {
+                bounds = map.getBounds();
+                ne = bounds.getNorthEast();
+                sw = bounds.getSouthWest();
+                document.getElementById('mapBounds').innerHTML = bounds.toUrlValue(6);
+
+
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                addMarker(event.latLng);
+            });
+
+            var drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: [ 'polygon']
+                },
+               //// markerOptions: { icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png' },
+               // circleOptions: {
+               //     fillColor: '#ffff00',
+               //     fillOpacity: 1,
+               //     strokeWeight: 5,
+               //     clickable: false,
+               //     editable: true,
+               //     zIndex: 1
+               // }
+            });
+            drawingManager.setMap(map);
+
+      
+            google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+                document.getElementById('ployy').innerHTML += "polygon points:" + "<br>";
+                for (var i = 0; i < polygon.getPath().getLength() ; i++) {
+                    document.getElementById('ployy').innerHTML += polygon.getPath().getAt(i).toUrlValue(6) + "<br>";
+                }
+                //polygonArray.push(polygon);
+
+                polygonArray =polygon;//.getPath();
+            });
+
+
+        }, function (error) {
+                   var myCenter = new google.maps.LatLng(20.296100, 85.824500);
+            var mapProp = { center: myCenter, zoom: 12, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+             marker = new google.maps.Marker({ position: myCenter, draggable: true });
+            marker.setMap(map);
+
+            google.maps.event.addListener(map, 'bounds_changed', function () {
+                bounds = map.getBounds();
+                ne = bounds.getNorthEast();
+                sw = bounds.getSouthWest();
+                document.getElementById('mapBounds').innerHTML = bounds.toUrlValue(6);
+
+
+            });
+        });
+
+ 
+     
+
+        }
+
+
+    function addMarker(location) {
+        alert(google.maps.geometry.poly.containsLocation(location, polygonArray));
+
+        document.getElementById("latTxt").value = location.lat();
+        document.getElementById("longTxt").value = location.lng();
+
+        if (!marker || !marker.setPosition) {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                draggable: true
+            });
+        } else {
+            marker.setPosition(location);
+        }
+        
+
+        //marker = new google.maps.Marker({
+        //    position: location,
+        //    map: map,
+        //    draggable: true
+        //});
+    }
+       
+
+    function getPolygonCoords() {
+        var len = map.getPath().getLength();
+        var htmlStr = "";
+        for (var i = 0; i < len; i++) {
+            htmlStr += map.getPath().getAt(i).toUrlValue(5) + "<br>";
+        }
+        document.getElementById('ployy').innerHTML = htmlStr;
+    }
+</script>  
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&libraries=drawing&callback=myMap"></script>  
