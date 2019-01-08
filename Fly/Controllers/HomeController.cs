@@ -20,13 +20,13 @@ namespace Fly.Controllers
         [HttpGet]
         public ActionResult AddNew(int? scotterId)
         {
-            Scotter scoModel = new Scotter();
-
+            Vehicles scoModel = new Vehicles();
+            
             return View(scoModel);
         }
 
         [HttpPost]
-        public ActionResult AddNew(Scotter model)
+        public ActionResult AddNew(Vehicles model)
         {
             ScotterRepo scoterRepo = new ScotterRepo();
             scoterRepo.Add(model);

@@ -9,22 +9,22 @@ namespace Fly.BLL
     public class ScotterRepo
     {
         protected FlyEntities db = new FlyEntities();
-        public Scotter Add(Scotter model)
+        public Vehicles Add(Vehicles model)
         {
-            db.Scotter.Add(model);
+            db.Vehicles.Add(model);
             db.SaveChanges();
 
             return model;
         }
 
-        public List<Scotter> GetAll()
+        public List<Vehicles> GetAll()
         {
-            return db.Scotter.ToList();
+            return db.Vehicles.ToList();
         }
 
-        public Scotter GetOne(int idVar)
+        public Vehicles GetOne(int idVar)
         {
-            return db.Scotter.FirstOrDefault(x=>x.Id == idVar);
+            return db.Vehicles.FirstOrDefault(x=>x.Id == idVar);
         }
     }
 }

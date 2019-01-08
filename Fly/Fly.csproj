@@ -238,6 +238,7 @@
     <Compile Include="Controllers\FlyAuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1297,6 +1298,10 @@
     <ProjectReference Include="..\Fly.DAL\Fly.DAL.csproj">
       <Project>{cf673e21-fb74-4032-8c04-7e69a8890e9b}</Project>
       <Name>Fly.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly.DomainModel\Fly.DomainModel.csproj">
+      <Project>{47dd7311-d5e6-48de-b006-bdd3bc4d1cf3}</Project>
+      <Name>Fly.DomainModel</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

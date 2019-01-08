@@ -1,13 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="FlyModelStoreContainer" CdmEntityContainer="FlyEntities">
-    <EntitySetMapping Name="Scotter">
-      <EntityTypeMapping TypeName="FlyModel.Scotter">
-        <MappingFragment StoreEntitySet="Scotter">
-          <ScalarProperty Name="Id" ColumnName="Id" />
+    <EntitySetMapping Name="AreasT">
+      <EntityTypeMapping TypeName="FlyModel.AreasT">
+        <MappingFragment StoreEntitySet="AreasT">
+          <ScalarProperty Name="AreaCoordinates" ColumnName="AreaCoordinates" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Riders">
+      <EntityTypeMapping TypeName="FlyModel.Riders">
+        <MappingFragment StoreEntitySet="Riders">
+          <ScalarProperty Name="GenderId" ColumnName="GenderId" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TripCoordinates">
+      <EntityTypeMapping TypeName="FlyModel.TripCoordinates">
+        <MappingFragment StoreEntitySet="TripCoordinates">
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+          <ScalarProperty Name="TripId" ColumnName="TripId" />
+          <ScalarProperty Name="LatV" ColumnName="LatV" />
+          <ScalarProperty Name="LongV" ColumnName="LongV" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trips">
+      <EntityTypeMapping TypeName="FlyModel.Trips">
+        <MappingFragment StoreEntitySet="Trips">
+          <ScalarProperty Name="TotalDistance" ColumnName="TotalDistance" />
+          <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="TempRequest" ColumnName="TempRequest" />
+          <ScalarProperty Name="IsCancel" ColumnName="IsCancel" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsDone" ColumnName="IsDone" />
+          <ScalarProperty Name="RiderId" ColumnName="RiderId" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vehicles">
+      <EntityTypeMapping TypeName="FlyModel.Vehicles">
+        <MappingFragment StoreEntitySet="Vehicles">
+          <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+          <ScalarProperty Name="UniqueId" ColumnName="UniqueId" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="HolderId" ColumnName="HolderId" />
+          <ScalarProperty Name="PlateNo" ColumnName="PlateNo" />
+          <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+          <ScalarProperty Name="SpecsId" ColumnName="SpecsId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehicleSpecs">
+      <EntityTypeMapping TypeName="FlyModel.VehicleSpecs">
+        <MappingFragment StoreEntitySet="VehicleSpecs">
+          <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+          <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehicleStatus">
+      <EntityTypeMapping TypeName="FlyModel.VehicleStatus">
+        <MappingFragment StoreEntitySet="VehicleStatus">
+          <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+          <ScalarProperty Name="InService" ColumnName="InService" />
+          <ScalarProperty Name="InRide" ColumnName="InRide" />
+          <ScalarProperty Name="BatteryStatus" ColumnName="BatteryStatus" />
           <ScalarProperty Name="LongV" ColumnName="LongV" />
           <ScalarProperty Name="LatV" ColumnName="LatV" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

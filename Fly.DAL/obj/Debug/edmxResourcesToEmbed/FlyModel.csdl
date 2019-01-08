@@ -1,15 +1,203 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="FlyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityType Name="Scotter">
+  <EntityContainer Name="FlyEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AreasT" EntityType="FlyModel.AreasT" />
+    <EntitySet Name="Riders" EntityType="FlyModel.Riders" />
+    <EntitySet Name="TripCoordinates" EntityType="FlyModel.TripCoordinates" />
+    <EntitySet Name="Trips" EntityType="FlyModel.Trips" />
+    <EntitySet Name="Vehicles" EntityType="FlyModel.Vehicles" />
+    <EntitySet Name="VehicleSpecs" EntityType="FlyModel.VehicleSpecs" />
+    <EntitySet Name="VehicleStatus" EntityType="FlyModel.VehicleStatus" />
+    <AssociationSet Name="FK_VehicleStatus_AreasT" Association="FlyModel.FK_VehicleStatus_AreasT">
+      <End Role="AreasT" EntitySet="AreasT" />
+      <End Role="VehicleStatus" EntitySet="VehicleStatus" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Trips_Riders" Association="FlyModel.FK_Trips_Riders">
+      <End Role="Riders" EntitySet="Riders" />
+      <End Role="Trips" EntitySet="Trips" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TripCoordinates_Trips" Association="FlyModel.FK_TripCoordinates_Trips">
+      <End Role="Trips" EntitySet="Trips" />
+      <End Role="TripCoordinates" EntitySet="TripCoordinates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Trips_Vehicles" Association="FlyModel.FK_Trips_Vehicles">
+      <End Role="Vehicles" EntitySet="Vehicles" />
+      <End Role="Trips" EntitySet="Trips" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VehicleSpecs_Vehicles" Association="FlyModel.FK_VehicleSpecs_Vehicles">
+      <End Role="Vehicles" EntitySet="Vehicles" />
+      <End Role="VehicleSpecs" EntitySet="VehicleSpecs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VehicleStatus_Vehicles" Association="FlyModel.FK_VehicleStatus_Vehicles">
+      <End Role="Vehicles" EntitySet="Vehicles" />
+      <End Role="VehicleStatus" EntitySet="VehicleStatus" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="AreasT">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-    <Property Name="LongV" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-    <Property Name="LatV" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="Int32" Nullable="false" />
+    <Property Name="AreaCoordinates" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="VehicleStatus" Relationship="FlyModel.FK_VehicleStatus_AreasT" FromRole="AreasT" ToRole="VehicleStatus" />
   </EntityType>
-  <EntityContainer Name="FlyEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Scotter" EntityType="Self.Scotter" />
-  </EntityContainer>
+  <EntityType Name="Riders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="Int32" Nullable="false" />
+    <Property Name="City" Type="Int32" />
+    <Property Name="PhoneNumber" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="GenderId" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_Riders" FromRole="Riders" ToRole="Trips" />
+  </EntityType>
+  <EntityType Name="TripCoordinates">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LongV" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LatV" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TripId" Type="Int32" Nullable="false" />
+    <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Trips" Relationship="FlyModel.FK_TripCoordinates_Trips" FromRole="TripCoordinates" ToRole="Trips" />
+  </EntityType>
+  <EntityType Name="Trips">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VehicleId" Type="Int32" Nullable="false" />
+    <Property Name="RiderId" Type="Int32" Nullable="false" />
+    <Property Name="IsDone" Type="Boolean" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Rate" Type="Byte" />
+    <Property Name="IsCancel" Type="Boolean" />
+    <Property Name="TempRequest" Type="Boolean" Nullable="false" />
+    <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndTime" Type="DateTime" Precision="3" />
+    <Property Name="IsPaid" Type="Boolean" />
+    <Property Name="TotalDistance" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="Riders" Relationship="FlyModel.FK_Trips_Riders" FromRole="Trips" ToRole="Riders" />
+    <NavigationProperty Name="TripCoordinates" Relationship="FlyModel.FK_TripCoordinates_Trips" FromRole="Trips" ToRole="TripCoordinates" />
+    <NavigationProperty Name="Vehicles" Relationship="FlyModel.FK_Trips_Vehicles" FromRole="Trips" ToRole="Vehicles" />
+  </EntityType>
+  <EntityType Name="Vehicles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="SpecsId" Type="Int32" Nullable="false" />
+    <Property Name="ModelId" Type="Int32" Nullable="false" />
+    <Property Name="PlateNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="HolderId" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="UniqueId" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ImageName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_Vehicles" FromRole="Vehicles" ToRole="Trips" />
+    <NavigationProperty Name="VehicleSpecs" Relationship="FlyModel.FK_VehicleSpecs_Vehicles" FromRole="Vehicles" ToRole="VehicleSpecs" />
+    <NavigationProperty Name="VehicleStatus" Relationship="FlyModel.FK_VehicleStatus_Vehicles" FromRole="Vehicles" ToRole="VehicleStatus" />
+  </EntityType>
+  <EntityType Name="VehicleSpecs">
+    <Key>
+      <PropertyRef Name="VehicleId" />
+    </Key>
+    <Property Name="VehicleId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="BrandId" Type="Int32" Nullable="false" />
+    <Property Name="ModelId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Vehicles" Relationship="FlyModel.FK_VehicleSpecs_Vehicles" FromRole="VehicleSpecs" ToRole="Vehicles" />
+  </EntityType>
+  <EntityType Name="VehicleStatus">
+    <Key>
+      <PropertyRef Name="VehicleId" />
+    </Key>
+    <Property Name="VehicleId" Type="Int32" Nullable="false" />
+    <Property Name="LatV" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LongV" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="BatteryStatus" Type="Int32" Nullable="false" />
+    <Property Name="InRide" Type="Boolean" Nullable="false" />
+    <Property Name="InService" Type="Boolean" Nullable="false" />
+    <Property Name="AreaId" Type="Int32" />
+    <NavigationProperty Name="AreasT" Relationship="FlyModel.FK_VehicleStatus_AreasT" FromRole="VehicleStatus" ToRole="AreasT" />
+    <NavigationProperty Name="Vehicles" Relationship="FlyModel.FK_VehicleStatus_Vehicles" FromRole="VehicleStatus" ToRole="Vehicles" />
+  </EntityType>
+  <Association Name="FK_VehicleStatus_AreasT">
+    <End Type="FlyModel.AreasT" Role="AreasT" Multiplicity="0..1" />
+    <End Type="FlyModel.VehicleStatus" Role="VehicleStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AreasT">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehicleStatus">
+        <PropertyRef Name="AreaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Trips_Riders">
+    <End Type="FlyModel.Riders" Role="Riders" Multiplicity="1" />
+    <End Type="FlyModel.Trips" Role="Trips" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Riders">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Trips">
+        <PropertyRef Name="RiderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TripCoordinates_Trips">
+    <End Type="FlyModel.Trips" Role="Trips" Multiplicity="1" />
+    <End Type="FlyModel.TripCoordinates" Role="TripCoordinates" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trips">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TripCoordinates">
+        <PropertyRef Name="TripId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Trips_Vehicles">
+    <End Type="FlyModel.Vehicles" Role="Vehicles" Multiplicity="1" />
+    <End Type="FlyModel.Trips" Role="Trips" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Trips">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VehicleSpecs_Vehicles">
+    <End Type="FlyModel.Vehicles" Role="Vehicles" Multiplicity="1" />
+    <End Type="FlyModel.VehicleSpecs" Role="VehicleSpecs" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehicleSpecs">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VehicleStatus_Vehicles">
+    <End Type="FlyModel.Vehicles" Role="Vehicles" Multiplicity="1" />
+    <End Type="FlyModel.VehicleStatus" Role="VehicleStatus" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehicleStatus">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

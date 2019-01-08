@@ -25,6 +25,16 @@ namespace Fly.DAL
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Scotter> Scotter { get; set; }
+        public DbSet<AreasT> AreasT { get; set; }
+        public DbSet<Riders> Riders { get; set; }
+        public DbSet<TripCoordinates> TripCoordinates { get; set; }
+        public DbSet<Trips> Trips { get; set; }
+        public DbSet<Vehicles> Vehicles { get; set; }
+        public DbSet<VehicleSpecs> VehicleSpecs { get; set; }
+        public DbSet<VehicleStatus> VehicleStatus { get; set; }
+        public DbSet<SecurityRole> SecurityRole { get; set; }
+        public DbSet<SecurityUser> SecurityUser { get; set; }
+        public DbSet<SecurityUserRole> SecurityUserRole { get; set; }
+        public DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }

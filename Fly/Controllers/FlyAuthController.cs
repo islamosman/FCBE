@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Fly.DomainModel;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,21 @@ namespace Fly.Controllers
             }
         }
 
+        public HttpResponseMessage Register(RegisterModel regModel)
+        {
+            HttpResponseMessage response2 = Request.CreateResponse(HttpStatusCode.InternalServerError, "ya howwwww");
+            return response2;
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "value");
+            response.Content = new StringContent("hello", Encoding.Unicode);
+            response.Headers.CacheControl = new CacheControlHeaderValue()
+            {
+                MaxAge = TimeSpan.FromMinutes(20)
+            };
+
+            response.StatusCode = HttpStatusCode.Conflict;
+            
+            return response;
+        }
         //[HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Authorize(Roles = "Supervisor")]
         [Route("UserInfo")]

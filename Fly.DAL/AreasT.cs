@@ -12,11 +12,18 @@ namespace Fly.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Scotter
+    public partial class AreasT
     {
+        public AreasT()
+        {
+            this.VehicleStatus = new HashSet<VehicleStatus>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
-        public string LongV { get; set; }
-        public string LatV { get; set; }
+        public int Country { get; set; }
+        public string AreaCoordinates { get; set; }
+    
+        public virtual ICollection<VehicleStatus> VehicleStatus { get; set; }
     }
 }
