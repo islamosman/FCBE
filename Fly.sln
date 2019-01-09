@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.BLL", "Fly.BLL\Fly.BLL.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.DomainModel", "Fly.DomainModel\Fly.DomainModel.csproj", "{47DD7311-D5E6-48DE-B006-BDD3BC4D1CF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.Resources", "Fly.Resources\Fly.Resources.csproj", "{58120DA7-D80A-432A-B7F4-48314127E787}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.Helper", "Fly.Helper\Fly.Helper.csproj", "{345CC478-83E7-4683-8327-3EED0C2D3C7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{47DD7311-D5E6-48DE-B006-BDD3BC4D1CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47DD7311-D5E6-48DE-B006-BDD3BC4D1CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47DD7311-D5E6-48DE-B006-BDD3BC4D1CF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58120DA7-D80A-432A-B7F4-48314127E787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58120DA7-D80A-432A-B7F4-48314127E787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58120DA7-D80A-432A-B7F4-48314127E787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58120DA7-D80A-432A-B7F4-48314127E787}.Release|Any CPU.Build.0 = Release|Any CPU
+		{345CC478-83E7-4683-8327-3EED0C2D3C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{345CC478-83E7-4683-8327-3EED0C2D3C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{345CC478-83E7-4683-8327-3EED0C2D3C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{345CC478-83E7-4683-8327-3EED0C2D3C7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

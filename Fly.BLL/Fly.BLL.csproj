@@ -35,6 +35,7 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,12 +46,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="LinqExtensions.cs" />
+    <Compile Include="MainRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\SecurityUserRepository.cs" />
+    <Compile Include="Vehicles\VehicleRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fly.DAL\Fly.DAL.csproj">
       <Project>{cf673e21-fb74-4032-8c04-7e69a8890e9b}</Project>
       <Name>Fly.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly.DomainModel\Fly.DomainModel.csproj">
+      <Project>{47dd7311-d5e6-48de-b006-bdd3bc4d1cf3}</Project>
+      <Name>Fly.DomainModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,7 +9,7 @@ namespace Fly.DomainModel
     public class RegisterModel
     {
         public string device_unique_id { get; set; }
-        public int phone_number { get; set; }
+        public string phone_number { get; set; }
         public string email { get; set; }
         public string password { get; set; }
         public string first_name { get; set; }

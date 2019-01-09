@@ -30,8 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,10 +45,66 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreasT.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="FlyModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Fly\DomainModel\Metadata\AreasTMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\SecurityRoleMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\SecurityUserMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\SecurityUserRoleMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\sysdiagramsMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\TripCoordinatesMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\TripsMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\VehiclesMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\VehicleSpecsMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\VehicleStatusMetadata.cs" />
     <Compile Include="Helper\RegisterModel.cs" />
+    <Compile Include="Helper\RequestResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityRole.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SecurityUser.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SecurityUserRole.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TripCoordinates.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Trips.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vehicles.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleSpecs.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleStatus.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="FlyModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FlyModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

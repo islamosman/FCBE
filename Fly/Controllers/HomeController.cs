@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Fly.BLL;
-using Fly.DAL;
+using Fly.DomainModel;
 
 namespace Fly.Controllers
 {
@@ -12,9 +12,10 @@ namespace Fly.Controllers
     {
         public ActionResult Index()
         {
-            ScotterRepo scoterRepo = new ScotterRepo();
-
-            return View(scoterRepo.GetAll());
+            using (VehicleRepository scoterRepo = new VehicleRepository())
+            {
+                return View(scoterRepo.GetAll().ToList());
+            }
         }
 
         [HttpGet]
@@ -28,9 +29,10 @@ namespace Fly.Controllers
         [HttpPost]
         public ActionResult AddNew(Vehicles model)
         {
-            ScotterRepo scoterRepo = new ScotterRepo();
-            scoterRepo.Add(model);
-
+            using (VehicleRepository scoterRepo = new VehicleRepository())
+            {
+                scoterRepo.Add(model);
+            }
             return RedirectToAction("AddNew", new { scotterId = model.Id });
         }
     }

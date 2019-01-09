@@ -1,4 +1,5 @@
-﻿using Fly.DomainModel;
+﻿using Fly.BLL;
+using Fly.DomainModel;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
@@ -10,19 +11,26 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Fly.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/FlyAuth")]
-    public class FlyAuthController : ApiController
+    public class FlyAuthController : BaseApiController
     {
         public IHttpActionResult GetToken(string url, string userName, string password)
         {
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+            {
+                return BadRequest(Fly.Resources.OperationLP.InvalidUserNamePassword);
+            }
+
             var pairs = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>( "grant_type", "password" ),
                         new KeyValuePair<string, string>( "username", userName ),
-                        new KeyValuePair<string, string> ( "Password", password )
+                        new KeyValuePair<string, string> ( "Password",Decrypt(password))
                     };
             var content = new FormUrlEncodedContent(pairs);
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -45,16 +53,22 @@ namespace Fly.Controllers
 
         public HttpResponseMessage Register(RegisterModel regModel)
         {
-            HttpResponseMessage response2 = Request.CreateResponse(HttpStatusCode.InternalServerError, "ya howwwww");
-            return response2;
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "value");
-            response.Content = new StringContent("hello", Encoding.Unicode);
-            response.Headers.CacheControl = new CacheControlHeaderValue()
+            using (SecurityUserRepository  secRepository=new SecurityUserRepository())
             {
-                MaxAge = TimeSpan.FromMinutes(20)
-            };
-
-            response.StatusCode = HttpStatusCode.Conflict;
+                reqResponse= secRepository.AddUpdate(new SecurityUser()
+                {
+                    DeviceId=regModel.device_unique_id,
+                    Telephone=regModel.phone_number,
+                    Email=regModel.email,
+                    Password=regModel.password,
+                    FullName=regModel.first_name + " " + regModel.last_name,
+                    Gender=regModel.gender,
+                    BirthDate=regModel.date_of_birth
+                });
+            }
+            HttpResponseMessage response = Request.CreateResponse(reqResponse.StatusCode, FillMessages(reqResponse.Messages));
+            response.Content = new StringContent(FillMessages(reqResponse.Messages), Encoding.Unicode);
+           
             
             return response;
         }

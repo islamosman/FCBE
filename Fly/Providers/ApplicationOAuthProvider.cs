@@ -12,6 +12,9 @@ using Microsoft.Owin.Security.OAuth;
 using Fly.Models;
 using Microsoft.Owin.Security.Infrastructure;
 using System.Collections.Concurrent;
+using Fly.BLL;
+using Fly.Resources;
+using Fly.DomainModel;
 
 namespace Fly.Providers
 {
@@ -41,21 +44,17 @@ namespace Fly.Providers
 
 
             /*** Replace below user authentication code as per your Entity Framework Model ****/
-            //using (var obj = new UserDBEntities())
-            //{
-
-            //    tblUserMaster entry = obj.tblUserMasters.Where
-            //    <tblUserMaster>(record => 
-            //    record.User_ID == context.UserName && 
-            //    record.User_Password == context.Password).FirstOrDefault();
-
-            //    if (entry == null)
-            //    {
-            //        context.SetError("invalid_grant", 
-            //        "The user name or password is incorrect.");
-            //        return;
-            //    }                
-            //}
+            SecurityUser secUserModel = new SecurityUser();
+            using (SecurityUserRepository obj = new SecurityUserRepository())
+            {
+                secUserModel = obj.GetBy(context.UserName, context.Password);
+                if (secUserModel == null)
+                {
+                    context.SetError("invalid_grant",
+                    OperationLP.InvalidUserNamePassword);
+                    return;
+                }
+            }
 
 
             ClaimsIdentity oAuthIdentity =
@@ -63,7 +62,7 @@ namespace Fly.Providers
             ClaimsIdentity cookiesIdentity =
             new ClaimsIdentity(context.Options.AuthenticationType);
 
-            oAuthIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+            oAuthIdentity.AddClaim(new Claim(ClaimTypes.Role, secUserModel.SecurityUserRole.FirstOrDefault().SecurityRole.RoleNameE));
             //  oAuthIdentity.AddClaim(new Claim(ClaimTypes.Role, "Supervisor"));
 
             AuthenticationProperties properties = CreateProperties(context.UserName);

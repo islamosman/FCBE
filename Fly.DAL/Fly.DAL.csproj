@@ -48,44 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AreasT.cs">
-      <DependentUpon>FlyModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Class1.cs" />
-    <Compile Include="FlyModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FlyModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="FlyModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FlyModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="FlyModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FlyModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Riders.cs">
-      <DependentUpon>FlyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TripCoordinates.cs">
-      <DependentUpon>FlyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Trips.cs">
-      <DependentUpon>FlyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Vehicles.cs">
-      <DependentUpon>FlyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VehicleSpecs.cs">
-      <DependentUpon>FlyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VehicleStatus.cs">
-      <DependentUpon>FlyModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="FlyModel.edmx">
@@ -99,18 +68,6 @@
       <DependentUpon>FlyModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="FlyModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FlyModel.edmx</DependentUpon>
-      <LastGenOutput>FlyModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="FlyModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FlyModel.edmx</DependentUpon>
-      <LastGenOutput>FlyModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

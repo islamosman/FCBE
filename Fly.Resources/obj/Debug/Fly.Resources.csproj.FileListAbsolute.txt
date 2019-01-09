@@ -1,0 +1,7 @@
+E:\GIT\ZAPP\FLY\FCBE\Fly.Resources\bin\Debug\Fly.Resources.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.Resources\bin\Debug\Fly.Resources.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.Resources\obj\Debug\Fly.Resources.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.Resources\obj\Debug\Fly.Resources.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.Resources\obj\Debug\Fly.Resources.OperationLP.resources
+E:\GIT\ZAPP\FLY\FCBE\Fly.Resources\obj\Debug\Fly.Resources.csproj.GenerateResource.Cache
+E:\GIT\ZAPP\FLY\FCBE\Fly.Resources\obj\Debug\Fly.Resources.csprojResolveAssemblyReference.cache

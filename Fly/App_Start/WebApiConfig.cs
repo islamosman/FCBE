@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using System.Web.Http.Cors;
 
 namespace Fly
 {
@@ -28,6 +29,8 @@ namespace Fly
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+            config.EnableCors(new EnableCorsAttribute("*", "*", "GET"));
+            config.EnableCors(new EnableCorsAttribute("*", "*", "POST"));
         }
     }
 }

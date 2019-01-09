@@ -7,3 +7,5 @@ E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\EntityFramework.xml
 E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Debug\Fly.BLL.csprojResolveAssemblyReference.cache
 E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Debug\Fly.BLL.dll
 E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Debug\Fly.BLL.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.DomainModel.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.DomainModel.pdb

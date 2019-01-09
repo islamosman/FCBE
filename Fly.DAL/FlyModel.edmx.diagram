@@ -5,25 +5,24 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="91af76e2e31945e89ed2a0673c3dd502" Name="Diagram1">
-        <EntityTypeShape EntityType="FlyModel.AreasT" Width="1.5" PointX="3.75" PointY="1.375" />
-        <EntityTypeShape EntityType="FlyModel.Riders" Width="1.5" PointX="0.75" PointY="1.125" />
-        <EntityTypeShape EntityType="FlyModel.TripCoordinates" Width="1.5" PointX="5.25" PointY="9.25" />
-        <EntityTypeShape EntityType="FlyModel.Trips" Width="1.5" PointX="3" PointY="4.5" />
-        <EntityTypeShape EntityType="FlyModel.Vehicles" Width="1.5" PointX="0.75" PointY="4.75" />
-        <EntityTypeShape EntityType="FlyModel.VehicleSpecs" Width="1.5" PointX="3" PointY="10" />
-        <EntityTypeShape EntityType="FlyModel.VehicleStatus" Width="1.5" PointX="6" PointY="5" />
+        <EntityTypeShape EntityType="FlyModel.AreasT" Width="1.5" PointX="0.75" PointY="2.75" />
+        <EntityTypeShape EntityType="FlyModel.SecurityRole" Width="1.5" PointX="3.75" PointY="10.125" />
+        <EntityTypeShape EntityType="FlyModel.SecurityUser" Width="1.5" PointX="3.75" PointY="0.75" />
+        <EntityTypeShape EntityType="FlyModel.SecurityUserRole" Width="1.5" PointX="6" PointY="1.5" />
+        <EntityTypeShape EntityType="FlyModel.sysdiagrams" Width="1.5" PointX="8.75" PointY="2.125" />
+        <EntityTypeShape EntityType="FlyModel.TripCoordinates" Width="1.5" PointX="8.25" PointY="6.75" />
+        <EntityTypeShape EntityType="FlyModel.Trips" Width="1.5" PointX="6" PointY="5.875" />
+        <EntityTypeShape EntityType="FlyModel.Vehicles" Width="1.5" PointX="0.75" PointY="6.125" />
+        <EntityTypeShape EntityType="FlyModel.VehicleSpecs" Width="1.5" PointX="3" PointY="15" />
+        <EntityTypeShape EntityType="FlyModel.VehicleStatus" Width="1.5" PointX="3" PointY="6.375" />
         <AssociationConnector Association="FlyModel.FK_VehicleStatus_AreasT" />
-        <AssociationConnector Association="FlyModel.FK_Trips_Riders" />
+        <AssociationConnector Association="FlyModel.FK_SecurityUserRole_SecurityRole" />
+        <AssociationConnector Association="FlyModel.FK_SecurityUserRole_SecurityUser" />
+        <AssociationConnector Association="FlyModel.FK_Trips_SecurityUser" />
         <AssociationConnector Association="FlyModel.FK_TripCoordinates_Trips" />
         <AssociationConnector Association="FlyModel.FK_Trips_Vehicles" />
         <AssociationConnector Association="FlyModel.FK_VehicleSpecs_Vehicles" />
         <AssociationConnector Association="FlyModel.FK_VehicleStatus_Vehicles" />
-        <EntityTypeShape EntityType="FlyModel.SecurityRole" Width="1.5" PointX="6.375" PointY="1" />
-        <EntityTypeShape EntityType="FlyModel.SecurityUser" Width="1.5" PointX="6.375" PointY="12.875" />
-        <EntityTypeShape EntityType="FlyModel.SecurityUserRole" Width="1.5" PointX="8.625" PointY="1" />
-        <EntityTypeShape EntityType="FlyModel.sysdiagrams" Width="1.5" PointX="8.375" PointY="4.75" />
-        <AssociationConnector Association="FlyModel.FK_dbo_SecurityUserRoles_dbo_SecurityRoles_RoleId" />
-        <AssociationConnector Association="FlyModel.FK_dbo_SecurityUserRoles_dbo_SecurityUsers_UserId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

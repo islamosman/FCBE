@@ -9,17 +9,58 @@
     <Property Name="Country" Type="int" Nullable="false" />
     <Property Name="AreaCoordinates" Type="nvarchar" MaxLength="500" Nullable="false" />
   </EntityType>
-  <EntityType Name="Riders">
+  <EntityType Name="SecurityRole">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
-    <Property Name="Country" Type="int" Nullable="false" />
-    <Property Name="City" Type="int" />
-    <Property Name="PhoneNumber" Type="int" Nullable="false" />
-    <Property Name="Email" Type="nvarchar" MaxLength="250" Nullable="false" />
-    <Property Name="GenderId" Type="bit" Nullable="false" />
+    <Property Name="RoleNameA" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="RoleNameE" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="FullDataAccess" Type="bit" Nullable="false" />
+    <Property Name="RoleDescription" Type="nvarchar" MaxLength="255" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="SecurityUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Telephone" Type="nvarchar" MaxLength="20" />
+    <Property Name="Email" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="Gender" Type="bit" />
+    <Property Name="BirthDate" Type="date" />
+    <Property Name="DeviceId" Type="nvarchar" MaxLength="500" />
+    <Property Name="CountryId" Type="int" />
+    <Property Name="CityId" Type="int" />
+  </EntityType>
+  <EntityType Name="SecurityUserRole">
+    <Key>
+      <PropertyRef Name="RoleId" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="RoleId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="AddedBy" Type="int" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="TripCoordinates">
     <Key>
@@ -83,6 +124,30 @@
     <Property Name="InService" Type="bit" Nullable="false" />
     <Property Name="AreaId" Type="int" />
   </EntityType>
+  <Association Name="FK_SecurityUserRole_SecurityRole">
+    <End Role="SecurityRole" Type="Self.SecurityRole" Multiplicity="1" />
+    <End Role="SecurityUserRole" Type="Self.SecurityUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityRole">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SecurityUserRole">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SecurityUserRole_SecurityUser">
+    <End Role="SecurityUser" Type="Self.SecurityUser" Multiplicity="1" />
+    <End Role="SecurityUserRole" Type="Self.SecurityUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SecurityUserRole">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TripCoordinates_Trips">
     <End Role="Trips" Type="Self.Trips" Multiplicity="1" />
     <End Role="TripCoordinates" Type="Self.TripCoordinates" Multiplicity="*" />
@@ -95,11 +160,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Trips_Riders">
-    <End Role="Riders" Type="Self.Riders" Multiplicity="1" />
+  <Association Name="FK_Trips_SecurityUser">
+    <End Role="SecurityUser" Type="Self.SecurityUser" Multiplicity="1" />
     <End Role="Trips" Type="Self.Trips" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Riders">
+      <Principal Role="SecurityUser">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Trips">
@@ -157,18 +222,29 @@
   </Association>
   <EntityContainer Name="FlyModelStoreContainer">
     <EntitySet Name="AreasT" EntityType="Self.AreasT" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Riders" EntityType="Self.Riders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SecurityRole" EntityType="Self.SecurityRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SecurityUser" EntityType="Self.SecurityUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SecurityUserRole" EntityType="Self.SecurityUserRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TripCoordinates" EntityType="Self.TripCoordinates" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Trips" EntityType="Self.Trips" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VehicleSpecs" EntityType="Self.VehicleSpecs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VehicleStatus" EntityType="Self.VehicleStatus" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_SecurityUserRole_SecurityRole" Association="Self.FK_SecurityUserRole_SecurityRole">
+      <End Role="SecurityRole" EntitySet="SecurityRole" />
+      <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SecurityUserRole_SecurityUser" Association="Self.FK_SecurityUserRole_SecurityUser">
+      <End Role="SecurityUser" EntitySet="SecurityUser" />
+      <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
+    </AssociationSet>
     <AssociationSet Name="FK_TripCoordinates_Trips" Association="Self.FK_TripCoordinates_Trips">
       <End Role="Trips" EntitySet="Trips" />
       <End Role="TripCoordinates" EntitySet="TripCoordinates" />
     </AssociationSet>
-    <AssociationSet Name="FK_Trips_Riders" Association="Self.FK_Trips_Riders">
-      <End Role="Riders" EntitySet="Riders" />
+    <AssociationSet Name="FK_Trips_SecurityUser" Association="Self.FK_Trips_SecurityUser">
+      <End Role="SecurityUser" EntitySet="SecurityUser" />
       <End Role="Trips" EntitySet="Trips" />
     </AssociationSet>
     <AssociationSet Name="FK_Trips_Vehicles" Association="Self.FK_Trips_Vehicles">

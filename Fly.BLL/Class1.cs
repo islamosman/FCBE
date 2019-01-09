@@ -6,25 +6,8 @@ using System.Linq;
 
 namespace Fly.BLL
 {
-    public class ScotterRepo
+    public class class1
     {
-        protected FlyEntities db = new FlyEntities();
-        public Vehicles Add(Vehicles model)
-        {
-            db.Vehicles.Add(model);
-            db.SaveChanges();
 
-            return model;
-        }
-
-        public List<Vehicles> GetAll()
-        {
-            return db.Vehicles.ToList();
-        }
-
-        public Vehicles GetOne(int idVar)
-        {
-            return db.Vehicles.FirstOrDefault(x=>x.Id == idVar);
-        }
     }
 }

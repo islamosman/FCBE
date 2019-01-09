@@ -14,18 +14,6 @@
           <Property Name="Country" Type="int" Nullable="false" />
           <Property Name="AreaCoordinates" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
-        <EntityType Name="Riders">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="Country" Type="int" Nullable="false" />
-          <Property Name="City" Type="int" />
-          <Property Name="PhoneNumber" Type="int" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="GenderId" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="SecurityRole">
           <Key>
             <PropertyRef Name="Id" />
@@ -49,7 +37,13 @@
           <Property Name="Email" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="IsActive" Type="bit" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="250" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="Gender" Type="bit" />
+          <Property Name="BirthDate" Type="date" />
+          <Property Name="DeviceId" Type="nvarchar" MaxLength="500" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="CityId" Type="int" />
         </EntityType>
         <EntityType Name="SecurityUserRole">
           <Key>
@@ -135,7 +129,7 @@
           <Property Name="InService" Type="bit" Nullable="false" />
           <Property Name="AreaId" Type="int" />
         </EntityType>
-        <Association Name="FK_dbo_SecurityUserRoles_dbo_SecurityRoles_RoleId">
+        <Association Name="FK_SecurityUserRole_SecurityRole">
           <End Role="SecurityRole" Type="Self.SecurityRole" Multiplicity="1" />
           <End Role="SecurityUserRole" Type="Self.SecurityUserRole" Multiplicity="*" />
           <ReferentialConstraint>
@@ -147,7 +141,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_SecurityUserRoles_dbo_SecurityUsers_UserId">
+        <Association Name="FK_SecurityUserRole_SecurityUser">
           <End Role="SecurityUser" Type="Self.SecurityUser" Multiplicity="1" />
           <End Role="SecurityUserRole" Type="Self.SecurityUserRole" Multiplicity="*" />
           <ReferentialConstraint>
@@ -171,11 +165,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Trips_Riders">
-          <End Role="Riders" Type="Self.Riders" Multiplicity="1" />
+        <Association Name="FK_Trips_SecurityUser">
+          <End Role="SecurityUser" Type="Self.SecurityUser" Multiplicity="1" />
           <End Role="Trips" Type="Self.Trips" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Riders">
+            <Principal Role="SecurityUser">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Trips">
@@ -233,7 +227,6 @@
         </Association>
         <EntityContainer Name="FlyModelStoreContainer">
           <EntitySet Name="AreasT" EntityType="Self.AreasT" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Riders" EntityType="Self.Riders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SecurityRole" EntityType="Self.SecurityRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SecurityUser" EntityType="Self.SecurityUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SecurityUserRole" EntityType="Self.SecurityUserRole" Schema="dbo" store:Type="Tables" />
@@ -243,11 +236,11 @@
           <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleSpecs" EntityType="Self.VehicleSpecs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleStatus" EntityType="Self.VehicleStatus" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_dbo_SecurityUserRoles_dbo_SecurityRoles_RoleId" Association="Self.FK_dbo_SecurityUserRoles_dbo_SecurityRoles_RoleId">
+          <AssociationSet Name="FK_SecurityUserRole_SecurityRole" Association="Self.FK_SecurityUserRole_SecurityRole">
             <End Role="SecurityRole" EntitySet="SecurityRole" />
             <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_SecurityUserRoles_dbo_SecurityUsers_UserId" Association="Self.FK_dbo_SecurityUserRoles_dbo_SecurityUsers_UserId">
+          <AssociationSet Name="FK_SecurityUserRole_SecurityUser" Association="Self.FK_SecurityUserRole_SecurityUser">
             <End Role="SecurityUser" EntitySet="SecurityUser" />
             <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
           </AssociationSet>
@@ -255,8 +248,8 @@
             <End Role="Trips" EntitySet="Trips" />
             <End Role="TripCoordinates" EntitySet="TripCoordinates" />
           </AssociationSet>
-          <AssociationSet Name="FK_Trips_Riders" Association="Self.FK_Trips_Riders">
-            <End Role="Riders" EntitySet="Riders" />
+          <AssociationSet Name="FK_Trips_SecurityUser" Association="Self.FK_Trips_SecurityUser">
+            <End Role="SecurityUser" EntitySet="SecurityUser" />
             <End Role="Trips" EntitySet="Trips" />
           </AssociationSet>
           <AssociationSet Name="FK_Trips_Vehicles" Association="Self.FK_Trips_Vehicles">
@@ -282,7 +275,10 @@
       <Schema Namespace="FlyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="FlyEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AreasT" EntityType="FlyModel.AreasT" />
-          <EntitySet Name="Riders" EntityType="FlyModel.Riders" />
+          <EntitySet Name="SecurityRole" EntityType="FlyModel.SecurityRole" />
+          <EntitySet Name="SecurityUser" EntityType="FlyModel.SecurityUser" />
+          <EntitySet Name="SecurityUserRole" EntityType="FlyModel.SecurityUserRole" />
+          <EntitySet Name="sysdiagrams" EntityType="FlyModel.sysdiagrams" />
           <EntitySet Name="TripCoordinates" EntityType="FlyModel.TripCoordinates" />
           <EntitySet Name="Trips" EntityType="FlyModel.Trips" />
           <EntitySet Name="Vehicles" EntityType="FlyModel.Vehicles" />
@@ -292,8 +288,16 @@
             <End Role="AreasT" EntitySet="AreasT" />
             <End Role="VehicleStatus" EntitySet="VehicleStatus" />
           </AssociationSet>
-          <AssociationSet Name="FK_Trips_Riders" Association="FlyModel.FK_Trips_Riders">
-            <End Role="Riders" EntitySet="Riders" />
+          <AssociationSet Name="FK_SecurityUserRole_SecurityRole" Association="FlyModel.FK_SecurityUserRole_SecurityRole">
+            <End Role="SecurityRole" EntitySet="SecurityRole" />
+            <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SecurityUserRole_SecurityUser" Association="FlyModel.FK_SecurityUserRole_SecurityUser">
+            <End Role="SecurityUser" EntitySet="SecurityUser" />
+            <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trips_SecurityUser" Association="FlyModel.FK_Trips_SecurityUser">
+            <End Role="SecurityUser" EntitySet="SecurityUser" />
             <End Role="Trips" EntitySet="Trips" />
           </AssociationSet>
           <AssociationSet Name="FK_TripCoordinates_Trips" Association="FlyModel.FK_TripCoordinates_Trips">
@@ -312,18 +316,6 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
             <End Role="VehicleStatus" EntitySet="VehicleStatus" />
           </AssociationSet>
-          <EntitySet Name="SecurityRole" EntityType="FlyModel.SecurityRole" />
-          <EntitySet Name="SecurityUser" EntityType="FlyModel.SecurityUser" />
-          <EntitySet Name="SecurityUserRole" EntityType="FlyModel.SecurityUserRole" />
-          <EntitySet Name="sysdiagrams" EntityType="FlyModel.sysdiagrams" />
-          <AssociationSet Name="FK_dbo_SecurityUserRoles_dbo_SecurityRoles_RoleId" Association="FlyModel.FK_dbo_SecurityUserRoles_dbo_SecurityRoles_RoleId">
-            <End Role="SecurityRole" EntitySet="SecurityRole" />
-            <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_SecurityUserRoles_dbo_SecurityUsers_UserId" Association="FlyModel.FK_dbo_SecurityUserRoles_dbo_SecurityUsers_UserId">
-            <End Role="SecurityUser" EntitySet="SecurityUser" />
-            <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AreasT">
           <Key>
@@ -335,18 +327,63 @@
           <Property Name="AreaCoordinates" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="VehicleStatus" Relationship="FlyModel.FK_VehicleStatus_AreasT" FromRole="AreasT" ToRole="VehicleStatus" />
         </EntityType>
-        <EntityType Name="Riders">
+        <EntityType Name="SecurityRole">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="Int32" Nullable="false" />
-          <Property Name="City" Type="Int32" />
-          <Property Name="PhoneNumber" Type="Int32" Nullable="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="GenderId" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_Riders" FromRole="Riders" ToRole="Trips" />
+          <Property Name="RoleNameA" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RoleNameE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FullDataAccess" Type="Boolean" Nullable="false" />
+          <Property Name="RoleDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityRole" FromRole="SecurityRole" ToRole="SecurityUserRole" />
+        </EntityType>
+        <EntityType Name="SecurityUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Gender" Type="Boolean" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="DeviceId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="CityId" Type="Int32" />
+          <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityUser" FromRole="SecurityUser" ToRole="SecurityUserRole" />
+          <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_SecurityUser" FromRole="SecurityUser" ToRole="Trips" />
+        </EntityType>
+        <EntityType Name="SecurityUserRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Precision="3" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <NavigationProperty Name="SecurityRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityRole" FromRole="SecurityUserRole" ToRole="SecurityRole" />
+          <NavigationProperty Name="SecurityUser" Relationship="FlyModel.FK_SecurityUserRole_SecurityUser" FromRole="SecurityUserRole" ToRole="SecurityUser" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="TripCoordinates">
           <Key>
@@ -375,7 +412,7 @@
           <Property Name="EndTime" Type="DateTime" Precision="3" />
           <Property Name="IsPaid" Type="Boolean" />
           <Property Name="TotalDistance" Type="Decimal" Precision="18" Scale="0" />
-          <NavigationProperty Name="Riders" Relationship="FlyModel.FK_Trips_Riders" FromRole="Trips" ToRole="Riders" />
+          <NavigationProperty Name="SecurityUser" Relationship="FlyModel.FK_Trips_SecurityUser" FromRole="Trips" ToRole="SecurityUser" />
           <NavigationProperty Name="TripCoordinates" Relationship="FlyModel.FK_TripCoordinates_Trips" FromRole="Trips" ToRole="TripCoordinates" />
           <NavigationProperty Name="Vehicles" Relationship="FlyModel.FK_Trips_Vehicles" FromRole="Trips" ToRole="Vehicles" />
         </EntityType>
@@ -432,11 +469,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Trips_Riders">
-          <End Type="FlyModel.Riders" Role="Riders" Multiplicity="1" />
+        <Association Name="FK_SecurityUserRole_SecurityRole">
+          <End Type="FlyModel.SecurityRole" Role="SecurityRole" Multiplicity="1" />
+          <End Type="FlyModel.SecurityUserRole" Role="SecurityUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SecurityRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SecurityUserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SecurityUserRole_SecurityUser">
+          <End Type="FlyModel.SecurityUser" Role="SecurityUser" Multiplicity="1" />
+          <End Type="FlyModel.SecurityUserRole" Role="SecurityUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SecurityUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SecurityUserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trips_SecurityUser">
+          <End Type="FlyModel.SecurityUser" Role="SecurityUser" Multiplicity="1" />
           <End Type="FlyModel.Trips" Role="Trips" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Riders">
+            <Principal Role="SecurityUser">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Trips">
@@ -492,81 +553,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="SecurityRole">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RoleNameA" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RoleNameE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="FullDataAccess" Type="Boolean" Nullable="false" />
-          <Property Name="RoleDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DateModified" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_dbo_SecurityUserRoles_dbo_SecurityRoles_RoleId" FromRole="SecurityRole" ToRole="SecurityUserRole" />
-        </EntityType>
-        <EntityType Name="SecurityUser">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FullName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="UserName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_dbo_SecurityUserRoles_dbo_SecurityUsers_UserId" FromRole="SecurityUser" ToRole="SecurityUserRole" />
-        </EntityType>
-        <EntityType Name="SecurityUserRole">
-          <Key>
-            <PropertyRef Name="RoleId" />
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="RoleId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="DateAdded" Type="DateTime" Precision="3" />
-          <Property Name="AddedBy" Type="Int32" />
-          <Property Name="DateModified" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <NavigationProperty Name="SecurityRole" Relationship="FlyModel.FK_dbo_SecurityUserRoles_dbo_SecurityRoles_RoleId" FromRole="SecurityUserRole" ToRole="SecurityRole" />
-          <NavigationProperty Name="SecurityUser" Relationship="FlyModel.FK_dbo_SecurityUserRoles_dbo_SecurityUsers_UserId" FromRole="SecurityUserRole" ToRole="SecurityUser" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <Association Name="FK_dbo_SecurityUserRoles_dbo_SecurityRoles_RoleId">
-          <End Type="FlyModel.SecurityRole" Role="SecurityRole" Multiplicity="1" />
-          <End Type="FlyModel.SecurityUserRole" Role="SecurityUserRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SecurityRole">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SecurityUserRole">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_SecurityUserRoles_dbo_SecurityUsers_UserId">
-          <End Type="FlyModel.SecurityUser" Role="SecurityUser" Multiplicity="1" />
-          <End Type="FlyModel.SecurityUserRole" Role="SecurityUserRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SecurityUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SecurityUserRole">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -583,16 +569,59 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Riders">
-            <EntityTypeMapping TypeName="FlyModel.Riders">
-              <MappingFragment StoreEntitySet="Riders">
-                <ScalarProperty Name="GenderId" ColumnName="GenderId" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+          <EntitySetMapping Name="SecurityRole">
+            <EntityTypeMapping TypeName="FlyModel.SecurityRole">
+              <MappingFragment StoreEntitySet="SecurityRole">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
+                <ScalarProperty Name="FullDataAccess" ColumnName="FullDataAccess" />
+                <ScalarProperty Name="RoleNameE" ColumnName="RoleNameE" />
+                <ScalarProperty Name="RoleNameA" ColumnName="RoleNameA" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SecurityUser">
+            <EntityTypeMapping TypeName="FlyModel.SecurityUser">
+              <MappingFragment StoreEntitySet="SecurityUser">
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SecurityUserRole">
+            <EntityTypeMapping TypeName="FlyModel.SecurityUserRole">
+              <MappingFragment StoreEntitySet="SecurityUserRole">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FlyModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -660,56 +689,6 @@
                 <ScalarProperty Name="LongV" ColumnName="LongV" />
                 <ScalarProperty Name="LatV" ColumnName="LatV" />
                 <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SecurityRole">
-            <EntityTypeMapping TypeName="FlyModel.SecurityRole">
-              <MappingFragment StoreEntitySet="SecurityRole">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-                <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
-                <ScalarProperty Name="FullDataAccess" ColumnName="FullDataAccess" />
-                <ScalarProperty Name="RoleNameE" ColumnName="RoleNameE" />
-                <ScalarProperty Name="RoleNameA" ColumnName="RoleNameA" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SecurityUser">
-            <EntityTypeMapping TypeName="FlyModel.SecurityUser">
-              <MappingFragment StoreEntitySet="SecurityUser">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SecurityUserRole">
-            <EntityTypeMapping TypeName="FlyModel.SecurityUserRole">
-              <MappingFragment StoreEntitySet="SecurityUserRole">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="FlyModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

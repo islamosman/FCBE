@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Data.Entity.Core.Objects;
 using System.Configuration;
+using Fly.DomainModel.Helper;
 
 namespace Fly.BLL
 {
@@ -24,12 +25,16 @@ namespace Fly.BLL
         void Add(T entity);
         void Remove(T entity);
 
+        void Validate(T entity);
+
+        RequestResponse AddUpdate(T entity);
         #endregion
     }
     public abstract class MainRepository<T> : IDisposable, MainIRepositories<T> where T : class
     {
         #region Members
-
+        protected RequestResponse responseObj;
+        
         protected IObjectSet<T> _objectSet;
         protected ObjectContext _context;
         //protected log4net.ILog logger;
@@ -42,13 +47,13 @@ namespace Fly.BLL
         {
             _context = context;
             _objectSet = context.CreateObjectSet<T>();
-
+            responseObj = new RequestResponse() { IsDone = false };
             //Init Logger
             //logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         }
 
         public MainRepository()
-            : this(new ObjectContext(ConfigurationManager.ConnectionStrings["Main_DBEntities"].ConnectionString))
+            : this(new ObjectContext(ConfigurationManager.ConnectionStrings["FlyEntities"].ConnectionString))
         {
         }
 
@@ -64,6 +69,8 @@ namespace Fly.BLL
             }
         }
 
+        public abstract RequestResponse AddUpdate(T entity);
+
         public IEnumerable<T> GetAll()
         {
             return _objectSet;
@@ -71,7 +78,7 @@ namespace Fly.BLL
 
         public abstract T GetById(int id);
 
-
+        public abstract void Validate(T entity);
         public IEnumerable<T> Query(Expression<Func<T, bool>> filter)
         {
 
