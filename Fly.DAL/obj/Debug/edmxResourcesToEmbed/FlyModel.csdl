@@ -87,6 +87,7 @@
     <Property Name="CityId" Type="Int32" />
     <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityUser" FromRole="SecurityUser" ToRole="SecurityUserRole" />
     <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_SecurityUser" FromRole="SecurityUser" ToRole="Trips" />
+    <Property Name="PassCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="SecurityUserRole">
     <Key>

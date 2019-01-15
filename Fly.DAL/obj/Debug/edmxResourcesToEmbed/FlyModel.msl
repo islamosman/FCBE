@@ -27,6 +27,7 @@
     <EntitySetMapping Name="SecurityUser">
       <EntityTypeMapping TypeName="FlyModel.SecurityUser">
         <MappingFragment StoreEntitySet="SecurityUser">
+          <ScalarProperty Name="PassCode" ColumnName="PassCode" />
           <ScalarProperty Name="CityId" ColumnName="CityId" />
           <ScalarProperty Name="CountryId" ColumnName="CountryId" />
           <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />

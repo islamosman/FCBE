@@ -33,6 +33,7 @@
     var marker;
     var polygonArray;
     function myMap() {
+        alert(google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(30.1703207, 31.226648), new google.maps.LatLng(30.1617312, 31.2280126)));
         if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function (pos) {
             var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
             
@@ -233,4 +234,4 @@
         buildColorPalette();
     }
 </script>  
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&libraries=drawing&callback=myMap"></script>  
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&libraries=drawing,geometry&callback=myMap"></script>  

@@ -17,4 +17,10 @@ namespace Fly.DomainModel
         public bool gender { get; set; }
         public DateTime date_of_birth { get; set; }
     }
+
+    public class VerifyPassCodeModel
+    {
+        public string mobileNumber { get; set; }
+        public string passCode { get; set; }
+    }
 }

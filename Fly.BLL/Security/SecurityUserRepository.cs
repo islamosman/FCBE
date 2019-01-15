@@ -16,17 +16,16 @@ namespace Fly.BLL
             throw new NotImplementedException();
         }
 
-        public SecurityUser GetBy(string userName,string password)
+        public SecurityUser GetBy(string userName, string password)
         {
-            return _objectSet.Include(x=>x.SecurityUserRole.Select(s=>s.SecurityRole)).FirstOrDefault(x=> x.Password == password && (x.Email == password || x.Telephone == password));
+            return _objectSet.Include(x => x.SecurityUserRole.Select(s => s.SecurityRole)).FirstOrDefault(x => x.Password == password && (x.Email == password || x.Telephone == password));
         }
 
         public override RequestResponse AddUpdate(SecurityUser model)
         {
             Validate(model);
-            if (responseObj.Messages.Count > 0)
+            if (responseObj.ErrorMessages.Count > 0)
             {
-                responseObj.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 return responseObj;
             }
             try
@@ -37,19 +36,38 @@ namespace Fly.BLL
                 }
                 else
                 {
+                    model.PassCode = RandomNumber(10);
+                    model.SecurityUserRole.Add(new SecurityUserRole()
+                    {
+                        RoleId = int.Parse(System.Configuration.ConfigurationManager.AppSettings["UserRole"].ToString())
+                    });
+
                     Add(model);
                 }
-                
-                Save();
 
-                responseObj.StatusCode = System.Net.HttpStatusCode.OK;
-                responseObj.IsDone = true;
+                Save();
+                responseObj.Messages.Add("success", "Welcoom,Registerd Successfully. PLease verfiy the code.");
             }
             catch (Exception ex)
             {
-                responseObj.StatusCode = System.Net.HttpStatusCode.InternalServerError;
-                responseObj.IsDone = false;
-                responseObj.Messages.Add("fillAlldata", ex.InnerException.Message);
+                responseObj.ErrorMessages.Add("fillAlldata", ex.InnerException.Message);
+            }
+
+            return responseObj;
+        }
+
+        public RequestResponse VerfiyPassCode(VerifyPassCodeModel verifyModel)
+        {
+            SecurityUser secUserModel = _objectSet.FirstOrDefault(x => x.PassCode == verifyModel.passCode && x.Telephone == verifyModel.mobileNumber);
+            if (secUserModel != null)
+            {
+                secUserModel.IsActive = true;
+                Attach(secUserModel);
+                Save();
+            }
+            else
+            {
+                responseObj.ErrorMessages.Add("NotValid", "Invalid Verification Code!");
             }
 
             return responseObj;
@@ -60,13 +78,13 @@ namespace Fly.BLL
             // Required
             if (string.IsNullOrEmpty(entity.Email) || string.IsNullOrEmpty(entity.Telephone) || string.IsNullOrEmpty(entity.Password))
             {
-                responseObj.Messages.Add("fillAlldata", "Fill all data");
+                responseObj.ErrorMessages.Add("fillAlldata", "Fill all data");
             }
 
             //Dublicate
-            if (_objectSet.Any(x =>x.Id != entity.Id && (x.Email == entity.Email || x.Telephone == entity.Telephone)))
+            if (_objectSet.Any(x => x.Email == entity.Email || x.Telephone == entity.Telephone))
             {
-                responseObj.Messages.Add("fillAlldata", "Email || Telephone already exist");
+                responseObj.ErrorMessages.Add("fillAlldata", "Email || Telephone already exist");
             }
         }
 

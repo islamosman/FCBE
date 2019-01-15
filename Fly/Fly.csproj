@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -25,6 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,6 +85,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Device" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -323,6 +326,7 @@
     <Content Include="assets\js\ui-treeview.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -421,11 +425,19 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\MVC\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\MVC\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\MVC\jquery.validate.js" />
+    <Content Include="Scripts\MVC\jquery.validate.min.js" />
+    <Content Include="Scripts\MVC\jquery.validate.mvc.js" />
+    <Content Include="Scripts\MVC\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\MVC\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="vendor\animate.css\animate.css" />
@@ -875,6 +887,96 @@
     <Content Include="vendor\DataTables\images\sort_desc_disabled.png" />
     <Content Include="vendor\DataTables\jquery.dataTables.js" />
     <Content Include="vendor\DataTables\jquery.dataTables.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-bs\css\dataTables.bootstrap.css" />
+    <Content Include="vendor\DataTable\datatables.net-bs\css\dataTables.bootstrap.min.css" />
+    <Content Include="vendor\DataTable\datatables.net-bs\js\dataTables.bootstrap.js" />
+    <Content Include="vendor\DataTable\datatables.net-bs\js\dataTables.bootstrap.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-bs\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net-buttons-bs\css\buttons.bootstrap.css" />
+    <Content Include="vendor\DataTable\datatables.net-buttons-bs\css\buttons.bootstrap.min.css" />
+    <Content Include="vendor\DataTable\datatables.net-buttons-bs\js\buttons.bootstrap.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons-bs\js\buttons.bootstrap.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons-bs\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\buttons.colVis.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\buttons.colVis.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\buttons.flash.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\buttons.flash.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\buttons.html5.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\buttons.html5.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\buttons.print.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\buttons.print.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\dataTables.buttons.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\js\dataTables.buttons.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader-bs\css\fixedHeader.bootstrap.css" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader-bs\css\fixedHeader.bootstrap.min.css" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader-bs\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader\js\dataTables.fixedHeader.js" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader\js\dataTables.fixedHeader.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net-keytable\js\dataTables.keyTable.js" />
+    <Content Include="vendor\DataTable\datatables.net-keytable\js\dataTables.keyTable.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-keytable\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net-responsive-bs\css\responsive.bootstrap.css" />
+    <Content Include="vendor\DataTable\datatables.net-responsive-bs\css\responsive.bootstrap.min.css" />
+    <Content Include="vendor\DataTable\datatables.net-responsive-bs\js\responsive.bootstrap.js" />
+    <Content Include="vendor\DataTable\datatables.net-responsive-bs\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net-responsive\js\dataTables.responsive.js" />
+    <Content Include="vendor\DataTable\datatables.net-responsive\js\dataTables.responsive.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-responsive\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net-scroller-bs\css\scroller.bootstrap.css" />
+    <Content Include="vendor\DataTable\datatables.net-scroller-bs\css\scroller.bootstrap.min.css" />
+    <Content Include="vendor\DataTable\datatables.net-scroller-bs\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net-scroller\js\dataTables.scroller.js" />
+    <Content Include="vendor\DataTable\datatables.net-scroller\js\dataTables.scroller.min.js" />
+    <Content Include="vendor\DataTable\datatables.net-scroller\License.txt" />
+    <Content Include="vendor\DataTable\datatables.net\js\jquery.dataTables.js" />
+    <Content Include="vendor\DataTable\datatables.net\js\jquery.dataTables.min.js" />
+    <Content Include="vendor\DataTable\datatables.net\License.txt" />
+    <Content Include="vendor\DataTable\jszip\dist\jszip.js" />
+    <Content Include="vendor\DataTable\jszip\dist\jszip.min.js" />
+    <Content Include="vendor\DataTable\jszip\docs\APPNOTE.TXT" />
+    <Content Include="vendor\DataTable\jszip\docs\references.txt" />
+    <Content Include="vendor\DataTable\jszip\docs\ZIP spec.txt" />
+    <Content Include="vendor\DataTable\jszip\documentation\css\main.css" />
+    <Content Include="vendor\DataTable\jszip\documentation\css\pygments.css" />
+    <Content Include="vendor\DataTable\jszip\documentation\examples\download-zip-file.html" />
+    <Content Include="vendor\DataTable\jszip\documentation\examples\downloader.html" />
+    <Content Include="vendor\DataTable\jszip\documentation\examples\downloader.js" />
+    <Content Include="vendor\DataTable\jszip\documentation\examples\get-binary-files-ajax.html" />
+    <Content Include="vendor\DataTable\jszip\documentation\examples\read-local-file-api.html" />
+    <Content Include="vendor\DataTable\jszip\documentation\_layouts\default.html" />
+    <Content Include="vendor\DataTable\jszip\Gruntfile.js" />
+    <Content Include="vendor\DataTable\jszip\index.html" />
+    <Content Include="vendor\DataTable\jszip\lib\arrayReader.js" />
+    <Content Include="vendor\DataTable\jszip\lib\base64.js" />
+    <Content Include="vendor\DataTable\jszip\lib\compressedObject.js" />
+    <Content Include="vendor\DataTable\jszip\lib\compressions.js" />
+    <Content Include="vendor\DataTable\jszip\lib\crc32.js" />
+    <Content Include="vendor\DataTable\jszip\lib\dataReader.js" />
+    <Content Include="vendor\DataTable\jszip\lib\defaults.js" />
+    <Content Include="vendor\DataTable\jszip\lib\deprecatedPublicUtils.js" />
+    <Content Include="vendor\DataTable\jszip\lib\flate.js" />
+    <Content Include="vendor\DataTable\jszip\lib\index.js" />
+    <Content Include="vendor\DataTable\jszip\lib\license_header.js" />
+    <Content Include="vendor\DataTable\jszip\lib\load.js" />
+    <Content Include="vendor\DataTable\jszip\lib\nodeBuffer.js" />
+    <Content Include="vendor\DataTable\jszip\lib\nodeBufferReader.js" />
+    <Content Include="vendor\DataTable\jszip\lib\object.js" />
+    <Content Include="vendor\DataTable\jszip\lib\signature.js" />
+    <Content Include="vendor\DataTable\jszip\lib\stringReader.js" />
+    <Content Include="vendor\DataTable\jszip\lib\stringWriter.js" />
+    <Content Include="vendor\DataTable\jszip\lib\support.js" />
+    <Content Include="vendor\DataTable\jszip\lib\uint8ArrayReader.js" />
+    <Content Include="vendor\DataTable\jszip\lib\uint8ArrayWriter.js" />
+    <Content Include="vendor\DataTable\jszip\lib\utf8.js" />
+    <Content Include="vendor\DataTable\jszip\lib\utils.js" />
+    <Content Include="vendor\DataTable\jszip\lib\zipEntries.js" />
+    <Content Include="vendor\DataTable\jszip\lib\zipEntry.js" />
+    <Content Include="vendor\DataTable\jszip\vendor\FileSaver.js" />
+    <Content Include="vendor\DataTable\pdfmake\build\pdfmake.js" />
+    <Content Include="vendor\DataTable\pdfmake\build\pdfmake.min.js" />
+    <Content Include="vendor\DataTable\pdfmake\build\vfs_fonts.js" />
     <Content Include="vendor\fontawesome\css\font-awesome.css" />
     <Content Include="vendor\fontawesome\css\font-awesome.min.css" />
     <Content Include="vendor\fontawesome\fonts\fontawesome-webfont.svg" />
@@ -1289,6 +1391,72 @@
     <Content Include="vendor\themify-icons\fonts\themify.woff" />
     <Content Include="vendor\toastr\toastr.js.map" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="vendor\DataTable\datatables.net-bs\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-bs\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-bs\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net-buttons-bs\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-buttons-bs\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-buttons-bs\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-buttons\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader-bs\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader-bs\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader-bs\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-fixedheader\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net-keytable\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-keytable\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-keytable\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net-responsive-bs\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-responsive-bs\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-responsive-bs\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net-responsive\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-responsive\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-responsive\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net-scroller-bs\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-scroller-bs\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-scroller-bs\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net-scroller\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-scroller\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net-scroller\Readme.md" />
+    <Content Include="vendor\DataTable\datatables.net\.bower.json" />
+    <Content Include="vendor\DataTable\datatables.net\bower.json" />
+    <Content Include="vendor\DataTable\datatables.net\Readme.md" />
+    <Content Include="vendor\DataTable\jszip\.bower.json" />
+    <Content Include="vendor\DataTable\jszip\bower.json" />
+    <Content Include="vendor\DataTable\jszip\CHANGES.md" />
+    <Content Include="vendor\DataTable\jszip\component.json" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\constructor.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\constructor_load.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\file_data.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\file_name.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\file_regex.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\filter.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\folder_data.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\folder_regex.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\generate.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\load.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\remove.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_jszip\support.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\api_zipobject.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\contributing.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\examples.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\faq.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\howto\read_zip.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\howto\write_zip.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\limitations.md" />
+    <Content Include="vendor\DataTable\jszip\documentation\upgrade_guide.md" />
+    <Content Include="vendor\DataTable\jszip\LICENSE.markdown" />
+    <Content Include="vendor\DataTable\jszip\package.json" />
+    <Content Include="vendor\DataTable\jszip\README.markdown" />
+    <Content Include="vendor\DataTable\jszip\_config.yml" />
+    <Content Include="vendor\DataTable\pdfmake\.bower.json" />
+    <Content Include="vendor\DataTable\pdfmake\bower.json" />
+    <Content Include="vendor\DataTable\pdfmake\build\pdfmake.min.js.map" />
+    <Content Include="vendor\DataTable\pdfmake\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1319,11 +1487,16 @@
       <Name>Fly.Resources</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

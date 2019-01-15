@@ -45,32 +45,37 @@ namespace Fly.Controllers
                 var token = tokenResponse.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
 
                 return Ok(token);
-                
-                //var response = client.PostAsync(url + "Token", content).Result;
-                //return response.Content.ReadAsStringAsync().Result;
             }
         }
 
-        public HttpResponseMessage Register(RegisterModel regModel)
+        [Route("Register")]
+        public IHttpActionResult Register(RegisterModel regModel)
         {
-            using (SecurityUserRepository  secRepository=new SecurityUserRepository())
+            using (SecurityUserRepository secRepository = new SecurityUserRepository())
             {
-                reqResponse= secRepository.AddUpdate(new SecurityUser()
+                reqResponse = secRepository.AddUpdate(new SecurityUser()
                 {
-                    DeviceId=regModel.device_unique_id,
-                    Telephone=regModel.phone_number,
-                    Email=regModel.email,
-                    Password=regModel.password,
-                    FullName=regModel.first_name + " " + regModel.last_name,
-                    Gender=regModel.gender,
-                    BirthDate=regModel.date_of_birth
+                    DeviceId = regModel.device_unique_id,
+                    Telephone = regModel.phone_number,
+                    Email = regModel.email,
+                    Password = Encrypt(regModel.password),
+                    FullName = regModel.first_name + " " + regModel.last_name,
+                    Gender = regModel.gender,
+                    BirthDate = regModel.date_of_birth,
+                    IsActive = false
                 });
             }
-            HttpResponseMessage response = Request.CreateResponse(reqResponse.StatusCode, FillMessages(reqResponse.Messages));
-            response.Content = new StringContent(FillMessages(reqResponse.Messages), Encoding.Unicode);
-           
-            
-            return response;
+            return Json(reqResponse);
+        }
+
+        [Route("VerfiyPass")]
+        public IHttpActionResult VerfiyPass(VerifyPassCodeModel verifyModel)
+        {
+            using (SecurityUserRepository secRepository = new SecurityUserRepository())
+            {
+                reqResponse = secRepository.VerfiyPassCode(verifyModel);
+            }
+            return Json(reqResponse);
         }
         //[HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Authorize(Roles = "Supervisor")]
@@ -91,37 +96,37 @@ namespace Fly.Controllers
         //public  IHttpActionResult RefreshToken(string url,string refreshToken)
         //{
 
-            //var pairs = new List<KeyValuePair<string, string>>
-            //        {
-            //            new KeyValuePair<string, string>( "grant_type", "refresh_token" ),
-            //            new KeyValuePair<string, string>( "refresh_token", refreshToken ),
-            //        };
-            //var content = new FormUrlEncodedContent(pairs);
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            //using (var client = new HttpClient())
-            //{
-            //    var response = client.pos(url + "Token", content).Result;
-            //    return Ok(response.Content.ReadAsStringAsync().Result);
-            //}
+        //var pairs = new List<KeyValuePair<string, string>>
+        //        {
+        //            new KeyValuePair<string, string>( "grant_type", "refresh_token" ),
+        //            new KeyValuePair<string, string>( "refresh_token", refreshToken ),
+        //        };
+        //var content = new FormUrlEncodedContent(pairs);
+        //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //using (var client = new HttpClient())
+        //{
+        //    var response = client.pos(url + "Token", content).Result;
+        //    return Ok(response.Content.ReadAsStringAsync().Result);
+        //}
 
-            //    var client = new HttpClient()
-            //         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authorizationHeader);
-            //    var tokenResponse = client..PostAsync(url + "Token", new FormUrlEncodedContent(pairs)).Result;
-            //    //    var client = new OAuth2Client(
+        //    var client = new HttpClient()
+        //         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authorizationHeader);
+        //    var tokenResponse = client..PostAsync(url + "Token", new FormUrlEncodedContent(pairs)).Result;
+        //    //    var client = new OAuth2Client(
 
-            //    //        new Uri("http://localhost:2727/token "),
+        //    //        new Uri("http://localhost:2727/token "),
 
-            //    //"client1",
+        //    //"client1",
 
-            //    //"secret");
+        //    //"secret");
 
 
 
-            //    var response = client.RequestRefreshTokenAsync(refreshToken).Result;
+        //    var response = client.RequestRefreshTokenAsync(refreshToken).Result;
 
-            //    return Ok(response);
+        //    return Ok(response);
 
-       // }
+        // }
     }
 
     public class Token

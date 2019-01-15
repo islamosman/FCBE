@@ -39,6 +39,7 @@ namespace Fly.DomainModel
         public string DeviceId { get; set; }
         public Nullable<int> CountryId { get; set; }
         public Nullable<int> CityId { get; set; }
+        public string PassCode { get; set; }
     
         public virtual ICollection<SecurityUserRole> SecurityUserRole { get; set; }
         public virtual ICollection<Trips> Trips { get; set; }

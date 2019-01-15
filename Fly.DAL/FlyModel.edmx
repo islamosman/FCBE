@@ -44,6 +44,7 @@
           <Property Name="DeviceId" Type="nvarchar" MaxLength="500" />
           <Property Name="CountryId" Type="int" />
           <Property Name="CityId" Type="int" />
+          <Property Name="PassCode" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="SecurityUserRole">
           <Key>
@@ -360,6 +361,7 @@
           <Property Name="CityId" Type="Int32" />
           <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityUser" FromRole="SecurityUser" ToRole="SecurityUserRole" />
           <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_SecurityUser" FromRole="SecurityUser" ToRole="Trips" />
+          <Property Name="PassCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SecurityUserRole">
           <Key>
@@ -585,6 +587,7 @@
           <EntitySetMapping Name="SecurityUser">
             <EntityTypeMapping TypeName="FlyModel.SecurityUser">
               <MappingFragment StoreEntitySet="SecurityUser">
+                <ScalarProperty Name="PassCode" ColumnName="PassCode" />
                 <ScalarProperty Name="CityId" ColumnName="CityId" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
                 <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />

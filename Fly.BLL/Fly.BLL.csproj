@@ -45,11 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseBussiness.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="MainRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\SecurityUserRepository.cs" />
+    <Compile Include="Trip\TripRepository.cs" />
     <Compile Include="Vehicles\VehicleRepository.cs" />
   </ItemGroup>
   <ItemGroup>

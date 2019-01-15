@@ -22,6 +22,7 @@ namespace Fly.BLL
 
         public override void Validate(Vehicles entity)
         {
+            RandomNumber(10);
             throw new NotImplementedException();
         }
     }

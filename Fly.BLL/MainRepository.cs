@@ -30,10 +30,10 @@ namespace Fly.BLL
         RequestResponse AddUpdate(T entity);
         #endregion
     }
-    public abstract class MainRepository<T> : IDisposable, MainIRepositories<T> where T : class
+    public abstract class MainRepository<T> : BaseBussiness,IDisposable, MainIRepositories<T> where T : class
     {
         #region Members
-        protected RequestResponse responseObj;
+       
         
         protected IObjectSet<T> _objectSet;
         protected ObjectContext _context;
@@ -47,7 +47,6 @@ namespace Fly.BLL
         {
             _context = context;
             _objectSet = context.CreateObjectSet<T>();
-            responseObj = new RequestResponse() { IsDone = false };
             //Init Logger
             //logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         }

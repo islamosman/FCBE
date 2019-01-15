@@ -39,6 +39,7 @@
     <Property Name="DeviceId" Type="nvarchar" MaxLength="500" />
     <Property Name="CountryId" Type="int" />
     <Property Name="CityId" Type="int" />
+    <Property Name="PassCode" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="SecurityUserRole">
     <Key>
