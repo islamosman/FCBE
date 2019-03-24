@@ -27,7 +27,7 @@ namespace Fly
                 defaults: new { id = RouteParameter.Optional }
             );
             var json = config.Formatters.JsonFormatter;
-            json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
+            json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.All;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
             config.EnableCors(new EnableCorsAttribute("*", "*", "GET"));
             config.EnableCors(new EnableCorsAttribute("*", "*", "POST"));

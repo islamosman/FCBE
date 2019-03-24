@@ -21,9 +21,10 @@ namespace Fly.DomainModel
     {
         public int VehicleId { get; set; }
         public int CategoryId { get; set; }
-        public int BrandId { get; set; }
         public int ModelId { get; set; }
     
         public virtual Vehicles Vehicles { get; set; }
+        public virtual VehiclesCategory VehiclesCategory { get; set; }
+        public virtual VehiclesModel VehiclesModel { get; set; }
     }
 }

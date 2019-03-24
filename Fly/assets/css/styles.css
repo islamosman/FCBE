@@ -11396,3 +11396,127 @@ td.small-width {
 [date-picker] .disabled.active, [date-picker] .disabled.now {
   color: #ffffff !important;
 }
+
+
+
+.select2-container {
+    z-index:9999!important; /*8881 !important;*/
+    width: 100% !important;
+}
+
+
+.myLabel {
+    background-color: #ecf4ff;
+    border-left-style: solid;
+    border-left-color: #2196F3;
+    border-left-width: 2px;
+    color: #333333;
+    padding-left: 2px;
+}
+
+.loadercontener2 {
+    display: none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 8888;
+    cursor: progress;
+}
+
+.loader2 {
+    -ms-border-radius: 20px;
+    border-radius: 20px;
+    position: relative;
+    margin: 28% 35% auto;
+    width: 500px !important;
+    height: 25px;
+    z-index: 9999;
+    background-color: #66e869;
+}
+
+    /*.loadercontener {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    position: fixed;
+    z-index: 99999;
+    background: #fff;
+}
+.loadercontener .loader {
+    position: absolute;
+    top: calc(50% - 3.5px);
+    left: calc(50% - 3.5px);
+}*/
+
+.loadercontener {
+    /*background: rgba(255,255,255,.85);*/
+    bottom: 0;
+    filter: Alpha(Opacity=80) !important;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99999;
+    display: none;
+}
+
+
+.loader {
+    position: fixed;
+    top: 8%;
+    left: 30%;
+    margin-left: -175px;
+    margin-top: -36px;
+    width: 350px;
+    height: 72px;
+}
+
+.loadercontenerTemplate {
+    background: rgba(255,255,255,.85);
+    bottom: 0;
+    filter: Alpha(Opacity=80) !important;
+    position: fixed;
+    top: 65px;
+    width: 100%;
+    z-index: 2000;
+    display: none;
+}
+
+
+.loaderTemplate {
+    position: fixed;
+    /*top: 8%;*/
+    left: 39%;
+    margin-left: -175px;
+    /*margin-top: -36px;*/
+    width: auto;
+    height: auto;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.border-top-blue {
+    border-top: 1px solid #2196f3;
+}
+
+.width100100 {
+    width: 100% !important;
+}
+
+
+.pointerCursor{
+    cursor:pointer;
+}
+
+.disabledpointer{
+    cursor:not-allowed !important;
+    background: #dcd8e2 !important;
+}
+
+.required{
+    color:red;
+}

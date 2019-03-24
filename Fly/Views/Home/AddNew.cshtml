@@ -47,6 +47,7 @@
              marker = new google.maps.Marker({ position: myCenter, draggable: true });
 
              google.maps.event.addListener(marker, 'dragend', function (event) {
+                 console.log(polygonArray);
                  alert(google.maps.geometry.poly.containsLocation(event.latLng, polygonArray));
                 document.getElementById("latTxt").value = event.latLng.lat();
                 document.getElementById("longTxt").value = event.latLng.lng();

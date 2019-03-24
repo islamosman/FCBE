@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -19,33 +20,45 @@ namespace Fly.Controllers
     [RoutePrefix("api/FlyAuth")]
     public class FlyAuthController : BaseApiController
     {
-        public IHttpActionResult GetToken(string url, string userName, string password)
+        public IHttpActionResult Login(LoginModel loginModel)
         {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(loginModel.userName) || string.IsNullOrEmpty(loginModel.password))
             {
                 return BadRequest(Fly.Resources.OperationLP.InvalidUserNamePassword);
             }
 
+            loginModel.password = Encrypt(loginModel.password);
             var pairs = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>( "grant_type", "password" ),
-                        new KeyValuePair<string, string>( "username", userName ),
-                        new KeyValuePair<string, string> ( "Password",Decrypt(password))
+                        new KeyValuePair<string, string>( "username", loginModel.userName ),
+                        new KeyValuePair<string, string> ( "Password",loginModel.password)
                     };
             var content = new FormUrlEncodedContent(pairs);
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            var authorizationHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("rajeev:" + password));
+            var authorizationHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("rajeev:" + loginModel.password));
 
 
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authorizationHeader);
-                var tokenResponse = client.PostAsync(url + "Token", new FormUrlEncodedContent(pairs)).Result;
-                var token = tokenResponse.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
-
+                var response = client.PostAsync(System.Configuration.ConfigurationManager.AppSettings["ServiceUrl"].ToString() + "Token", content).Result;
+                var token = response.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
+                // var sss = response.Content.ReadAsStringAsync().Result;
+                //return Json(new { tock = sss });
                 return Ok(token);
             }
+
+            //using (var client = new HttpClient())
+            //{
+            // var ss=   HttpContext.Current.Request.Url.AbsoluteUri;
+            //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authorizationHeader);
+            //    //System.Configuration.ConfigurationManager.AppSettings["ServiceUrl"].ToString()
+            //    var tokenResponse = client.PostAsync(loginModel.urlStr + "Token", new FormUrlEncodedContent(pairs)).Result;
+            //    var token = tokenResponse.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
+
+            //    return Ok(token);
+            //}
         }
 
         [Route("Register")]

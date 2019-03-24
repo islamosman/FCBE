@@ -1,0 +1,7 @@
+E:\GIT\ZAPP\FLY\FCBE\Fly.DAL\bin\Release\Fly.DAL.dll.config
+E:\GIT\ZAPP\FLY\FCBE\Fly.DAL\bin\Release\Fly.DAL.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.DAL\bin\Release\Fly.DAL.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.DAL\bin\Release\EntityFramework.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.DAL\bin\Release\EntityFramework.xml
+E:\GIT\ZAPP\FLY\FCBE\Fly.DAL\obj\Release\Fly.DAL.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.DAL\obj\Release\Fly.DAL.pdb

@@ -9,3 +9,7 @@ E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Debug\Fly.BLL.dll
 E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Debug\Fly.BLL.pdb
 E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.DomainModel.dll
 E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.DomainModel.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.Helper.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.Resources.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.Helper.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Debug\Fly.Resources.pdb

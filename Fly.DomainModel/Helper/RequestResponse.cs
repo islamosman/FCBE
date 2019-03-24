@@ -23,6 +23,8 @@ namespace Fly.DomainModel.Helper
         public Dictionary<string, string> ErrorMessages { get; set; }
         public object ReturnedObject { set; get; }
 
+        public int responseType { get { return ErrorMessages.Count > 0 ? 2 : 1; } }
+
         private string FillMessages(Dictionary<string, string> ValidationErrors)
         {
             StringBuilder errorList = new StringBuilder();

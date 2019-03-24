@@ -1,0 +1,5 @@
+E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\bin\Release\Fly.Helper.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\bin\Release\Fly.Helper.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\obj\Release\Fly.Helper.csprojResolveAssemblyReference.cache
+E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\obj\Release\Fly.Helper.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\obj\Release\Fly.Helper.pdb

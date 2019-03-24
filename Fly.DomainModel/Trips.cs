@@ -36,6 +36,7 @@ namespace Fly.DomainModel
         public Nullable<System.DateTime> EndTime { get; set; }
         public Nullable<bool> IsPaid { get; set; }
         public Nullable<decimal> TotalDistance { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     
         public virtual SecurityUser SecurityUser { get; set; }
         public virtual ICollection<TripCoordinates> TripCoordinates { get; set; }

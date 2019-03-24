@@ -47,7 +47,7 @@ namespace Fly.Providers
             SecurityUser secUserModel = new SecurityUser();
             using (SecurityUserRepository obj = new SecurityUserRepository())
             {
-                secUserModel = obj.GetBy(context.UserName, context.Password);
+                secUserModel = obj.GetBy(context.UserName,  context.Password);
                 if (secUserModel == null)
                 {
                     context.SetError("invalid_grant",

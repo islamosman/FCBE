@@ -27,7 +27,6 @@ namespace Fly.DomainModel
         public int Id { get; set; }
         public string Name { get; set; }
         public int SpecsId { get; set; }
-        public int ModelId { get; set; }
         public string PlateNo { get; set; }
         public Nullable<int> HolderId { get; set; }
         public bool IsActive { get; set; }

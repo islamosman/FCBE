@@ -5,7 +5,15 @@
       <EntityTypeMapping TypeName="FlyModel.AreasT">
         <MappingFragment StoreEntitySet="AreasT">
           <ScalarProperty Name="AreaCoordinates" ColumnName="AreaCoordinates" />
-          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Countries">
+      <EntityTypeMapping TypeName="FlyModel.Countries">
+        <MappingFragment StoreEntitySet="Countries">
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
@@ -14,9 +22,6 @@
     <EntitySetMapping Name="SecurityRole">
       <EntityTypeMapping TypeName="FlyModel.SecurityRole">
         <MappingFragment StoreEntitySet="SecurityRole">
-          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-          <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-          <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
           <ScalarProperty Name="FullDataAccess" ColumnName="FullDataAccess" />
           <ScalarProperty Name="RoleNameE" ColumnName="RoleNameE" />
           <ScalarProperty Name="RoleNameA" ColumnName="RoleNameA" />
@@ -68,6 +73,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TempStatus">
+      <EntityTypeMapping TypeName="FlyModel.TempStatus">
+        <MappingFragment StoreEntitySet="TempStatus">
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DataStr" ColumnName="DataStr" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="TripCoordinates">
       <EntityTypeMapping TypeName="FlyModel.TripCoordinates">
         <MappingFragment StoreEntitySet="TripCoordinates">
@@ -82,6 +96,7 @@
     <EntitySetMapping Name="Trips">
       <EntityTypeMapping TypeName="FlyModel.Trips">
         <MappingFragment StoreEntitySet="Trips">
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="TotalDistance" ColumnName="TotalDistance" />
           <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
           <ScalarProperty Name="EndTime" ColumnName="EndTime" />
@@ -105,8 +120,33 @@
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           <ScalarProperty Name="HolderId" ColumnName="HolderId" />
           <ScalarProperty Name="PlateNo" ColumnName="PlateNo" />
-          <ScalarProperty Name="ModelId" ColumnName="ModelId" />
           <ScalarProperty Name="SpecsId" ColumnName="SpecsId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehiclesBrand">
+      <EntityTypeMapping TypeName="FlyModel.VehiclesBrand">
+        <MappingFragment StoreEntitySet="VehiclesBrand">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehiclesCategory">
+      <EntityTypeMapping TypeName="FlyModel.VehiclesCategory">
+        <MappingFragment StoreEntitySet="VehiclesCategory">
+          <ScalarProperty Name="EnumImage" ColumnName="EnumImage" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehiclesModel">
+      <EntityTypeMapping TypeName="FlyModel.VehiclesModel">
+        <MappingFragment StoreEntitySet="VehiclesModel">
+          <ScalarProperty Name="BrandId" ColumnName="BrandId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
@@ -116,7 +156,6 @@
       <EntityTypeMapping TypeName="FlyModel.VehicleSpecs">
         <MappingFragment StoreEntitySet="VehicleSpecs">
           <ScalarProperty Name="ModelId" ColumnName="ModelId" />
-          <ScalarProperty Name="BrandId" ColumnName="BrandId" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
           <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
         </MappingFragment>

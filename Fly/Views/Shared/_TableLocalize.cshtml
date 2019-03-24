@@ -1,0 +1,23 @@
+﻿@using Fly.Resources
+<script>
+    var TablePageSize='@int.Parse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString())'
+    var deleteTT = '@OperationLP.BtnDelete';
+    var editTT = '@OperationLP.BtnEdit';
+
+    var pagingData = {
+        "emptyTable": "@OperationLP.TblNoData",
+        "loadingRecords": "@OperationLP.TblLoadingData",
+        "processing": "@OperationLP.TblLoadingData",
+        "zeroRecords": "@OperationLP.TblSearchNoData",
+        "info": "@OperationLP.TblPagingFrom _START_ @OperationLP.TblPagingTo _END_ @OperationLP.TblPagingTotal _TOTAL_ ",
+
+        "paginate": {
+            "first": "@OperationLP.TblPagingFirst",
+            "last": "@OperationLP.TblPagingLast",
+            "next": "@OperationLP.TblPagingNext",
+            "previous": "@OperationLP.TblPagingPrevious"
+        }
+    };
+
+</script>
+

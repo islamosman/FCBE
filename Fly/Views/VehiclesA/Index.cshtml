@@ -1,0 +1,215 @@
+﻿@using Fly.Resources
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-md-12 col-xs-12">
+        <div class="panel panel-white">
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4 class="panel-title text-primary padding-top-10 text-bold">Vehicles</h4>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    Vehicles
+                                    <select class="select2">
+                                        <option>s</option>
+                                        <option>s</option>
+                                        <option>s</option>
+                                    </select>
+                                    @*@Html.DropDownList("Pages", new SelectList(new Temp.BLL.PagesLukpRepository().GetAll(), "Id", LayOutLP.CultureUI == "en-GB" ? "NameAr" : "NameEn"), LabelLP.SelectPage, new { @class = "select2", id = "ddlPages1", @style = "width:100%" })*@
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    المكان
+
+                                    @*@Html.DropDownList("Position", new SelectList(new Temp.BLL.PagePositionRepository().GetByPageId(222), "Id", LayOutLP.CultureUI == "en-GB" ? "Id" : "Id"), "اختر المكان", new { @class = "select2", id = "ddlPagePostions1", @style = "width:100%" })*@
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br />
+                                <div class="input-group">
+                                    <input name="searchToken" id="searchToken" placeholder="@OperationLP.TxtSearch" class="form-control" />
+
+                                    <span class="input-group-btn">
+                                        <button type="button" id="search" class="btn btn-success" onclick="search()" data-original-title="@OperationLP.BtnSearch" data-toggle="tooltip">
+
+                                            <span class="fa-search fa"></span>
+                                        </button>
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <br />
+                                <button type="button" id="addItem" class="btn btn-primary" data-original-title="@OperationLP.BtnNew" data-toggle="tooltip">
+                                    Add
+                                    <span class="fa-plus fa"></span>
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                @Html.Action("TableStructure", "GlobalCtrl", new { area = "", @colmnCount = 1, @operationsColumnCount = 1 })
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@Html.Partial("/Views/Shared/_TableLocalize.cshtml")
+
+
+<script src="~/Scripts/DevScripts/StandardForm.js"></script>
+
+<script>
+
+    var ActionLoadData = "@Url.Action("loadData")";
+    var ActionEditData = "@Url.Action("index", "VehiclesA")";
+    var ActionDeleteData = "@Url.Action("Delete", "VehiclesA")";
+
+    var colData = [
+    { "data": "VName", "title": "Name", "name": "VName", "autoWidth": true, "orderable": true },
+
+     { "data": "Id", "name": "", "autoWidth": false, "orderable": false }
+    ];
+
+
+
+    operationIndex = 1;
+
+    GenerateTableCustomColumn();
+
+    function search() {
+        var searchKeyword = document.getElementById('searchToken').value;
+        var pageId = $("#ddlPages1 option:selected").val();
+        var postionId = $("#ddlPagePostions1 option:selected").val();
+
+        tablesub.ajax.url(ActionLoadData + "?searchtoken=" + searchKeyword + "&pageId=" + pageId + "&positionId=" + postionId);
+        tablesub.ajax.reload(null, false);
+    }
+
+    function OnBeginWithAttach() {
+        $("#addForm").validate();
+        var dataString = "";
+
+        var result = true;
+        $("#addForm .select222").each(function () {
+            try {
+                var thisVlaue = $(this).valid();
+                if (!$(this).valid()) {
+                    result = false;
+                }
+            } catch (e) {
+            }
+        });
+
+        if (!result) {
+            return false;
+        }
+
+        var action = $("#addForm").attr("action");
+        if ($("#addForm").attr("enctype") == "multipart/form-data") {
+            dataString = new FormData($("#addForm").get(0));
+
+            var files = document.getElementById("mainPic").files;
+            for (var x = 0; x < files.length; x++) {
+                dataString.append("scoter1", files[x]);
+            }
+
+            //files = document.getElementById("traineePic2").files;
+            //for (var x = 0; x < files.length; x++) {
+            //    dataString.append("file2", files[x]);
+            //}
+
+            contentType = false;
+            processData = false;
+        }
+
+
+        ShowLoader();
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: dataString,
+            //  dataType: "json", //change to your own, else read my note above on enabling the JsonValueProviderFactory in MVC
+            contentType: contentType,
+            processData: processData,
+            success: function (data) {
+                if (data.responseType == 1) {
+                    search("");
+                    $("#generalModal").modal("hide");
+                }
+                Notification(data.responseType, data.ErrorMessegesStr || data.MessegesStr);
+
+                HideLoader();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+
+        return false;
+
+    }
+
+    function GetModelBrand(brandId) {
+        $.ajax({
+            url: "@Url.Action("GetBrandModels", "VehiclesA",new { area=""})",
+            type: 'POST',
+            data: {
+                brandId: brandId
+            },
+            dataType: 'json',
+            success: onDDLSucess,
+            error: onDDLFail
+        });
+        return false;
+    }
+
+
+
+    function onDDLSucess(result, userContext, methodName) {
+        var select = $('#vModelDDL');
+
+        select.empty().trigger("change");
+        // add first option
+        var option1 = $('<option></option>').text('Select Model').val('');
+        option1.appendTo(select);
+
+        if (!result.ErrorMessage) {
+            for (var i = 0; i < result.length; i++) {
+                var option = $('<option></option>').text(result[i].Name).val(result[i].Id);
+                option.appendTo(select);
+
+            }
+            select.trigger("change");
+        }
+    }
+
+    function onDDLFail(error, userContext, methodName) {
+
+    }
+</script>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&libraries=drawing,geometry&callback="></script>

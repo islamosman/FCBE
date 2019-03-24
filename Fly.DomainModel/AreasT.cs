@@ -26,9 +26,10 @@ namespace Fly.DomainModel
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Country { get; set; }
+        public int CountryId { get; set; }
         public string AreaCoordinates { get; set; }
     
+        public virtual Countries Countries { get; set; }
         public virtual ICollection<VehicleStatus> VehicleStatus { get; set; }
     }
 }

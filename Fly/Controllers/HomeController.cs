@@ -7,37 +7,220 @@ using Fly.BLL;
 using Fly.DomainModel;
 using System.Net;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+using System.Dynamic;
+using System.Collections;
+using System.Text;
 
+namespace JsonUtils
+{
+    /// <summary>
+    /// Creates a dynamic object
+    /// Methods that can be used on arrays: foreach, ToArray(), ToList(), Count, Length
+    /// </summary>
+    public class JsonObject : DynamicObject, IEnumerable, IEnumerator
+    {
+        object _object;
+
+        JsonObject(object jObject)
+        {
+            this._object = jObject;
+        }
+
+        public static dynamic GetDynamicJsonObject(byte[] buf)
+        {
+            return GetDynamicJsonObject(buf, Encoding.UTF8);
+        }
+
+        public static dynamic GetDynamicJsonObject(byte[] buf, Encoding encoding)
+        {
+            return GetDynamicJsonObject(encoding.GetString(buf));
+        }
+
+        public static dynamic GetDynamicJsonObject(string json)
+        {
+            object o = JsonConvert.DeserializeObject(json);
+            return new JsonUtils.JsonObject(o);
+        }
+
+        internal static dynamic GetDynamicJsonObject(JObject jObj)
+        {
+            return new JsonUtils.JsonObject(jObj);
+        }
+
+        public object this[string s]
+        {
+            get
+            {
+                JObject jObject = _object as JObject;
+                object obj = jObject.SelectToken(s);
+                if (obj == null) return true;
+
+                if (obj is JValue)
+                    return GetValue(obj);
+                else
+                    return new JsonObject(obj);
+            }
+        }
+
+        public object this[int i]
+        {
+            get
+            {
+                if (!(_object is JArray)) return null;
+
+                object obj = (_object as JArray)[i];
+                if (obj is JValue)
+                {
+                    return GetValue(obj);
+                }
+                return new JsonObject(obj);
+            }
+        }
+
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            result = null;
+
+            if (_object is JArray)
+            {
+                JArray jArray = _object as JArray;
+                switch (binder.Name)
+                {
+                    case "Length":
+                    case "Count": result = jArray.Count; break;
+                    case "ToList": result = (Func<List<string>>)(() => jArray.Values().Select(x => x.ToString()).ToList()); break;
+                    case "ToArray": result = (Func<string[]>)(() => jArray.Values().Select(x => x.ToString()).ToArray()); break;
+                }
+
+                return true;
+            }
+
+            JObject jObject = _object as JObject;
+            object obj = jObject.SelectToken(binder.Name);
+            if (obj == null) return true;
+
+            if (obj is JValue)
+                result = GetValue(obj);
+            else
+                result = new JsonObject(obj);
+
+            return true;
+        }
+
+        object GetValue(object obj)
+        {
+            string val = ((JValue)obj).ToString();
+
+            int resInt; double resDouble; DateTime resDateTime;
+
+            if (int.TryParse(val, out resInt)) return resInt;
+            if (DateTime.TryParse(val, out resDateTime)) return resDateTime;
+            if (double.TryParse(val, out resDouble)) return resDouble;
+
+            return val;
+        }
+
+        public override string ToString()
+        {
+            return _object.ToString();
+        }
+
+        int _index = -1;
+
+        public IEnumerator GetEnumerator()
+        {
+            _index = -1;
+            return this;
+        }
+
+        public object Current
+        {
+            get
+            {
+                if (!(_object is JArray)) return null;
+                object obj = (_object as JArray)[_index];
+                if (obj is JValue) return GetValue(obj);
+                return new JsonObject(obj);
+            }
+        }
+
+        public bool MoveNext()
+        {
+            if (!(_object is JArray)) return false;
+            _index++;
+            return _index < (_object as JArray).Count;
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
 namespace Fly.Controllers
 {
+    public static class JsonExtensions
+    {
+        public static JsonUtils.JsonObject GetDynamicJsonObject(this Uri uri)
+        {
+            using (System.Net.WebClient wc = new System.Net.WebClient())
+            {
+                wc.Encoding = System.Text.Encoding.UTF8;
+                wc.Headers["User-Agent"] = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727; .NET4.0C; .NET4.0E)";
+                return JsonUtils.JsonObject.GetDynamicJsonObject(wc.DownloadString(uri.ToString()));
+            }
+        }
+    }
+
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-           // var diswtance = distance(30.1703207, 31.226648, 30.1617312, 31.2280126, char.Parse("K"));
-           // var distandce = DistanceTo(30.1703207, 31.226648, 30.1617312, 31.2280126);
+            Gmap.net.GoogleMapApi dd = new Gmap.net.GoogleMapApi(false);
+            Gmap.net.Overlays.Polygon ssw = new Gmap.net.Overlays.Polygon("D") ;
+            ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.042287586068877, Longitude = 31.166267037884495 });
+            ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.042287586068877, Longitude = 31.224159837261936 });
+            ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.017877075175274, Longitude = 31.166267037884495 });
+            ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.017877075175274, Longitude = 31.224159837261936 });
+            ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.042287586068877, Longitude = 31.224159837261936 });
+            ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.017877075175274, Longitude = 31.224159837261936 });
+            dd.CallJs();
+            JavaScriptResult ddd= JavaScript("return '1';");
+            
+            bool isContain= ssw.Points.Contains(new Gmap.net.Location() { Latitude = 30.022806863746357, Longitude = 31.207265853881836 });
 
-           //// string address = "Alexandria Agriculture Rd, Madinet Qelyoub, Qalyoub, Al Qalyubia Governorate";
-           // //string requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&address={0}&sensor=false", Uri.EscapeDataString(address));
 
-           // //WebRequest request = WebRequest.Create(requestUri);
-           // //WebResponse response = request.GetResponse();
-           // //XDocument xdoc = XDocument.Load(response.GetResponseStream());
+            //string url = "http://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&address=";
+            //url = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo";
+            //dynamic googleResults = new Uri(url).GetDynamicJsonObject();
+            //foreach (var result in googleResults.results)
+            //{
+            //    Console.WriteLine("[" + result.geometry.location.lat + "," + result.geometry.location.lng + "] " + result.formatted_address);
+            //}
 
-           // //XElement result = xdoc.Element("GeocodeResponse").Element("result");
-           // //XElement locationElement = result.Element("geometry").Element("location");
-           // //XElement lat = locationElement.Element("lat");
-           // //XElement lng = locationElement.Element("lng");
+            // var diswtance = distance(30.1703207, 31.226648, 30.1617312, 31.2280126, char.Parse("K"));
+            // var distandce = DistanceTo(30.1703207, 31.226648, 30.1617312, 31.2280126);
 
-           // var sCoord = new System.Device.Location.GeoCoordinate(30.1703207, 31.226648);
-           // var eCoord = new System.Device.Location.GeoCoordinate(30.1617312, 31.2280126);
+            //// string address = "Alexandria Agriculture Rd, Madinet Qelyoub, Qalyoub, Al Qalyubia Governorate";
+            // //string requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&address={0}&sensor=false", Uri.EscapeDataString(address));
 
-           // var sss= sCoord.GetDistanceTo(eCoord);
-            using (VehicleRepository scoterRepo = new VehicleRepository())
-            {
-                scoterRepo.Validate(new Vehicles());
-                return View(scoterRepo.GetAll().ToList());
-            }
+            // //WebRequest request = WebRequest.Create(requestUri);
+            // //WebResponse response = request.GetResponse();
+            // //XDocument xdoc = XDocument.Load(response.GetResponseStream());
+
+            // //XElement result = xdoc.Element("GeocodeResponse").Element("result");
+            // //XElement locationElement = result.Element("geometry").Element("location");
+            // //XElement lat = locationElement.Element("lat");
+            // //XElement lng = locationElement.Element("lng");
+
+            // var sCoord = new System.Device.Location.GeoCoordinate(30.1703207, 31.226648);
+            // var eCoord = new System.Device.Location.GeoCoordinate(30.1617312, 31.2280126);
+
+            // var sss= sCoord.GetDistanceTo(eCoord);
+            return View();
         }
         public double distance(double lat1, double lon1, double lat2, double lon2, char unit)
         {
@@ -107,7 +290,7 @@ namespace Fly.Controllers
         public ActionResult AddNew(int? scotterId)
         {
             Vehicles scoModel = new Vehicles();
-            
+
             return View(scoModel);
         }
 

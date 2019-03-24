@@ -6,8 +6,15 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
-    <Property Name="Country" Type="int" Nullable="false" />
+    <Property Name="CountryId" Type="int" Nullable="false" />
     <Property Name="AreaCoordinates" Type="nvarchar" MaxLength="500" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
   </EntityType>
   <EntityType Name="SecurityRole">
     <Key>
@@ -17,9 +24,6 @@
     <Property Name="RoleNameA" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="RoleNameE" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="FullDataAccess" Type="bit" Nullable="false" />
-    <Property Name="RoleDescription" Type="nvarchar" MaxLength="255" />
-    <Property Name="DateModified" Type="datetime" />
-    <Property Name="ModifiedBy" Type="int" />
   </EntityType>
   <EntityType Name="SecurityUser">
     <Key>
@@ -63,6 +67,14 @@
     <Property Name="version" Type="int" />
     <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
+  <EntityType Name="TempStatus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DataStr" Type="nvarchar" MaxLength="2000" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
   <EntityType Name="TripCoordinates">
     <Key>
       <PropertyRef Name="Id" />
@@ -89,6 +101,7 @@
     <Property Name="EndTime" Type="datetime" />
     <Property Name="IsPaid" Type="bit" />
     <Property Name="TotalDistance" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="CreatedDate" Type="datetime" />
   </EntityType>
   <EntityType Name="Vehicles">
     <Key>
@@ -97,12 +110,34 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
     <Property Name="SpecsId" Type="int" Nullable="false" />
-    <Property Name="ModelId" Type="int" Nullable="false" />
     <Property Name="PlateNo" Type="nvarchar" MaxLength="20" />
     <Property Name="HolderId" Type="int" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
     <Property Name="UniqueId" Type="nvarchar" MaxLength="250" Nullable="false" />
     <Property Name="ImageName" Type="nvarchar" MaxLength="150" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VehiclesBrand">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VehiclesCategory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="EnumImage" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VehiclesModel">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="BrandId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="VehicleSpecs">
     <Key>
@@ -110,7 +145,6 @@
     </Key>
     <Property Name="VehicleId" Type="int" Nullable="false" />
     <Property Name="CategoryId" Type="int" Nullable="false" />
-    <Property Name="BrandId" Type="int" Nullable="false" />
     <Property Name="ModelId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="VehicleStatus">
@@ -125,6 +159,18 @@
     <Property Name="InService" Type="bit" Nullable="false" />
     <Property Name="AreaId" Type="int" />
   </EntityType>
+  <Association Name="FK_AreasT_Countries">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="AreasT" Type="Self.AreasT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AreasT">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_SecurityUserRole_SecurityRole">
     <End Role="SecurityRole" Type="Self.SecurityRole" Multiplicity="1" />
     <End Role="SecurityUserRole" Type="Self.SecurityUserRole" Multiplicity="*" />
@@ -185,6 +231,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_VehiclesModel_VehiclesBrand">
+    <End Role="VehiclesBrand" Type="Self.VehiclesBrand" Multiplicity="1" />
+    <End Role="VehiclesModel" Type="Self.VehiclesModel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VehiclesBrand">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehiclesModel">
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_VehicleSpecs_Vehicles">
     <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="1" />
     <End Role="VehicleSpecs" Type="Self.VehicleSpecs" Multiplicity="0..1" />
@@ -194,6 +252,30 @@
       </Principal>
       <Dependent Role="VehicleSpecs">
         <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VehicleSpecs_VehiclesCategory">
+    <End Role="VehiclesCategory" Type="Self.VehiclesCategory" Multiplicity="1" />
+    <End Role="VehicleSpecs" Type="Self.VehicleSpecs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VehiclesCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehicleSpecs">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VehicleSpecs_VehiclesModel">
+    <End Role="VehiclesModel" Type="Self.VehiclesModel" Multiplicity="1" />
+    <End Role="VehicleSpecs" Type="Self.VehicleSpecs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VehiclesModel">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehicleSpecs">
+        <PropertyRef Name="ModelId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -223,15 +305,24 @@
   </Association>
   <EntityContainer Name="FlyModelStoreContainer">
     <EntitySet Name="AreasT" EntityType="Self.AreasT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SecurityRole" EntityType="Self.SecurityRole" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SecurityUser" EntityType="Self.SecurityUser" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SecurityUserRole" EntityType="Self.SecurityUserRole" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TempStatus" EntityType="Self.TempStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TripCoordinates" EntityType="Self.TripCoordinates" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Trips" EntityType="Self.Trips" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VehiclesBrand" EntityType="Self.VehiclesBrand" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VehiclesCategory" EntityType="Self.VehiclesCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VehiclesModel" EntityType="Self.VehiclesModel" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VehicleSpecs" EntityType="Self.VehicleSpecs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VehicleStatus" EntityType="Self.VehicleStatus" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_AreasT_Countries" Association="Self.FK_AreasT_Countries">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="AreasT" EntitySet="AreasT" />
+    </AssociationSet>
     <AssociationSet Name="FK_SecurityUserRole_SecurityRole" Association="Self.FK_SecurityUserRole_SecurityRole">
       <End Role="SecurityRole" EntitySet="SecurityRole" />
       <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
@@ -252,8 +343,20 @@
       <End Role="Vehicles" EntitySet="Vehicles" />
       <End Role="Trips" EntitySet="Trips" />
     </AssociationSet>
+    <AssociationSet Name="FK_VehiclesModel_VehiclesBrand" Association="Self.FK_VehiclesModel_VehiclesBrand">
+      <End Role="VehiclesBrand" EntitySet="VehiclesBrand" />
+      <End Role="VehiclesModel" EntitySet="VehiclesModel" />
+    </AssociationSet>
     <AssociationSet Name="FK_VehicleSpecs_Vehicles" Association="Self.FK_VehicleSpecs_Vehicles">
       <End Role="Vehicles" EntitySet="Vehicles" />
+      <End Role="VehicleSpecs" EntitySet="VehicleSpecs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VehicleSpecs_VehiclesCategory" Association="Self.FK_VehicleSpecs_VehiclesCategory">
+      <End Role="VehiclesCategory" EntitySet="VehiclesCategory" />
+      <End Role="VehicleSpecs" EntitySet="VehicleSpecs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VehicleSpecs_VehiclesModel" Association="Self.FK_VehicleSpecs_VehiclesModel">
+      <End Role="VehiclesModel" EntitySet="VehiclesModel" />
       <End Role="VehicleSpecs" EntitySet="VehicleSpecs" />
     </AssociationSet>
     <AssociationSet Name="FK_VehicleStatus_AreasT" Association="Self.FK_VehicleStatus_AreasT">

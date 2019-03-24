@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FlyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AreasT">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Country" Type="int" Nullable="false" />
+    <Property Name="AreaCoordinates" Type="nvarchar" MaxLength="500" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SecurityRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoleNameA" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="RoleNameE" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="FullDataAccess" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SecurityUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Telephone" Type="nvarchar" MaxLength="20" />
+    <Property Name="Email" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="Gender" Type="bit" />
+    <Property Name="BirthDate" Type="date" />
+    <Property Name="DeviceId" Type="nvarchar" MaxLength="500" />
+    <Property Name="CountryId" Type="int" />
+    <Property Name="CityId" Type="int" />
+    <Property Name="PassCode" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="SecurityUserRole">
+    <Key>
+      <PropertyRef Name="RoleId" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="RoleId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="DateAdded" Type="datetime" />
+    <Property Name="AddedBy" Type="int" />
+    <Property Name="DateModified" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="TempStatus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DataStr" Type="nvarchar" MaxLength="2000" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TripCoordinates">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LongV" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LatV" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="TripId" Type="int" Nullable="false" />
+    <Property Name="DateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Trips">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VehicleId" Type="int" Nullable="false" />
+    <Property Name="RiderId" Type="int" Nullable="false" />
+    <Property Name="IsDone" Type="bit" Nullable="false" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="250" />
+    <Property Name="Rate" Type="tinyint" />
+    <Property Name="IsCancel" Type="bit" />
+    <Property Name="TempRequest" Type="bit" Nullable="false" />
+    <Property Name="StartTime" Type="datetime" Nullable="false" />
+    <Property Name="EndTime" Type="datetime" />
+    <Property Name="IsPaid" Type="bit" />
+    <Property Name="TotalDistance" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="CreatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Vehicles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="SpecsId" Type="int" Nullable="false" />
+    <Property Name="ModelId" Type="int" Nullable="false" />
+    <Property Name="PlateNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="HolderId" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="UniqueId" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="150" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VehicleSpecs">
+    <Key>
+      <PropertyRef Name="VehicleId" />
+    </Key>
+    <Property Name="VehicleId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="BrandId" Type="int" Nullable="false" />
+    <Property Name="ModelId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VehicleStatus">
+    <Key>
+      <PropertyRef Name="VehicleId" />
+    </Key>
+    <Property Name="VehicleId" Type="int" Nullable="false" />
+    <Property Name="LatV" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LongV" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="BatteryStatus" Type="int" Nullable="false" />
+    <Property Name="InRide" Type="bit" Nullable="false" />
+    <Property Name="InService" Type="bit" Nullable="false" />
+    <Property Name="AreaId" Type="int" />
+  </EntityType>
+  <Association Name="FK_SecurityUserRole_SecurityRole">
+    <End Role="SecurityRole" Type="Self.SecurityRole" Multiplicity="1" />
+    <End Role="SecurityUserRole" Type="Self.SecurityUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityRole">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SecurityUserRole">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SecurityUserRole_SecurityUser">
+    <End Role="SecurityUser" Type="Self.SecurityUser" Multiplicity="1" />
+    <End Role="SecurityUserRole" Type="Self.SecurityUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SecurityUserRole">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TripCoordinates_Trips">
+    <End Role="Trips" Type="Self.Trips" Multiplicity="1" />
+    <End Role="TripCoordinates" Type="Self.TripCoordinates" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trips">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TripCoordinates">
+        <PropertyRef Name="TripId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Trips_SecurityUser">
+    <End Role="SecurityUser" Type="Self.SecurityUser" Multiplicity="1" />
+    <End Role="Trips" Type="Self.Trips" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Trips">
+        <PropertyRef Name="RiderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Trips_Vehicles">
+    <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="1" />
+    <End Role="Trips" Type="Self.Trips" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Trips">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VehicleSpecs_Vehicles">
+    <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="1" />
+    <End Role="VehicleSpecs" Type="Self.VehicleSpecs" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehicleSpecs">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VehicleStatus_AreasT">
+    <End Role="AreasT" Type="Self.AreasT" Multiplicity="0..1" />
+    <End Role="VehicleStatus" Type="Self.VehicleStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AreasT">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehicleStatus">
+        <PropertyRef Name="AreaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VehicleStatus_Vehicles">
+    <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="1" />
+    <End Role="VehicleStatus" Type="Self.VehicleStatus" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehicleStatus">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FlyModelStoreContainer">
+    <EntitySet Name="AreasT" EntityType="Self.AreasT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SecurityRole" EntityType="Self.SecurityRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SecurityUser" EntityType="Self.SecurityUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SecurityUserRole" EntityType="Self.SecurityUserRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TempStatus" EntityType="Self.TempStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TripCoordinates" EntityType="Self.TripCoordinates" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Trips" EntityType="Self.Trips" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VehicleSpecs" EntityType="Self.VehicleSpecs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VehicleStatus" EntityType="Self.VehicleStatus" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_SecurityUserRole_SecurityRole" Association="Self.FK_SecurityUserRole_SecurityRole">
+      <End Role="SecurityRole" EntitySet="SecurityRole" />
+      <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SecurityUserRole_SecurityUser" Association="Self.FK_SecurityUserRole_SecurityUser">
+      <End Role="SecurityUser" EntitySet="SecurityUser" />
+      <End Role="SecurityUserRole" EntitySet="SecurityUserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TripCoordinates_Trips" Association="Self.FK_TripCoordinates_Trips">
+      <End Role="Trips" EntitySet="Trips" />
+      <End Role="TripCoordinates" EntitySet="TripCoordinates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Trips_SecurityUser" Association="Self.FK_Trips_SecurityUser">
+      <End Role="SecurityUser" EntitySet="SecurityUser" />
+      <End Role="Trips" EntitySet="Trips" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Trips_Vehicles" Association="Self.FK_Trips_Vehicles">
+      <End Role="Vehicles" EntitySet="Vehicles" />
+      <End Role="Trips" EntitySet="Trips" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VehicleSpecs_Vehicles" Association="Self.FK_VehicleSpecs_Vehicles">
+      <End Role="Vehicles" EntitySet="Vehicles" />
+      <End Role="VehicleSpecs" EntitySet="VehicleSpecs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VehicleStatus_AreasT" Association="Self.FK_VehicleStatus_AreasT">
+      <End Role="AreasT" EntitySet="AreasT" />
+      <End Role="VehicleStatus" EntitySet="VehicleStatus" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VehicleStatus_Vehicles" Association="Self.FK_VehicleStatus_Vehicles">
+      <End Role="Vehicles" EntitySet="Vehicles" />
+      <End Role="VehicleStatus" EntitySet="VehicleStatus" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

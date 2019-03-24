@@ -1,0 +1,34 @@
+﻿@{
+    int columnCount = ViewBag.columnCount;
+    int operationsColumnCount = ViewBag.columnOperationCount;
+}
+
+<div class="ProjList panel-body table-responsive">
+    <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer" cellspacing="0" id="tablelookups">
+        <thead>
+            <tr>
+                @for (int i = 0; i < columnCount; i++)
+                {
+                    <th> </th>
+                }
+                @for (int i = 0; i < operationsColumnCount; i++)
+                {
+                    <th width="10%" style="text-align:center;"><i class="fa fa-gear" style="color:#00c0ff;" data-toggle="tooltip" data-original-title="@Fly.Resources.OperationLP.BtnOperations" tooltip-placement="top" tooltip="@Fly.Resources.OperationLP.BtnOperations"></i></th>
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @for (int i = 0; i < columnCount + operationsColumnCount; i++)
+                {
+                    <td></td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+

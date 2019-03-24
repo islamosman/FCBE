@@ -1,0 +1,224 @@
+﻿@model Fly.DomainModel.Vehicles
+
+@using (Ajax.BeginForm("Add", "VehiclesA", new AjaxOptions { HttpMethod = "post", OnBegin = "OnBeginWithAttach" }, new { id = "addForm", enctype = "multipart/form-data" }))
+{
+
+    <div class="modal-body" style="background-color:#ffffff;">
+
+        @Html.HiddenFor(model => model.Id, new { @class = "EmptyClassID" })
+        @Html.HiddenFor(model => model.ImageName, new { @class = "EmptyClassID" })
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="text-bold">Name</label>
+                    <span class="symbol required" aria-required="true"></span>
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control EmptyClass" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "required" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="text-bold">Plate No.</label>
+                    <span class="symbol required" aria-required="true"></span>
+                    @Html.TextBoxFor(model => model.PlateNo, new { @class = "form-control EmptyClass" })
+                    @Html.ValidationMessageFor(model => model.PlateNo, "", new { @class = "required" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="text-bold">QR No.</label>
+                    <span class="symbol required" aria-required="true"></span>
+                    @Html.TextBoxFor(model => model.UniqueId, new { @class = "form-control EmptyClass", disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="checkbox clip-check check-success checkbox-inline">
+                        <input type="checkbox" id="checkbox111" name="IsActive" value="true" @(Model.IsActive ? "checked" : "")>
+                        <label for="checkbox111">
+                            Active
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="text-bold">Image</label>
+                    <span class="symbol required" aria-required="true"></span>
+                    <input type="file" id="mainPic" class="mainInput">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="form-field-select-1" class="text-bold">Category</label>
+                    <select class="select2internal" name="VehicleSpecs.CategoryId">
+                        @foreach (var item in Model.vCategory)
+                        {
+                            <option value="@item.Id" @(Model.VehicleSpecs == null ? "" : (item.Id == Model.VehicleSpecs.CategoryId ? "selected" : ""))>@item.Name</option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(m => m.VehicleSpecs.CategoryId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="form-field-select-1" class="text-bold">Brand</label>
+                    <select class="select2internal" id="vBrandDDL">
+                        <option value="">Select Brand</option>
+                        @foreach (var item in Model.vBrand)
+                        {
+                            <option value="@item.Id" @(Model.VehicleSpecs.VehiclesModel == null ? "" : (item.Id == Model.VehicleSpecs.VehiclesModel.BrandId ? "selected" : ""))>@item.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="form-field-select-1" class="text-bold">Model</label>
+                    <select class="select2internal" id="vModelDDL" name="VehicleSpecs.ModelId">
+                        <option value="">Select Model</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="form-field-select-1" class="text-bold">Area</label>
+                    <select class="select2internal" name="VehicleStatus.AreaId" id="vAreaDDL">
+                        <option value="">Select Area</option>
+                        @foreach (var item in Model.AreasList)
+                        {
+                            <option value="@item.Id" data-cord="@item.extraValue" @(Model.VehicleStatus == null ? "" : (item.Id == Model.VehicleStatus.AreaId ? "selected" : ""))>@item.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <label>Long</label>
+        <input type="text" name="VehicleStatus.LongV" id="longTxt" value="@(Model.VehicleStatus != null ? Model.VehicleStatus.LongV: "")" />
+        <br />
+        <label>Lat</label>
+        <input type="text" name="VehicleStatus.LatV" id="latTxt" value="@(Model.VehicleStatus != null ? Model.VehicleStatus.LatV : "" )" />
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="googleMap" style="height:400px;width:100%;"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success btnSave" id="btnSave">
+            Save
+        </button>
+        <button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
+            Close
+        </button>
+    </div>
+}
+
+<script>
+    $.validator.unobtrusive.parse("#addForm");
+    $(document).ready(function () {
+        $(".select2internal").select2();
+
+        $("#vBrandDDL").on("select2:select",
+                function (evt) {
+                    if ($("#vBrandDDL option:selected").val() > 0) {
+                        GetModelBrand($("#vBrandDDL option:selected").val());
+                    }
+                });
+
+        $("#vAreaDDL").on("select2:select",
+                function (evt) {
+                    if ($("#vAreaDDL option:selected").val() > 0) {
+                        alert($("#vAreaDDL option:selected").attr("data-cord"));
+                    }
+                });
+
+    });
+
+
+</script>
+<script>
+    $(document).ready(function () {
+        myMap();
+    });
+
+    var map;
+    var marker;
+    var polygonArray;
+    function myMap() {
+        if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function (pos) {
+            var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+
+            var myCenter = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);//new google.maps.LatLng(20.296100, 85.824500);
+            var mapProp = {
+                polylineOptions: {
+                    editable: true
+                }, center: myCenter, zoom: 16, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            marker = new google.maps.Marker({ position: myCenter, draggable: true });
+
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                document.getElementById("latTxt").value = event.latLng.lat();
+                document.getElementById("longTxt").value = event.latLng.lng();
+            });
+
+            marker.setMap(map);
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                addMarker(event.latLng);
+            });
+
+        }, function (error) {
+            var myCenter = new google.maps.LatLng(20.296100, 85.824500);
+            var mapProp = { center: myCenter, zoom: 12, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            marker = new google.maps.Marker({ position: myCenter, draggable: true });
+            marker.setMap(map);
+
+            google.maps.event.addListener(map, 'bounds_changed', function () {
+                bounds = map.getBounds();
+                ne = bounds.getNorthEast();
+                sw = bounds.getSouthWest();
+                document.getElementById('mapBounds').innerHTML = bounds.toUrlValue(6);
+
+
+            });
+        });
+    }
+
+
+    function addMarker(location) {
+        document.getElementById("latTxt").value = location.lat();
+        document.getElementById("longTxt").value = location.lng();
+
+        if (!marker || !marker.setPosition) {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                draggable: true
+            });
+        } else {
+            marker.setPosition(location);
+        }
+    }
+
+</script>
+
+

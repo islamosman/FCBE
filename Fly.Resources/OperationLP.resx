@@ -117,13 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BtnCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="BtnClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="BtnDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="BtnEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="BtnNew" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="BtnNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="BtnOk" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="BtnOperations" xml:space="preserve">
+    <value>Operations</value>
+  </data>
+  <data name="BtnPrint" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="BtnSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="BtnSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="BtnYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="DataExist" xml:space="preserve">
+    <value>Data exist</value>
+  </data>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>Delete Confirmation</value>
+  </data>
+  <data name="DeleteFailuer" xml:space="preserve">
+    <value>Delete failure</value>
+  </data>
+  <data name="DeleteFailureRealations" xml:space="preserve">
+    <value>Can not delete this record.</value>
+  </data>
+  <data name="DeleteSuccessfully" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
   <data name="FailurMsg" xml:space="preserve">
     <value>Failuer</value>
+  </data>
+  <data name="InvalidData" xml:space="preserve">
+    <value>Invalid Data</value>
   </data>
   <data name="InvalidUserNamePassword" xml:space="preserve">
     <value>Invalid User Name Or Password</value>
   </data>
+  <data name="StartSuccess" xml:space="preserve">
+    <value>start successfully</value>
+  </data>
   <data name="SuccessMsg" xml:space="preserve">
     <value>Success</value>
+  </data>
+  <data name="TblLoadingData" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="TblNoData" xml:space="preserve">
+    <value>There are no data</value>
+  </data>
+  <data name="TblPagingFirst" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="TblPagingFrom" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="TblPagingLast" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="TblPagingNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="TblPagingPrevious" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="TblPagingTo" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="TblPagingTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TblSearchNoData" xml:space="preserve">
+    <value>No matching search data</value>
+  </data>
+  <data name="TempReverse" xml:space="preserve">
+    <value>Temp reverse</value>
+  </data>
+  <data name="TxtSearch" xml:space="preserve">
+    <value>Search keyword</value>
   </data>
 </root>

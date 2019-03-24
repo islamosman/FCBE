@@ -1,0 +1,101 @@
+/* --------------------------------------------------- */
+/*                     My Classes                      */
+/* --------------------------------------------------- */
+
+
+
+
+
+/* --------------------------------------------------- */
+/*                    Start Login Page                 */
+/* --------------------------------------------------- */
+.login-container{
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    display: flex;
+    background-image: url('/Content/Images/3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.login{
+    width: 500px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 26px;
+    background: rgba(224, 216, 216, 0.75);
+    color:#0a0a0a;
+    font-weight:bold;
+}
+.login-container .login .logo-img{
+    margin-bottom: 0px;
+    text-align: center;
+}
+.login-container .login .input-group{
+    margin-bottom: 10px;
+}
+.login-container .login .input-group input:focus{
+    padding-left: 20px;
+    transition: padding 0.5s ease-in-out;
+}
+.login-container .login .remember-me{
+    display: inline-block;
+    margin-top: 20px;
+    float: left;    
+}
+.login-container .login .remember-me label{
+    font-weight: normal;
+}
+.login-container .login .login-btn{
+    float: right;
+    width: 100%;
+}
+.login-container .login .login-btn a{
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+.login-container .login .login-btn i{
+    margin-right: 10px;
+}
+.login-container .login  .forget-password{
+    display: inline-block;
+    margin-top: 20px;
+    float: right;
+}
+.login-container .login p.signup-link{
+    text-align: center;
+    margin-top: 20px;
+}
+.login-container .login p.signup-link a{
+    margin-left: 2px;
+}
+
+/* --------------------------------------------------- */
+/*                    End Login Page                   */
+/* --------------------------------------------------- */
+
+/* --------------------------------------------------- */
+/*                     Start Home Page                 */
+/* --------------------------------------------------- */
+
+header .topbar{
+    text-align: right;
+    background: rgba(0,0,0,0.80);
+    padding: 8px 0px;
+}
+header .topbar a{
+    color: white;
+    margin-right: 20px;
+}
+header .topbar a:hover{
+    color: #10ccbe;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+
+/* --------------------------------------------------- */
+/*                     End Home Page                   */
+/* --------------------------------------------------- */
+

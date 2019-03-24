@@ -61,11 +61,173 @@ namespace Fly.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string BtnCancel {
+            get {
+                return ResourceManager.GetString("BtnCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string BtnClose {
+            get {
+                return ResourceManager.GetString("BtnClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string BtnDelete {
+            get {
+                return ResourceManager.GetString("BtnDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string BtnEdit {
+            get {
+                return ResourceManager.GetString("BtnEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string BtnNew {
+            get {
+                return ResourceManager.GetString("BtnNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string BtnNo {
+            get {
+                return ResourceManager.GetString("BtnNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string BtnOk {
+            get {
+                return ResourceManager.GetString("BtnOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operations.
+        /// </summary>
+        public static string BtnOperations {
+            get {
+                return ResourceManager.GetString("BtnOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print.
+        /// </summary>
+        public static string BtnPrint {
+            get {
+                return ResourceManager.GetString("BtnPrint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string BtnSave {
+            get {
+                return ResourceManager.GetString("BtnSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string BtnSearch {
+            get {
+                return ResourceManager.GetString("BtnSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string BtnYes {
+            get {
+                return ResourceManager.GetString("BtnYes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data exist.
+        /// </summary>
+        public static string DataExist {
+            get {
+                return ResourceManager.GetString("DataExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Confirmation.
+        /// </summary>
+        public static string DeleteConfirmation {
+            get {
+                return ResourceManager.GetString("DeleteConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete failure.
+        /// </summary>
+        public static string DeleteFailuer {
+            get {
+                return ResourceManager.GetString("DeleteFailuer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can not delete this record..
+        /// </summary>
+        public static string DeleteFailureRealations {
+            get {
+                return ResourceManager.GetString("DeleteFailureRealations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted successfully.
+        /// </summary>
+        public static string DeleteSuccessfully {
+            get {
+                return ResourceManager.GetString("DeleteSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failuer.
         /// </summary>
         public static string FailurMsg {
             get {
                 return ResourceManager.GetString("FailurMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Data.
+        /// </summary>
+        public static string InvalidData {
+            get {
+                return ResourceManager.GetString("InvalidData", resourceCulture);
             }
         }
         
@@ -79,11 +241,128 @@ namespace Fly.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to start successfully.
+        /// </summary>
+        public static string StartSuccess {
+            get {
+                return ResourceManager.GetString("StartSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Success.
         /// </summary>
         public static string SuccessMsg {
             get {
                 return ResourceManager.GetString("SuccessMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string TblLoadingData {
+            get {
+                return ResourceManager.GetString("TblLoadingData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no data.
+        /// </summary>
+        public static string TblNoData {
+            get {
+                return ResourceManager.GetString("TblNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First.
+        /// </summary>
+        public static string TblPagingFirst {
+            get {
+                return ResourceManager.GetString("TblPagingFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string TblPagingFrom {
+            get {
+                return ResourceManager.GetString("TblPagingFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last.
+        /// </summary>
+        public static string TblPagingLast {
+            get {
+                return ResourceManager.GetString("TblPagingLast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string TblPagingNext {
+            get {
+                return ResourceManager.GetString("TblPagingNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string TblPagingPrevious {
+            get {
+                return ResourceManager.GetString("TblPagingPrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To.
+        /// </summary>
+        public static string TblPagingTo {
+            get {
+                return ResourceManager.GetString("TblPagingTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string TblPagingTotal {
+            get {
+                return ResourceManager.GetString("TblPagingTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No matching search data.
+        /// </summary>
+        public static string TblSearchNoData {
+            get {
+                return ResourceManager.GetString("TblSearchNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temp reverse.
+        /// </summary>
+        public static string TempReverse {
+            get {
+                return ResourceManager.GetString("TempReverse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search keyword.
+        /// </summary>
+        public static string TxtSearch {
+            get {
+                return ResourceManager.GetString("TxtSearch", resourceCulture);
             }
         }
     }

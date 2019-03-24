@@ -28,9 +28,6 @@ namespace Fly.DomainModel
         public string RoleNameA { get; set; }
         public string RoleNameE { get; set; }
         public bool FullDataAccess { get; set; }
-        public string RoleDescription { get; set; }
-        public Nullable<System.DateTime> DateModified { get; set; }
-        public Nullable<int> ModifiedBy { get; set; }
     
         public virtual ICollection<SecurityUserRole> SecurityUserRole { get; set; }
     }

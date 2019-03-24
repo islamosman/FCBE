@@ -48,11 +48,19 @@
     <Compile Include="BaseBussiness.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="LinqExtensions.cs" />
+    <Compile Include="LukUps\CountriesRepository.cs" />
     <Compile Include="MainRepository.cs" />
+    <Compile Include="PredicateBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\SecurityUserRepository.cs" />
+    <Compile Include="Trip\TripCoordinatesRepository.cs" />
     <Compile Include="Trip\TripRepository.cs" />
+    <Compile Include="Vehicles\AreasTRepository.cs" />
     <Compile Include="Vehicles\VehicleRepository.cs" />
+    <Compile Include="Vehicles\VehiclesBrandRepositroy.cs" />
+    <Compile Include="Vehicles\VehiclesCategoryRepository.cs" />
+    <Compile Include="Vehicles\VehiclesModelRepository.cs" />
+    <Compile Include="Vehicles\VehicleStatusRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fly.DAL\Fly.DAL.csproj">
@@ -62,6 +70,14 @@
     <ProjectReference Include="..\Fly.DomainModel\Fly.DomainModel.csproj">
       <Project>{47dd7311-d5e6-48de-b006-bdd3bc4d1cf3}</Project>
       <Name>Fly.DomainModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly.Helper\Fly.Helper.csproj">
+      <Project>{345cc478-83e7-4683-8327-3eed0c2d3c7c}</Project>
+      <Name>Fly.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly.Resources\Fly.Resources.csproj">
+      <Project>{58120da7-d80a-432a-b7f4-48314127e787}</Project>
+      <Name>Fly.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

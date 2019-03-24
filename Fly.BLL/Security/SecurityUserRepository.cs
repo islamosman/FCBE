@@ -18,7 +18,8 @@ namespace Fly.BLL
 
         public SecurityUser GetBy(string userName, string password)
         {
-            return _objectSet.Include(x => x.SecurityUserRole.Select(s => s.SecurityRole)).FirstOrDefault(x => x.Password == password && (x.Email == password || x.Telephone == password));
+            int userRoleId = int.Parse(System.Configuration.ConfigurationManager.AppSettings["UserRole"]);
+            return _objectSet.Include(x => x.SecurityUserRole.Select(s => s.SecurityRole)).FirstOrDefault(x => x.Password == password && x.SecurityUserRole.Any(s=>s.RoleId ==userRoleId) && (x.Email == userName || x.Telephone == userName));
         }
 
         public override RequestResponse AddUpdate(SecurityUser model)
@@ -88,5 +89,15 @@ namespace Fly.BLL
             }
         }
 
+        public SecurityUser GetUser(string email)
+        {
+            int userRoleId = int.Parse(System.Configuration.ConfigurationManager.AppSettings["AdminRole"]);
+            return _objectSet.Include(x => x.SecurityUserRole).FirstOrDefault(x => x.Email == email);
+        }
+        public SecurityUser GetUser(string email,string password)
+        {
+            int userRoleId = int.Parse(System.Configuration.ConfigurationManager.AppSettings["AdminRole"]);
+            return _objectSet.Include(x => x.SecurityUserRole).FirstOrDefault(x => x.Email == email && x.Password == password && x.SecurityUserRole.Any(s=>s.RoleId == userRoleId));
+        }
     }
 }

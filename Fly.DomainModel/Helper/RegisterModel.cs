@@ -23,4 +23,11 @@ namespace Fly.DomainModel
         public string mobileNumber { get; set; }
         public string passCode { get; set; }
     }
+
+    public class LoginModel
+    {
+        public string urlStr { get; set; }
+        public string userName { get; set; }
+        public string password { get; set; }
+    }
 }

@@ -47,7 +47,6 @@
     <link href="/vendor/sweetalert/ie9.css" rel="stylesheet" media="screen">
     <link href="/vendor/toastr/toastr.min.css" rel="stylesheet" media="screen">
     <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
-
     <!-- start: MAIN JAVASCRIPTS -->
     <script src="~/vendor/jquery/jquery.min.js"></script>
     <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -62,7 +61,7 @@
     <script src="/vendor/select2/select2.min.js"></script>
 
     <script src="assets/js/main.js"></script>
-    
+
     <script src="/vendor/toastr/toastr.min.js"></script>
     <script src="/assets/js/ui-notifications.js"></script>
     <script src="~/vendor/DataTable/datatables.net/js/jquery.dataTables.js"></script>
@@ -70,9 +69,8 @@
     <script src="~/Scripts/MVC/jquery.validate.js"></script>
     <script src="~/Scripts/MVC/jquery.validate.unobtrusive.js"></script>
     <script src="~/Scripts/MVC/jquery.unobtrusive-ajax.min.js"></script>
-
+    <script src="~/Scripts/DevScripts/helperMethods.js"></script>
     <!-- start: JavaScript Event Handlers for this page -->
-  
     <!-- end: JavaScript Event Handlers for this page -->
     <!-- end: CLIP-TWO JAVASCRIPTS -->
 </head>
@@ -86,7 +84,7 @@
                     <!-- start: MAIN NAVIGATION MENU -->
                     <ul class="main-navigation-menu">
                         <li>
-                            <a href="index.html">
+                            <a href="/">
                                 <div class="item-content">
                                     <div class="item-media">
                                         <i class="ti-home"></i>
@@ -104,17 +102,30 @@
                                         <i class="ti-settings"></i>
                                     </div>
                                     <div class="item-inner">
-                                        <span class="title"> UI Elements </span><i class="icon-arrow"></i>
+                                        <span class="title"> LukUps </span><i class="icon-arrow"></i>
                                     </div>
                                 </div>
                             </a>
                             <ul class="sub-menu">
                                 <li>
-                                    <a href="ui_elements.html">
-                                        <span class="title"> Elements </span>
+                                    <a href="@Url.Action("index","AreaC",new { area = "" })">
+                                        <span class="title"> Areas</span>
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+
+                        <li>
+                            <a href="@Url.Action("index","VehiclesA",new { area = "" })">
+                                <div class="item-content">
+                                    <div class="item-media">
+                                        <i class="ti-home"></i>
+                                    </div>
+                                    <div class="item-inner">
+                                        <span class="title"> Vehicles</span>
+                                    </div>
+                                </div>
+                            </a>
                         </li>
                     </ul>
                     <!-- end: MAIN NAVIGATION MENU -->
@@ -182,7 +193,6 @@
                             </ul>
                         </li>
                         <!-- end: MESSAGES DROPDOWN -->
-                   
                         <!-- start: USER OPTIONS DROPDOWN -->
                         <li class="dropdown current-user">
                             <a href class="dropdown-toggle" data-toggle="dropdown">
@@ -190,17 +200,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-dark">
                                 <li>
-                                    <a href="pages_user_profile.html">
-                                        My Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="login_lockscreen.html">
-                                        Lock Screen
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="login_signin.html">
+                                    <a href="@Url.Action("SignOut","LogIn")">
                                         Log Out
                                     </a>
                                 </li>
@@ -219,13 +219,13 @@
                     &nbsp;
                 </a>
                 @*<a class="dropdown-off-sidebar hidden-sm hidden-xs" data-toggle-class="app-offsidebar-open" data-toggle-target="#app" data-toggle-click-outside="#off-sidebar">
-                    &nbsp;
-                </a>*@
+                        &nbsp;
+                    </a>*@
                 <!-- end: NAVBAR COLLAPSE -->
             </header>
             <!-- end: TOP NAVBAR -->
             <div class="main-content">
-               
+
                 <div class="wrap-content container" id="container">
                     @RenderBody()
                 </div>
@@ -244,11 +244,49 @@
         </footer>
         <!-- end: FOOTER -->
     </div>
-   
+
+    @* Confirmation Delete  popup *@
+    <div class="modal fade" id="deletePopup" role="dialog" aria-labelledby="deletePopup" aria-hidden="true" style="z-index:999999 !important;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="generalModelTitleDelete">Delete Confirmation</h4>
+                </div>
+                <div class="modal-body" style="text-align: center;    background-color: #fff;">
+                    <span class="Bold">Delete Confirmation</span>
+                </div>
+                <div class="modal-footer" style="text-align: center">
+                    <button type="button" class="btn btn-success deleteConfirmationBtn" data-loading-text="Deleting..." onclick="Delete();">Delete</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel <i class="fa fa-times-circle"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="generalModal" class="modal fade bs-example-modal-lg" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-backdrop fade in" style="height: 336px;"></div>
+        <div class="modal-dialog modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="generalModelTitle">Add / Edit</h4>
+                </div>
+
+                <div id="generalModelBody"></div>
+
+            </div>
+        </div>
+    </div>
     <script>
-			jQuery(document).ready(function() {
-				Main.init();
-			});
+        jQuery(document).ready(function () {
+            Main.init();
+        });
     </script>
 </body>
 </html>

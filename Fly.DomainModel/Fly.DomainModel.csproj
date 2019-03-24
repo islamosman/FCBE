@@ -49,23 +49,38 @@
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="Countries.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DTO\AreasT.cs" />
+    <Compile Include="DTO\Vehicles.cs" />
     <Compile Include="FlyModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Fly\DomainModel\Metadata\AreasTMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\CountriesMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\SecurityRoleMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\SecurityUserMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\SecurityUserRoleMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\sysdiagramsMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\TempStatusMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\TripCoordinatesMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\TripsMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\VehiclesBrandMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\VehiclesCategoryMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\VehiclesMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\VehiclesModelMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\VehicleSpecsMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\VehicleStatusMetadata.cs" />
+    <Compile Include="Helper\AreaModel.cs" />
+    <Compile Include="Helper\AvilableVehiclesModel.cs" />
+    <Compile Include="Helper\LoginViewModel.cs" />
+    <Compile Include="Helper\LukUpModel.cs" />
     <Compile Include="Helper\RegisterModel.cs" />
     <Compile Include="Helper\RequestResponse.cs" />
+    <Compile Include="Helper\VehicaleReservationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityRole.cs">
       <DependentUpon>FlyModel.tt</DependentUpon>
@@ -79,6 +94,9 @@
     <Compile Include="sysdiagrams.cs">
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TempStatus.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="TripCoordinates.cs">
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
@@ -86,6 +104,15 @@
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Vehicles.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VehiclesBrand.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VehiclesCategory.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VehiclesModel.cs">
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="VehicleSpecs.cs">
@@ -106,6 +133,12 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Helper\file1.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fly.Helper\Fly.Helper.csproj">
+      <Project>{345cc478-83e7-4683-8327-3eed0c2d3c7c}</Project>
+      <Name>Fly.Helper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

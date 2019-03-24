@@ -1,0 +1,15 @@
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.BLL.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.BLL.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\EntityFramework.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.DAL.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.DomainModel.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.DAL.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.DomainModel.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\EntityFramework.xml
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Release\Fly.BLL.csprojResolveAssemblyReference.cache
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Release\Fly.BLL.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\obj\Release\Fly.BLL.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.Helper.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.Resources.dll
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.Helper.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.BLL\bin\Release\Fly.Resources.pdb

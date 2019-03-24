@@ -1,0 +1,143 @@
+﻿@model Fly.DomainModel.Helper.LoginViewModel
+@{
+    Layout = null;
+    ViewBag.Title = "Log in";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>@ViewBag.Title - DCC Web viewer</title>
+    <link rel="icon" type="image/png" href="/Content/Images/login_logo.png" />
+    <!-- ------------------------------------------------ -->
+    <!--                  CSS Files                       -->
+    <!-- ------------------------------------------------ -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.min.css">
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="~/vendor/fontawesome/css/font-awesome.min.css">
+
+    <!-- Font-Awesome -->
+    <link href="~/Content/G-style.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="vendors/js/html5shiv.min.js"></script>
+      <script src="vendors/js/respond.min.js"></script>
+    <![endif]-->
+    <!-- ------------------------------------------------ -->
+    <!--                 / CSS Files                      -->
+    <!-- ------------------------------------------------ -->
+    <!-- ------------------------------------------------ -->
+    <!--                  Script Files                    -->
+    <!-- ------------------------------------------------ -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/MVC/jquery.validate.min.js"></script>
+    <script src="~/Scripts/MVC/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/MVC/jquery.unobtrusive-ajax.min.js"></script>
+
+</head>
+<body>
+    <section class="login-container">
+        <div class="login">
+            <div class="logo-img">
+                <img src="~/Content/Images/login_logo.png" title="Logo" alt="Logo" />
+            </div>
+            <div style="color: #5F7883;font-size: 25px;text-align: center;margin-bottom: 5px;margin-top: 5px;height: 30px;" role="alert">
+                DCC Web Viewer
+            </div>
+            @using (Ajax.BeginForm("IndexPost", "LogIn", null, new AjaxOptions { OnBegin = "OnBegin", OnSuccess = "OnSuccessLogin" }, new { @class = "form-horizental login-form register-form" }))
+            {
+                <div class="form-block">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </div>
+
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @name = "username", placeholder = "Username", @autofocus = "autofocus" })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
+                            </div>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control password", @name = "password", @placeholder = "Password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary login-btn">
+                    Log In  <i class="fa fa-sign-in" aria-hidden="true"></i>
+                </button>
+
+                <div class="form-check remember-me">
+                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input", @id = "defaultCheck1" })
+                    @*<input class="form-check-input" type="checkbox" value="false" name="RememberMe" id="defaultCheck1">*@
+                    <label class="form-check-label" style="font-weight:bold;" for="defaultCheck1">
+                        Remember me
+                    </label>
+                </div>
+
+
+                    @*<div class="remember-me">
+                            <input type='checkbox'> <label>Remember me</label>
+                        </div>*@
+                    <div class="forget-password">
+
+                    </div>
+            }
+            <div class="clearfix"></div>
+            <div class="alert alert-danger" id="infoDivLogin" style="display:none;"></div>
+        </div>
+
+    </section>
+
+    <!-- ------------------------------------------------ -->
+    <!--                 / Script Files                   -->
+    <!-- ------------------------------------------------ -->
+    <script>
+        function OnBegin() {
+            $(".login-btn").attr("disabled", "disabled");
+        }
+
+        function OnSuccessLogin(data) {
+            debugger;
+            if (data.success == true) {
+                // if (window.location.href.indexOf("Login") > -1) {
+                window.location.href = "@Url.Action("Index","Home")";
+                //} else {
+                //    location.reload();
+                //}
+            } else {
+                $('#infoDivLogin').html(data.message);
+                if (data.success == true) {
+                    $('#infoDivLogin').removeClass("alert-danger").addClass("alert-success");
+                } else {
+                    $('#infoDivLogin').addClass("alert-danger").removeClass("alert-success");
+                }
+
+                $('#infoDivLogin').css('display', 'block');
+                $('#infoDivLogin').show();
+            }
+            $(".login-btn").removeAttr("disabled");
+            $('.loader').hide();
+        }
+
+    </script>
+</body>
+</html>
