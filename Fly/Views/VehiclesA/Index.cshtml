@@ -1,6 +1,6 @@
 ﻿@using Fly.Resources
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Vehicles";
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
@@ -19,12 +19,12 @@
 
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    Vehicles
+                                    @*Vehicles
                                     <select class="select2">
                                         <option>s</option>
                                         <option>s</option>
                                         <option>s</option>
-                                    </select>
+                                    </select>*@
                                     @*@Html.DropDownList("Pages", new SelectList(new Temp.BLL.PagesLukpRepository().GetAll(), "Id", LayOutLP.CultureUI == "en-GB" ? "NameAr" : "NameEn"), LabelLP.SelectPage, new { @class = "select2", id = "ddlPages1", @style = "width:100%" })*@
 
                                 </div>
@@ -32,7 +32,7 @@
 
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    المكان
+                                    @*المكان*@
 
                                     @*@Html.DropDownList("Position", new SelectList(new Temp.BLL.PagePositionRepository().GetByPageId(222), "Id", LayOutLP.CultureUI == "en-GB" ? "Id" : "Id"), "اختر المكان", new { @class = "select2", id = "ddlPagePostions1", @style = "width:100%" })*@
                                 </div>
@@ -68,7 +68,7 @@
                 </div>
 
 
-                @Html.Action("TableStructure", "GlobalCtrl", new { area = "", @colmnCount = 1, @operationsColumnCount = 1 })
+                @Html.Action("TableStructure", "GlobalCtrl", new { area = "", @colmnCount = 8, @operationsColumnCount = 1 })
 
             </div>
         </div>
@@ -83,20 +83,33 @@
 <script src="~/Scripts/DevScripts/StandardForm.js"></script>
 
 <script>
-
     var ActionLoadData = "@Url.Action("loadData")";
     var ActionEditData = "@Url.Action("index", "VehiclesA")";
     var ActionDeleteData = "@Url.Action("Delete", "VehiclesA")";
 
     var colData = [
     { "data": "VName", "title": "Name", "name": "VName", "autoWidth": true, "orderable": true },
+    { "data": "PlateNo", "title": "Plate", "name": "PlateNo", "autoWidth": true, "orderable": true },
+    { "data": "QRCode", "title": "QR", "name": "QRCode", "autoWidth": true, "orderable": true },
+    { "data": "BatteryStatus", "title": "Battery", "name": "BatteryStatus", "autoWidth": true, "orderable": true },
+    { "data": "IsActive", "title": "Active?", "name": "IsActive", "autoWidth": true, "orderable": true },
+    { "data": "InService", "title": "In Service?", "name": "InService", "autoWidth": true, "orderable": true },
+    { "data": "InRide", "title": "In Ride?", "name": "InRide", "autoWidth": true, "orderable": true },
+
+    { "data": "imageId", "title": "Print", "name": "imageId", "autoWidth": true, "orderable": false },
+
 
      { "data": "Id", "name": "", "autoWidth": false, "orderable": false }
     ];
 
 
 
-    operationIndex = 1;
+    operationIndex = 8;
+    isActiveIndex = 4;
+    isActiveIndex2 = 5;
+    isActiveIndex3 = 6;
+
+    isPrint = 7;
 
     GenerateTableCustomColumn();
 
@@ -198,9 +211,13 @@
 
         if (!result.ErrorMessage) {
             for (var i = 0; i < result.length; i++) {
-                var option = $('<option></option>').text(result[i].Name).val(result[i].Id);
-                option.appendTo(select);
-
+                if (selectedModel != undefined && selectedModel != "") {
+                    var option = $('<option selected></option>').text(result[i].Name).val(result[i].Id);
+                    option.appendTo(select);
+                } else {
+                    var option = $('<option></option>').text(result[i].Name).val(result[i].Id);
+                    option.appendTo(select);
+                }
             }
             select.trigger("change");
         }

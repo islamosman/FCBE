@@ -47,7 +47,7 @@ namespace Fly.Providers
             SecurityUser secUserModel = new SecurityUser();
             using (SecurityUserRepository obj = new SecurityUserRepository())
             {
-                secUserModel = obj.GetBy(context.UserName,  context.Password);
+                secUserModel = obj.GetBy(context.UserName, context.Password);
                 if (secUserModel == null)
                 {
                     context.SetError("invalid_grant",
@@ -62,7 +62,10 @@ namespace Fly.Providers
             ClaimsIdentity cookiesIdentity =
             new ClaimsIdentity(context.Options.AuthenticationType);
 
-            oAuthIdentity.AddClaim(new Claim(ClaimTypes.Role, secUserModel.SecurityUserRole.FirstOrDefault().SecurityRole.RoleNameE));
+            Claim newClaim = new Claim(ClaimTypes.Role, secUserModel.SecurityUserRole.FirstOrDefault().SecurityRole.RoleNameE);
+            newClaim.Properties.Add(new KeyValuePair<string, string>("UserId", secUserModel.Id.ToString()));
+            oAuthIdentity.AddClaim(new Claim("UserId", secUserModel.Id.ToString()));
+            oAuthIdentity.AddClaim(newClaim);
             //  oAuthIdentity.AddClaim(new Claim(ClaimTypes.Role, "Supervisor"));
 
             AuthenticationProperties properties = CreateProperties(context.UserName);

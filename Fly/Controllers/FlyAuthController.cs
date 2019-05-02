@@ -1,5 +1,6 @@
 ﻿using Fly.BLL;
 using Fly.DomainModel;
+using Fly.Providers;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
@@ -77,6 +78,15 @@ namespace Fly.Controllers
                     BirthDate = regModel.date_of_birth,
                     IsActive = false
                 });
+
+                if (reqResponse.IsDone)
+                {
+                    SMTPEmailSender EmailProxy = new SMTPEmailSender();
+
+                    string msgBody = "Activation Code : " + reqResponse.ResponseIdStr;
+
+                    EmailProxy.SendEmail("", regModel.email, "Subscription activation", msgBody, true);
+                }
             }
             return Json(reqResponse);
         }

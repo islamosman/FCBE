@@ -61,13 +61,16 @@
     </Compile>
     <Compile Include="Fly\DomainModel\Metadata\AreasTMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\CountriesMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\PromoCodeMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\SecurityRoleMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\SecurityUserMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\SecurityUserRoleMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\SubscriptionVMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\sysdiagramsMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\TempStatusMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\TripCoordinatesMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\TripsMetadata.cs" />
+    <Compile Include="Fly\DomainModel\Metadata\UsedPromoCodeMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\VehiclesBrandMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\VehiclesCategoryMetadata.cs" />
     <Compile Include="Fly\DomainModel\Metadata\VehiclesMetadata.cs" />
@@ -81,6 +84,9 @@
     <Compile Include="Helper\RegisterModel.cs" />
     <Compile Include="Helper\RequestResponse.cs" />
     <Compile Include="Helper\VehicaleReservationModel.cs" />
+    <Compile Include="PromoCode.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityRole.cs">
       <DependentUpon>FlyModel.tt</DependentUpon>
@@ -89,6 +95,9 @@
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SecurityUserRole.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubscriptionV.cs">
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagrams.cs">
@@ -101,6 +110,9 @@
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Trips.cs">
+      <DependentUpon>FlyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UsedPromoCode.cs">
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Vehicles.cs">

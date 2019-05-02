@@ -37,7 +37,13 @@ namespace Fly.DomainModel
         public Nullable<bool> IsPaid { get; set; }
         public Nullable<decimal> TotalDistance { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public string Duration { get; set; }
+        public Nullable<decimal> Amount { get; set; }
+        public Nullable<int> WeAcceptOrderId { get; set; }
+        public Nullable<int> PromoCodeId { get; set; }
+        public Nullable<decimal> NetAmount { get; set; }
     
+        public virtual PromoCode PromoCode { get; set; }
         public virtual SecurityUser SecurityUser { get; set; }
         public virtual ICollection<TripCoordinates> TripCoordinates { get; set; }
         public virtual Vehicles Vehicles { get; set; }

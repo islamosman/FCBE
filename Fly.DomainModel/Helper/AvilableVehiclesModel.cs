@@ -16,5 +16,8 @@ namespace Fly.DomainModel.Helper
         public string description { get; set; }
         public string iconImageEnum { get; set; }
         public string ImageUrl { get; set; }
+        public string BatteryStatus { get; set; }
+        public string QRCode { get; set; }
+        public string PlateNo { get; set; }
     }
 }

@@ -1,0 +1,97 @@
+﻿@using Fly.Resources
+@{
+    ViewBag.Title = "Promocode";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<div class="row">
+
+    <div class="col-md-12 col-xs-12">
+        <div class="panel panel-white">
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4 class="panel-title text-primary padding-top-10 text-bold">Promocode</h4>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br />
+                                <div class="input-group">
+                                    <input name="searchToken" id="searchToken" placeholder="@OperationLP.TxtSearch" class="form-control" />
+
+                                    <span class="input-group-btn">
+                                        <button type="button" id="search" class="btn btn-success" onclick="search()" data-original-title="@OperationLP.BtnSearch" data-toggle="tooltip">
+
+                                            <span class="fa-search fa"></span>
+                                        </button>
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <br />
+                                <button type="button" id="addItem" class="btn btn-primary" data-original-title="@OperationLP.BtnNew" data-toggle="tooltip">
+                                    Add
+                                    <span class="fa-plus fa"></span>
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                @Html.Action("TableStructure", "GlobalCtrl", new { area = "", @colmnCount = 3, @operationsColumnCount = 1 })
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@Html.Partial("/Views/Shared/_TableLocalize.cshtml")
+
+
+<script src="~/Scripts/DevScripts/StandardForm.js"></script>
+
+<script>
+
+    var ActionLoadData = "@Url.Action("loadData")";
+    var ActionEditData = "@Url.Action("index", "PromoCode")";
+    var colData = [
+    { "data": "Name", "title": "Name", "name": "Name", "autoWidth": true, "orderable": true },
+    { "data": "Percentage", "title": "%", "name": "Percentage", "autoWidth": true, "orderable": true },
+    { "data": "IsDelete", "title": "Deleted?", "name": "IsDelete", "autoWidth": true, "orderable": true },
+     { "data": "Id", "name": "", "autoWidth": false, "orderable": false }
+    ];
+
+
+    deleteEnabled = false;
+    isActiveIndex = 2;
+
+    operationIndex = 3;
+    GenerateTableCustomColumn();
+
+
+
+</script>

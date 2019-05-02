@@ -2,17 +2,48 @@
 using Fly.DomainModel;
 using Fly.DomainModel.Helper;
 using Fly.Resources;
+using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+//using QRBarcodeService;
+using ThoughtWorks.QRCode.Codec;
 
 namespace Fly.Controllers
 {
     public class VehiclesAController : AdminBaseController
     {
+
+        public ActionResult Image(string imageId)
+        {
+            imageId = WebUI.Helpers.WebUiUtility.Decrypt(imageId);
+
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder
+            {
+                QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE,
+                QRCodeScale = 4,
+                QRCodeVersion = 8,
+                QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H
+            };
+            Image image = qrCodeEncoder.Encode(imageId);
+
+            using (var ms = new MemoryStream())
+            {
+                image.Save(ms, ImageFormat.Jpeg);
+
+                return File(ms.ToArray(), "image/jpeg");
+            }
+        }
+
         public ActionResult Index(int? id)
         {
             ViewBag.ActiveMenu = 1;
@@ -25,6 +56,24 @@ namespace Fly.Controllers
                 {
                     areaModel = vehiclesProxy.GetById((int)id);
                 }
+
+                areaModel.vCategory = new VehiclesCategoryRepository().GetAll().Select(x => new LukUpModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToList();
+                areaModel.vBrand = new VehiclesBrandRepositroy().GetAll().Select(x => new LukUpModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToList();
+                areaModel.AreasList = new AreasTRepository().GetAll().Select(x => new LukUpModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    extraValue = x.AreaCoordinates
+                }).ToList();
+                //areaModel.VehicleSpecs = new VehicleSpecs();
 
                 return PartialView("_AddVehicles", areaModel);
             }
@@ -93,6 +142,13 @@ namespace Fly.Controllers
                 {
                     r.Id,
                     VName = r.Name,
+                    PlateNo = r.PlateNo,
+                    QRCode = r.UniqueId,
+                    imageId = WebUI.Helpers.WebUiUtility.Encrypt(r.UniqueId),
+                    IsActive = r.IsActive,
+                    InRide = r.VehicleStatus.InRide,
+                    InService = r.VehicleStatus.InService,
+                    BatteryStatus = r.VehicleStatus.BatteryStatus
                 }).AsQueryable()
 
             };
@@ -111,6 +167,10 @@ namespace Fly.Controllers
             {
                 ModelState["Id"].Errors.Clear();
                 ModelState["VehicleSpecs.ModelId"].Errors.Clear();
+                ModelState["VehicleStatus.VehicleId"].Errors.Clear();
+                ModelState["VehicleStatus.BatteryStatus"].Errors.Clear();
+                ModelState["VehicleStatus.InRide"].Errors.Clear();
+                //ModelState["VehicleStatus.InService"].Errors.Clear();
             }
 
             if (ModelState.IsValid)
@@ -121,26 +181,12 @@ namespace Fly.Controllers
                     var fileContent = Request.Files[file];
                     if (fileContent != null && fileContent.ContentLength > 0)
                     {
+                        fileName = Path.GetFileName(fileContent.FileName);
 
-                        var sdf = Request.Files[file];
-                        if (file == "file1")
-                        {
-                            fileName = Path.GetFileName(fileContent.FileName);
-
-                            fileName = Guid.NewGuid().ToString().Substring(0, 6).ToString() + fileName;
-                            // Add file
-                            var path = Path.Combine(Server.MapPath("~/DataImages/"), fileName);
-                            fileContent.SaveAs(path);
-                        }
-                        else if (file == "file2")
-                        {
-                            fileName2 = Path.GetFileName(fileContent.FileName);
-
-                            fileName2 = Guid.NewGuid().ToString().Substring(0, 6).ToString() + fileName2;
-                            // Add file
-                            var path = Path.Combine(Server.MapPath("~/DataImages/"), fileName2);
-                            fileContent.SaveAs(path);
-                        }
+                        fileName = Guid.NewGuid().ToString().Substring(0, 6).ToString() + fileName;
+                        // Add file
+                        var path = Path.Combine(Server.MapPath("~/DataImages/"), fileName);
+                        fileContent.SaveAs(path);
                     }
                 }
                 if (!string.IsNullOrEmpty(fileName))
@@ -183,8 +229,8 @@ namespace Fly.Controllers
             {
                 return Json(vModelProxy.GetByBrand(brandId).Select(x => new LukUpModel()
                 {
-                    Id= x.Id,
-                    Name= x.Name
+                    Id = x.Id,
+                    Name = x.Name
                 }));
             }
 

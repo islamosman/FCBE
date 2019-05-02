@@ -7,7 +7,13 @@
 
         @Html.HiddenFor(model => model.Id, new { @class = "EmptyClassID" })
         @Html.HiddenFor(model => model.ImageName, new { @class = "EmptyClassID" })
-
+        @Html.HiddenFor(model => model.VehicleSpecs.VehicleId)
+        @Html.HiddenFor(model => model.VehicleStatus.VehicleId)
+        @*@Html.HiddenFor(model => model.VehicleStatus.InService)*@
+        @Html.HiddenFor(model => model.VehicleStatus.InRide)
+        @Html.HiddenFor(model => model.VehicleStatus.BatteryStatus)
+        @Html.HiddenFor(model => model.VehicleStatus.VehicleQR)
+        
         <div class="row">
             <div class="col-md-2">
                 <div class="form-group">
@@ -30,7 +36,7 @@
                 <div class="form-group">
                     <label class="text-bold">QR No.</label>
                     <span class="symbol required" aria-required="true"></span>
-                    @Html.TextBoxFor(model => model.UniqueId, new { @class = "form-control EmptyClass", disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.UniqueId, new { @class = "form-control EmptyClass", @readonly = "readonly" })
                 </div>
             </div>
 
@@ -44,6 +50,19 @@
                     </div>
 
                 </div>
+
+
+                <div class="form-group">
+                    <div class="checkbox clip-check check-success checkbox-inline">
+                        <input type="checkbox" id="checkbox112" name="VehicleStatus.InService" value="true" @(Model.VehicleStatus != null ? (Model.VehicleStatus.InService ? "checked" : "") : "")>
+                        <label for="checkbox112">
+                            Service
+                        </label>
+                    </div>
+
+                </div>
+
+
             </div>
 
             <div class="col-md-3">
@@ -75,7 +94,7 @@
                 <div class="form-group">
                     <label for="form-field-select-1" class="text-bold">Brand</label>
                     <select class="select2internal" id="vBrandDDL">
-                        <option value="">Select Brand</option>
+                        <option value="">Select Brand </option>
                         @foreach (var item in Model.vBrand)
                         {
                             <option value="@item.Id" @(Model.VehicleSpecs.VehiclesModel == null ? "" : (item.Id == Model.VehicleSpecs.VehiclesModel.BrandId ? "selected" : ""))>@item.Name</option>
@@ -107,12 +126,14 @@
             </div>
 
         </div>
+        <div style="display:none">
+            <label>Long</label>
+            <input type="text" name="VehicleStatus.LongV" id="longTxt" value="@(Model.VehicleStatus != null ? Model.VehicleStatus.LongV: "")" />
+            <br />
+            <label>Lat</label>
+            <input type="text" name="VehicleStatus.LatV" id="latTxt" value="@(Model.VehicleStatus != null ? Model.VehicleStatus.LatV : "" )" />
+        </div>
 
-        <label>Long</label>
-        <input type="text" name="VehicleStatus.LongV" id="longTxt" value="@(Model.VehicleStatus != null ? Model.VehicleStatus.LongV: "")" />
-        <br />
-        <label>Lat</label>
-        <input type="text" name="VehicleStatus.LatV" id="latTxt" value="@(Model.VehicleStatus != null ? Model.VehicleStatus.LatV : "" )" />
         <div class="row">
             <div class="col-xs-12">
                 <div id="googleMap" style="height:400px;width:100%;"></div>
@@ -131,9 +152,18 @@
 }
 
 <script>
+    var selectedModel = "@(Model.VehicleSpecs.VehiclesModel != null ? Model.VehicleSpecs.VehiclesModel.BrandId.ToString() : "")";
+    var lngServer = "@(Model.VehicleStatus != null ? Model.VehicleStatus.LongV :"")";
+    var latServer = "@(Model.VehicleStatus != null ? Model.VehicleStatus.LatV :"")";
+
     $.validator.unobtrusive.parse("#addForm");
     $(document).ready(function () {
         $(".select2internal").select2();
+
+        if ($("#vBrandDDL option:selected").val() > 0) {
+            GetModelBrand($("#vBrandDDL option:selected").val());
+        }
+
 
         $("#vBrandDDL").on("select2:select",
                 function (evt) {
@@ -145,7 +175,7 @@
         $("#vAreaDDL").on("select2:select",
                 function (evt) {
                     if ($("#vAreaDDL option:selected").val() > 0) {
-                        alert($("#vAreaDDL option:selected").attr("data-cord"));
+                        //alert($("#vAreaDDL option:selected").attr("data-cord"));
                     }
                 });
 
@@ -154,53 +184,89 @@
 
 </script>
 <script>
-    $(document).ready(function () {
-        myMap();
-    });
-
+    var zoomVar = 10;
     var map;
     var marker;
     var polygonArray;
-    function myMap() {
-        if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function (pos) {
-            var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
 
-            var myCenter = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);//new google.maps.LatLng(20.296100, 85.824500);
+    $(document).ready(function () {
+        myMap();
+    });
+  
+    function myMap() {
+        if (latServer != "" && lngServer != "") {
+            console.log("w")
+            var me = new google.maps.LatLng(latServer, lngServer);
+            var myCenter = new google.maps.LatLng(latServer, lngServer);//new google.maps.LatLng(20.296100, 85.824500);
             var mapProp = {
                 polylineOptions: {
                     editable: true
-                }, center: myCenter, zoom: 16, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP
+                }, center: myCenter, zoom: zoomVar, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
             marker = new google.maps.Marker({ position: myCenter, draggable: true });
+
+            marker.setMap(map);
 
             google.maps.event.addListener(marker, 'dragend', function (event) {
                 document.getElementById("latTxt").value = event.latLng.lat();
                 document.getElementById("longTxt").value = event.latLng.lng();
             });
 
-            marker.setMap(map);
-
             google.maps.event.addListener(map, 'click', function (event) {
                 addMarker(event.latLng);
             });
+        } else {
+            if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function (pos) {
+                console.log("D")
+                var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
 
-        }, function (error) {
-            var myCenter = new google.maps.LatLng(20.296100, 85.824500);
-            var mapProp = { center: myCenter, zoom: 12, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
-            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-            marker = new google.maps.Marker({ position: myCenter, draggable: true });
-            marker.setMap(map);
-
-            google.maps.event.addListener(map, 'bounds_changed', function () {
-                bounds = map.getBounds();
-                ne = bounds.getNorthEast();
-                sw = bounds.getSouthWest();
-                document.getElementById('mapBounds').innerHTML = bounds.toUrlValue(6);
+                var myCenter = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);//new google.maps.LatLng(20.296100, 85.824500);
+                var mapProp = {
+                    polylineOptions: {
+                        editable: true
+                    }, center: myCenter, zoom: zoomVar, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+                marker = new google.maps.Marker({ position: myCenter, draggable: true });
+                marker.setMap(map);
 
 
+                google.maps.event.addListener(marker, 'dragend', function (event) {
+                    document.getElementById("latTxt").value = event.latLng.lat();
+                    document.getElementById("longTxt").value = event.latLng.lng();
+                });
+
+                google.maps.event.addListener(map, 'click', function (event) {
+                    addMarker(event.latLng);
+                });
+            }, function (error) {
+                console.log("e")
+                var myCenter = new google.maps.LatLng(30.00982998556293, 31.275490710742588);
+                var mapProp = { center: myCenter, zoom: zoomVar, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
+                var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+                marker = new google.maps.Marker({ position: myCenter, draggable: true });
+                marker.setMap(map);
+
+                //google.maps.event.addListener(map, 'bounds_changed', function () {
+                //    bounds = map.getBounds();
+                //    ne = bounds.getNorthEast();
+                //    sw = bounds.getSouthWest();
+                //    document.getElementById('mapBounds').innerHTML = bounds.toUrlValue(6);
+                //});
+
+
+                google.maps.event.addListener(marker, 'dragend', function (event) {
+                    document.getElementById("latTxt").value = event.latLng.lat();
+                    document.getElementById("longTxt").value = event.latLng.lng();
+                });
+
+                google.maps.event.addListener(map, 'click', function (event) {
+                    addMarker(event.latLng);
+                });
             });
-        });
+        }
+
     }
 
 

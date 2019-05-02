@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Fly.DomainModel.Helper;
 using Fly.Helper;
 using Fly.Resources;
+using System.Data.Entity;
 
 namespace Fly.BLL
 {
@@ -31,6 +32,9 @@ namespace Fly.BLL
                 }
 
                 Save();
+
+                responseObj.ReturnedObject = entity;
+                responseObj.ResponseIdStr = entity.Id.ToString();
             }
             catch (Exception ex)
             {
@@ -54,8 +58,38 @@ namespace Fly.BLL
             }
         }
 
+        public int? GetLastVehicalOpenTrip(string vId)
+        {
+            using (VehicleStatusRepository vsRepo = new VehicleStatusRepository())
+            {
+                VehicleStatus vsModel = vsRepo.GetByQR(vId);
+                if (vsModel != null)
+                {
+                    return _objectSet.FirstOrDefault(x => x.VehicleId == vsModel.VehicleId && x.IsDone == false)?.Id;
+                }
+            }
+            return null;
+        }
+
+        public RequestResponse GetBalance(int userId)
+        {
+            List<Trips> userTrips = _objectSet.Where(x => x.RiderId == userId).ToList();
+
+            decimal? totalRideAmount = userTrips.Where(x => x.IsDone == true).Sum(x => x.Amount);
+            decimal? totalRidePaied = userTrips.Where(x => x.IsDone == true && x.IsPaid == true).Sum(x => x.Amount);
+
+            responseObj.ReturnedObject = new
+            {
+                Total = totalRideAmount,
+                Paied = totalRidePaied
+            };
+            return responseObj;
+        }
+
         public RequestResponse TripRegister(VehicaleReservationModel data)
         {
+
+
             Trips tripModel = new Trips()
             {
                 VehicleId = int.Parse(data.vehicleId),
@@ -65,6 +99,17 @@ namespace Fly.BLL
             switch (data.reservationEnum)
             {
                 case TripType.Start:
+
+                    // check if v QR found
+                    using (VehicleRepository vRepo = new VehicleRepository())
+                    {
+                        if (!vRepo.IsAvilableByBarcode(data.qrStr, int.Parse(data.vehicleId)))
+                        {
+                            responseObj.ErrorMessages.Add("nodata", "QR is wrong");
+                            return responseObj;
+                        }
+                    }
+
                     //if (!data.tripId.HasValue)
                     //{
                     //    responseObj.ErrorMessages.Add("tripId", OperationLP.InvalidData);
@@ -76,6 +121,11 @@ namespace Fly.BLL
                     tripModel.StartTime = DateTime.Now;
                     tripModel.TempRequest = false;
                     responseObj = AddUpdate(tripModel);
+
+                    using (VehicleStatusRepository vsRepo = new VehicleStatusRepository())
+                    {
+                        vsRepo.UpdateInRide(int.Parse(data.vehicleId));
+                    }
                     //}
                     break;
                 case TripType.End:
@@ -88,7 +138,46 @@ namespace Fly.BLL
                         tripModel = GetById(data.tripId.Value);
                         tripModel.EndTime = DateTime.Now;
                         tripModel.IsDone = true;
+                        TimeSpan span = DateTime.Parse(tripModel.EndTime.ToString()) - DateTime.Parse(tripModel.StartTime.ToString());
+                        double totalMinutes = span.TotalMinutes;
+                        double totalHours = span.TotalHours;
+                        double totalSecounds = span.TotalSeconds;
+
+                        //tripModel.Duration = string.Format("{0}:{1}:{2}", totalHours, totalMinutes, totalSecounds);
+                        tripModel.Duration = Math.Round(totalMinutes, 2).ToString();
+
+                        double unloackAmount = double.Parse(System.Configuration.ConfigurationManager.AppSettings["unlockAmount"].ToString());
+                        double minuteAmount = double.Parse(System.Configuration.ConfigurationManager.AppSettings["minuteAmount"].ToString());
+
+
+                        decimal totalAmount = Math.Round(decimal.Parse((unloackAmount + (totalMinutes * minuteAmount)).ToString()), 2);
+                        tripModel.Amount = totalAmount;
+
+                        if (data.PromoCodeId > 0)
+                        {
+                            decimal promoDiscount = 0;
+                            using (PromoCodeRepository promoRepo = new PromoCodeRepository())
+                            {
+                                PromoCode promoModel = promoRepo.GetById(data.PromoCodeId);
+                                if (promoModel != null)
+                                {
+                                    promoDiscount = promoModel.Percentage;
+                                }
+                            }
+                            tripModel.NetAmount = totalAmount - ((totalAmount * promoDiscount) / 100);
+                        }
+                        else
+                        {
+                            tripModel.NetAmount = totalAmount;
+                        }
+
+
                         responseObj = AddUpdate(tripModel);
+
+                        using (VehicleStatusRepository vsRepo = new VehicleStatusRepository())
+                        {
+                            vsRepo.UpdateInRide(int.Parse(data.vehicleId), false, data.needPrepare);
+                        }
                     }
                     break;
                 case TripType.TempRequest:
@@ -112,6 +201,108 @@ namespace Fly.BLL
                 default:
                     break;
             }
+            return responseObj;
+        }
+
+        public RequestResponse GetTripStatus(int tripId)
+        {
+            Trips currentTrip = _objectSet.FirstOrDefault(x => x.Id == tripId);
+            if (currentTrip != null)
+            {
+                if (currentTrip.Id > 0)
+                {
+                    double unloackAmount = double.Parse(System.Configuration.ConfigurationManager.AppSettings["unlockAmount"].ToString());
+                    double minuteAmount = double.Parse(System.Configuration.ConfigurationManager.AppSettings["minuteAmount"].ToString());
+                    TimeSpan span = DateTime.Parse(currentTrip.EndTime.HasValue ? currentTrip.EndTime.ToString() : DateTime.Now.ToString())
+                        - DateTime.Parse(currentTrip.StartTime.ToString());
+                    double totalMinutes = span.TotalMinutes;
+                    double totalHours = span.TotalHours;
+                    double totalSecounds = span.TotalSeconds;
+
+
+                    responseObj.ReturnedObject = new
+                    {
+                        TripId = currentTrip.Id,
+                        vId = currentTrip.VehicleId,
+                        IsDone = currentTrip.IsDone,
+                        rate = currentTrip.Rate,
+                        IsCancel = currentTrip.IsCancel,
+                        StartDate = currentTrip.StartTime.ToString("dd/MM/yyyy , HH:mm:ss tt"),
+                        EndDate = currentTrip.EndTime.HasValue ? currentTrip.EndTime.Value.ToString("dd/MM/yyyy , HH:mm:ss tt") : "",
+                        Duration = Math.Round(totalMinutes, 2).ToString(),
+                        totalSecounds = totalSecounds,
+                        Amount = Math.Round(decimal.Parse((unloackAmount + (totalMinutes * minuteAmount)).ToString()), 2)
+                    };
+
+
+                }
+                else
+                {
+                    responseObj.ErrorMessages.Add("nod", Resources.OperationLP.TblNoData);
+                }
+            }
+            else
+            {
+                responseObj.ErrorMessages.Add("nod", Resources.OperationLP.TblNoData);
+            }
+
+            return responseObj;
+        }
+
+        public RequestResponse TripPaymentId(int tripId, int orderId)
+        {
+            Trips currentTrip = _objectSet.FirstOrDefault(x => x.Id == tripId);
+            if (currentTrip != null)
+            {
+                currentTrip.WeAcceptOrderId = orderId;
+                AddUpdate(currentTrip);
+            }
+            else
+            {
+                responseObj.ErrorMessages.Add("notrip", "Trip Not Found");
+            }
+
+            return responseObj;
+        }
+
+        public RequestResponse TripPaymentDone(int orderId)
+        {
+            Trips currentTrip = _objectSet.FirstOrDefault(x => x.WeAcceptOrderId == orderId);
+            if (currentTrip != null)
+            {
+                currentTrip.IsPaid = true;
+                AddUpdate(currentTrip);
+            }
+            else
+            {
+                responseObj.ErrorMessages.Add("notrip", "Trip Not Found");
+            }
+
+            return responseObj;
+        }
+
+        public RequestResponse UpdateTripRate(int tripId, int rate, bool isRepair)
+        {
+            Trips currentTrip = GetById(tripId);
+            currentTrip.Rate = byte.Parse(rate.ToString());
+            AddUpdate(currentTrip);
+
+            if (isRepair)
+            {
+                using (VehicleStatusRepository vStatus = new VehicleStatusRepository())
+                {
+                    VehicleStatus currentVStatusModel = vStatus.GetById(currentTrip.VehicleId);
+                    currentVStatusModel.InService = isRepair;
+
+                    vStatus.AddUpdate(currentVStatusModel);
+                }
+            }
+            return responseObj;
+        }
+
+        public RequestResponse GetAllByUser(int userId)
+        {
+            responseObj.ReturnedObject = _objectSet.Include(x => x.Vehicles).Where(x => x.RiderId == userId).OrderByDescending(x => x.EndTime).ToList();
             return responseObj;
         }
     }

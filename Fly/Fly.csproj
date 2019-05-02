@@ -107,6 +107,13 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="QRBarcodeService">
+      <HintPath>..\..\..\..\Blocks\QRBarcodeService.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.6.9.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.9\lib\net452\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Device" />
@@ -177,6 +184,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="ThoughtWorks.QRCode">
+      <HintPath>..\..\..\..\Blocks\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -244,10 +254,13 @@
     <Compile Include="Controllers\AdminBaseController.cs" />
     <Compile Include="Controllers\AreaCController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\FlyAuthController.cs" />
     <Compile Include="Controllers\GlobalCtrlController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogInController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\PromoCodeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VehiclesAController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
@@ -260,6 +273,9 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="Providers\HttpMultipartParser.cs" />
+    <Compile Include="Providers\Misc.cs" />
+    <Compile Include="Providers\SMTPEmailSender.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -296,8 +312,13 @@
     <Content Include="assets\images\lion-403764_640.jpg" />
     <Content Include="assets\images\lion-565818_640.jpg" />
     <Content Include="assets\images\lion-565820_640.jpg" />
+    <Content Include="assets\images\logo-green.png" />
     <Content Include="assets\images\logo.png" />
     <Content Include="assets\images\logo2.png" />
+    <Content Include="assets\images\marker.png" />
+    <Content Include="assets\images\Marker1.png" />
+    <Content Include="assets\images\Marker2.png" />
+    <Content Include="assets\images\Marker3.png" />
     <Content Include="assets\images\media-user.png" />
     <Content Include="assets\images\note_dot.png" />
     <Content Include="assets\images\photodune-4043508-3d-modern-office-room-l.jpg" />
@@ -1281,7 +1302,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\AddNew.cshtml" />
     <Content Include="vendor\bootstrap\css\bootstrap-theme.css.map" />
     <Content Include="vendor\bootstrap\css\bootstrap.css.map" />
     <Content Include="vendor\bootstrap\fonts\glyphicons-halflings-regular.eot" />
@@ -1448,6 +1468,12 @@
     <Content Include="Views\LogIn\Index.cshtml" />
     <Content Include="Views\AreaC\Index.cshtml" />
     <Content Include="Views\AreaC\_AddArea.cshtml" />
+    <Content Include="Views\Clients\Index.cshtml" />
+    <Content Include="Views\Clients\GetTrips.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
+    <Content Include="Views\Payment\PeymentMethod.cshtml" />
+    <Content Include="Views\PromoCode\Index.cshtml" />
+    <Content Include="Views\PromoCode\_AddPromo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,6 +11,9 @@ var modelHeaderTitle = "";
 
 var attachment = undefined;
 var userLink = undefined;
+var getTrips = undefined;
+var isPrint = undefined;
+var getId = undefined;
 
 $(document).ready(function () {
     $('body').on("click", "#addItem", function () {
@@ -40,6 +43,48 @@ function GenerateTableCustomColumn() {
             }
         });
     }
+
+
+    if (getTrips != undefined) {
+        colDef.push({
+            "targets": getTrips,
+            "data": "download_link",
+            "render": function (data, type, full) {
+                var html = '<a href="#!" onclick="Show_Trips(' + data + ')" class="tooltips" data-toggle="tooltip"  tooltip-placement="top" ><i class="fa fa-pencil" style="color:#00c0ff;"></i></a>';
+
+                return html;
+            }
+        });
+    }
+
+    if (getId != undefined) {
+        colDef.push({
+            "targets": getId,
+            "data": "download_link",
+            "render": function (data, type, full) {
+                if (data) {
+                    var html = '<a href="/DataImages/' + data + '" target="_blank" class="tooltips" data-toggle="tooltip"  tooltip-placement="top" ><i class="fa fa-print" style="color:#00c0ff;"></i></a>';
+
+                    return html;
+                }
+                return "";
+            }
+        });
+    }
+
+    if (isPrint != undefined) {
+        colDef.push({
+            "targets": isPrint,
+            "data": "download_link",
+            "render": function (data, type, full) {
+                var html = '<a href="/VehiclesA/Image?imageId=' + data + '" target="_blank" class="tooltips" data-toggle="tooltip" data-original-title="' + editTT + '" tooltip-placement="top" tooltip="' + editTT + '"><i class="fa fa-print" style="color:#008a2c;"></i></a>';
+
+                return html;
+            }
+        });
+    }
+
+
     if (isActiveIndex != undefined) {
         colDef.push({
             "targets": isActiveIndex,
@@ -54,6 +99,33 @@ function GenerateTableCustomColumn() {
         });
     }
 
+    if (isActiveIndex2 != undefined) {
+        colDef.push({
+            "targets": isActiveIndex2,
+            "data": "CurrentYear",
+            "render": function (data, type, full) {
+                if (data == true) {
+                    return '<i class="fa fa-check-circle-o" style="color:green;"></i>';
+                } else {
+                    return '<i class="fa fa-ban" style="color:red;"></i>';
+                }
+            }
+        });
+    }
+
+    if (isActiveIndex3 != undefined) {
+        colDef.push({
+            "targets": isActiveIndex3,
+            "data": "CurrentYear",
+            "render": function (data, type, full) {
+                if (data == true) {
+                    return '<i class="fa fa-check-circle-o" style="color:green;"></i>';
+                } else {
+                    return '<i class="fa fa-ban" style="color:red;"></i>';
+                }
+            }
+        });
+    }
 
     if (userLink != undefined) {
         colDef.push({

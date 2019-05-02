@@ -22,10 +22,11 @@ namespace Fly.DomainModel
         public int VehicleId { get; set; }
         public string LatV { get; set; }
         public string LongV { get; set; }
-        public int BatteryStatus { get; set; }
+        public decimal BatteryStatus { get; set; }
         public bool InRide { get; set; }
         public bool InService { get; set; }
         public Nullable<int> AreaId { get; set; }
+        public string VehicleQR { get; set; }
     
         public virtual AreasT AreasT { get; set; }
         public virtual Vehicles Vehicles { get; set; }

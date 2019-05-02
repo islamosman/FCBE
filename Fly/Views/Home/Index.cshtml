@@ -1,6 +1,166 @@
 ﻿
 @{
-    ViewBag.Title = "AddNew";
+    ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
+<div class="row">
+
+    <div class="col-md-12 col-xs-12">
+        <div class="panel panel-white">
+            <div class="panel-body">
+
+                <div class="row" style="border-bottom: 1px solid #56d69b; padding-bottom: 5px;">
+                    <div class="col-md-2">
+                        <h4 class="panel-title text-primary padding-top-10 text-bold">Vehicles</h4>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+
+                            </div>
+
+                            <div class="col-md-2">
+
+                                <button type="button" class="btn btn-primary" data-original-title="Refresh" data-toggle="tooltip"
+                                        onclick="getAll();">
+
+                                    <span class="fa-refresh fa"></span>
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top: 10px;border: 2px solid #d6e326;">
+                    <div class="col-xs-12" style="padding:0px;">
+                        <div id="googleMap" style="height:500px;width:100%;"></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&libraries=drawing,geometry&callback="></script>
+
+<script>
+    var zoomVar = 10;
+    var map;
+    var marker;
+    var polygonArray;
+
+    $(document).ready(function () {
+        myMap();
+    });
+
+    function myMap() {
+
+        if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function (pos) {
+            var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+
+            var myCenter = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);//new google.maps.LatLng(20.296100, 85.824500);
+            var mapProp = {
+                polylineOptions: {
+                    editable: true
+                }, center: myCenter, zoom: zoomVar, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+        }, function (error) {
+            var myCenter = new google.maps.LatLng(30.00982998556293, 31.275490710742588);
+            var mapProp = { center: myCenter, zoom: zoomVar, scrollwheel: false, draggable: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        });
+
+        setTimeout(function () { getAll(); }, 5000);
+        getAll();
+    }
+
+
+    function addMarker(location, name, plateNo, i, imagePath) {
+
+        var infowindow = new google.maps.InfoWindow({
+            content: name
+        });
+
+        // if (!marker || !marker.setPosition) {
+        marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            draggable: false,
+            //icon: {
+            //    url: imagePath,
+            //    size: {
+            //        width: 40,
+            //        height: 62
+            //    }
+            //},
+            icon: imagePath,
+
+        });
+
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            return function () {
+                infowindow.setContent(name + ' (' + plateNo + ')');
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+
+        //marker.addListener('click', function () {
+        //    infowindow.open(map, marker);
+        //});
+
+        //} else {
+        //    marker.setPosition(location);
+        //}
+    }
+
+
+    function getAll() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetAllVehicls")",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.length > 0) {
+                    for (x = 0; x < data.length; x++) {
+                        var imagePath = '/assets/images/marker.png';
+
+                        if (data[x].InService) {
+                            imagePath = '/assets/images/marker.png';
+                        } else if (data[x].InRide) {
+                            imagePath = '/assets/images/marker.png';
+                        }
+
+                        addMarker(new google.maps.LatLng(data[x].Lat, data[x].Long), data[x].Name, data[x].PlateNo, x, imagePath);
+                    }
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Error");
+            }
+        });
+    }
+</script>

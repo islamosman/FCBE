@@ -317,7 +317,7 @@ var Main = function() {
 					break;
 
 				default:
-					$(".navbar-brand img").attr("src", "assets/images/logo.png");
+				    $(".navbar-brand img").attr("src", "assets/images/logo-green.png");
 					break;
 			}
 		}
@@ -328,7 +328,7 @@ var Main = function() {
 			$('#closed-sidebar').prop('checked', false);
 			$('#fixed-footer').prop('checked', false);
 			$('#skin_color').attr("href", "assets/css/themes/theme-1.css");
-			$(".navbar-brand img").attr("src", "assets/images/logo.png");
+			$(".navbar-brand img").attr("src", "assets/images/logo-green.png");
 
 		}
 

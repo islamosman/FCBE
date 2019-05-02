@@ -175,12 +175,12 @@ namespace Fly.Controllers
         }
     }
 
-    public class HomeController : Controller
+    public class HomeController : AdminBaseController
     {
         public ActionResult Index()
         {
             Gmap.net.GoogleMapApi dd = new Gmap.net.GoogleMapApi(false);
-            Gmap.net.Overlays.Polygon ssw = new Gmap.net.Overlays.Polygon("D") ;
+            Gmap.net.Overlays.Polygon ssw = new Gmap.net.Overlays.Polygon("D");
             ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.042287586068877, Longitude = 31.166267037884495 });
             ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.042287586068877, Longitude = 31.224159837261936 });
             ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.017877075175274, Longitude = 31.166267037884495 });
@@ -188,38 +188,11 @@ namespace Fly.Controllers
             ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.042287586068877, Longitude = 31.224159837261936 });
             ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.017877075175274, Longitude = 31.224159837261936 });
             dd.CallJs();
-            JavaScriptResult ddd= JavaScript("return '1';");
-            
-            bool isContain= ssw.Points.Contains(new Gmap.net.Location() { Latitude = 30.022806863746357, Longitude = 31.207265853881836 });
+            JavaScriptResult ddd = JavaScript("return '1';");
+
+            bool isContain = ssw.Points.Contains(new Gmap.net.Location() { Latitude = 30.022806863746357, Longitude = 31.207265853881836 });
 
 
-            //string url = "http://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&address=";
-            //url = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo";
-            //dynamic googleResults = new Uri(url).GetDynamicJsonObject();
-            //foreach (var result in googleResults.results)
-            //{
-            //    Console.WriteLine("[" + result.geometry.location.lat + "," + result.geometry.location.lng + "] " + result.formatted_address);
-            //}
-
-            // var diswtance = distance(30.1703207, 31.226648, 30.1617312, 31.2280126, char.Parse("K"));
-            // var distandce = DistanceTo(30.1703207, 31.226648, 30.1617312, 31.2280126);
-
-            //// string address = "Alexandria Agriculture Rd, Madinet Qelyoub, Qalyoub, Al Qalyubia Governorate";
-            // //string requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyBLKRh7JfikPylbNdGfTiDbe6zut1yabxo&address={0}&sensor=false", Uri.EscapeDataString(address));
-
-            // //WebRequest request = WebRequest.Create(requestUri);
-            // //WebResponse response = request.GetResponse();
-            // //XDocument xdoc = XDocument.Load(response.GetResponseStream());
-
-            // //XElement result = xdoc.Element("GeocodeResponse").Element("result");
-            // //XElement locationElement = result.Element("geometry").Element("location");
-            // //XElement lat = locationElement.Element("lat");
-            // //XElement lng = locationElement.Element("lng");
-
-            // var sCoord = new System.Device.Location.GeoCoordinate(30.1703207, 31.226648);
-            // var eCoord = new System.Device.Location.GeoCoordinate(30.1617312, 31.2280126);
-
-            // var sss= sCoord.GetDistanceTo(eCoord);
             return View();
         }
         public double distance(double lat1, double lon1, double lat2, double lon2, char unit)
@@ -286,22 +259,15 @@ namespace Fly.Controllers
 
             return dist;
         }
-        [HttpGet]
-        public ActionResult AddNew(int? scotterId)
-        {
-            Vehicles scoModel = new Vehicles();
 
-            return View(scoModel);
-        }
 
         [HttpPost]
-        public ActionResult AddNew(Vehicles model)
+        public ActionResult GetAllVehicls()
         {
             using (VehicleRepository scoterRepo = new VehicleRepository())
             {
-                scoterRepo.Add(model);
+                return Json(scoterRepo.getAllForDash());
             }
-            return RedirectToAction("AddNew", new { scotterId = model.Id });
         }
     }
 }

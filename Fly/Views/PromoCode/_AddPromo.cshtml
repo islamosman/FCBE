@@ -1,0 +1,60 @@
+﻿@model Fly.DomainModel.PromoCode
+
+@using (Ajax.BeginForm("Add", "PromoCode", new AjaxOptions { OnBegin = "OnBegin", OnComplete = "OnComplete", OnSuccess = "OnSucess" }, new { id = "addForm" }))
+{
+
+    <div class="modal-body" style="background-color:#ffffff;">
+
+        @Html.HiddenFor(model => model.Id, new { @class = "EmptyClassID" })
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="text-bold">Name</label>
+                    <span class="symbol required" aria-required="true"></span>
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control EmptyClass" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "required" })
+                </div>
+            </div>
+
+            <div class="col-xs-3">
+                
+                <div class="form-group">
+                    <label for="form-field-select-1" class="text-bold">Discount %</label>
+                    <span class="symbol required" aria-required="true"></span>
+                    @Html.TextBoxFor(model => model.Percentage, new { @class = "form-control EmptyClass" })
+                    @Html.ValidationMessageFor(m => m.Percentage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-xs-3">
+                <br />
+                <div class="form-group">
+                    <div class="checkbox clip-check check-success checkbox-inline">
+                        <input type="checkbox" id="checkbox112" name="IsDeleted" value="true" @(Model != null ? (Model.IsDeleted == true ? "checked" : "") : "")>
+                        <label for="checkbox112">
+                            Deleted
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success btnSave" id="btnSave">
+            Save
+        </button>
+        <button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
+            Close
+        </button>
+    </div>
+}
+
+
+
+<script>
+    $.validator.unobtrusive.parse("#addForm");
+</script>
+

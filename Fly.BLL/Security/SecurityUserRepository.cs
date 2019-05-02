@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Fly.DomainModel;
 using System.Data.Entity;
 using Fly.DomainModel.Helper;
+using System.Linq.Expressions;
 
 namespace Fly.BLL
 {
@@ -13,13 +14,13 @@ namespace Fly.BLL
     {
         public override SecurityUser GetById(int id)
         {
-            throw new NotImplementedException();
+            return _objectSet.FirstOrDefault(x => x.Id == id);
         }
 
         public SecurityUser GetBy(string userName, string password)
         {
             int userRoleId = int.Parse(System.Configuration.ConfigurationManager.AppSettings["UserRole"]);
-            return _objectSet.Include(x => x.SecurityUserRole.Select(s => s.SecurityRole)).FirstOrDefault(x => x.Password == password && x.SecurityUserRole.Any(s=>s.RoleId ==userRoleId) && (x.Email == userName || x.Telephone == userName));
+            return _objectSet.Include(x => x.SecurityUserRole.Select(s => s.SecurityRole)).FirstOrDefault(x => x.Password == password && x.SecurityUserRole.Any(s => s.RoleId == userRoleId) && (x.Email == userName || x.Telephone == userName));
         }
 
         public override RequestResponse AddUpdate(SecurityUser model)
@@ -47,6 +48,7 @@ namespace Fly.BLL
                 }
 
                 Save();
+                responseObj.ResponseIdStr = model.PassCode;
                 responseObj.Messages.Add("success", "Welcoom,Registerd Successfully. PLease verfiy the code.");
             }
             catch (Exception ex)
@@ -59,7 +61,7 @@ namespace Fly.BLL
 
         public RequestResponse VerfiyPassCode(VerifyPassCodeModel verifyModel)
         {
-            SecurityUser secUserModel = _objectSet.FirstOrDefault(x => x.PassCode == verifyModel.passCode && x.Telephone == verifyModel.mobileNumber);
+            SecurityUser secUserModel = _objectSet.FirstOrDefault(x => x.PassCode == verifyModel.passCode);//&& x.Telephone == verifyModel.mobileNumber
             if (secUserModel != null)
             {
                 secUserModel.IsActive = true;
@@ -83,7 +85,7 @@ namespace Fly.BLL
             }
 
             //Dublicate
-            if (_objectSet.Any(x => x.Email == entity.Email || x.Telephone == entity.Telephone))
+            if (_objectSet.Any(x => (x.Email == entity.Email || x.Telephone == entity.Telephone) && x.Id != entity.Id))
             {
                 responseObj.ErrorMessages.Add("fillAlldata", "Email || Telephone already exist");
             }
@@ -94,10 +96,62 @@ namespace Fly.BLL
             int userRoleId = int.Parse(System.Configuration.ConfigurationManager.AppSettings["AdminRole"]);
             return _objectSet.Include(x => x.SecurityUserRole).FirstOrDefault(x => x.Email == email);
         }
-        public SecurityUser GetUser(string email,string password)
+        public SecurityUser GetUser(string email, string password)
         {
             int userRoleId = int.Parse(System.Configuration.ConfigurationManager.AppSettings["AdminRole"]);
-            return _objectSet.Include(x => x.SecurityUserRole).FirstOrDefault(x => x.Email == email && x.Password == password && x.SecurityUserRole.Any(s=>s.RoleId == userRoleId));
+            return _objectSet.Include(x => x.SecurityUserRole).FirstOrDefault(x => x.Email == email && x.Password == password && x.SecurityUserRole.Any(s => s.RoleId == userRoleId));
+        }
+
+
+        public List<SecurityUser> get(int skip, int take, String Searchtoken, string column, string sortColumnDir)
+        {
+            if (column == "Name")
+            {
+                column = "FullName";
+            }
+
+            Expression<Func<SecurityUser, bool>> predicate = SearchOnUsers(Searchtoken);
+
+            return _objectSet.Where(predicate)
+                .OrderBy(column + " " + sortColumnDir).Skip(skip).Take(take)
+                  .ToList();
+        }
+
+
+        public Expression<Func<SecurityUser, bool>> SearchOnUsers(String Searchtoken)
+        {
+            int roleId = int.Parse(System.Configuration.ConfigurationManager.AppSettings["UserRole"].ToString());
+            bool flag = false;
+            Expression<Func<SecurityUser, bool>> predicate;
+            predicate = PredicateBuilder.True<SecurityUser>();
+
+            predicate = predicate.And(i => i.SecurityUserRole.Any(x => x.RoleId == roleId));
+            //  flag = true;
+            if (!string.IsNullOrEmpty(Searchtoken))
+            {
+                predicate = predicate.And(s => s.FullName.Contains(Searchtoken));
+                flag = true;
+            }
+
+            return predicate;
+        }
+
+        public int Getcount(String Searchtoken)
+        {
+            Expression<Func<SecurityUser, bool>> predicate = SearchOnUsers(Searchtoken);
+            return _objectSet.Where(predicate).Count();
+        }
+
+        public RequestResponse GetStatus(int userId)
+        {
+            SecurityUser currentUser = GetById(userId);
+
+            responseObj.ReturnedObject = new
+            {
+                IdStatus = string.IsNullOrEmpty(currentUser.IdString) ? false : true,
+                VisaStatus = currentUser.IsPaied == true ? true : false
+            };
+            return responseObj;
         }
     }
 }

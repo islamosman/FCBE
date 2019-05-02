@@ -54,12 +54,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FlyModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="FlyModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlyModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="FlyModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>FlyModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>FlyModel1.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>

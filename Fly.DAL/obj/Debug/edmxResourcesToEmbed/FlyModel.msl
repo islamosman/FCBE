@@ -19,6 +19,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="PromoCode">
+      <EntityTypeMapping TypeName="FlyModel.PromoCode">
+        <MappingFragment StoreEntitySet="PromoCode">
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="SecurityRole">
       <EntityTypeMapping TypeName="FlyModel.SecurityRole">
         <MappingFragment StoreEntitySet="SecurityRole">
@@ -32,6 +42,9 @@
     <EntitySetMapping Name="SecurityUser">
       <EntityTypeMapping TypeName="FlyModel.SecurityUser">
         <MappingFragment StoreEntitySet="SecurityUser">
+          <ScalarProperty Name="IsPaied" ColumnName="IsPaied" />
+          <ScalarProperty Name="PayMobId" ColumnName="PayMobId" />
+          <ScalarProperty Name="IdString" ColumnName="IdString" />
           <ScalarProperty Name="PassCode" ColumnName="PassCode" />
           <ScalarProperty Name="CityId" ColumnName="CityId" />
           <ScalarProperty Name="CountryId" ColumnName="CountryId" />
@@ -59,6 +72,27 @@
           <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SubscriptionV">
+      <EntityTypeMapping TypeName="FlyModel.SubscriptionV">
+        <MappingFragment StoreEntitySet="SubscriptionV">
+          <ScalarProperty Name="PromoCodeId" ColumnName="PromoCodeId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="IsCancel" ColumnName="IsCancel" />
+          <ScalarProperty Name="PayMobId" ColumnName="PayMobId" />
+          <ScalarProperty Name="PayAmount" ColumnName="PayAmount" />
+          <ScalarProperty Name="IsDone" ColumnName="IsDone" />
+          <ScalarProperty Name="Paied" ColumnName="Paied" />
+          <ScalarProperty Name="DaysCount" ColumnName="DaysCount" />
+          <ScalarProperty Name="PickDateTime" ColumnName="PickDateTime" />
+          <ScalarProperty Name="Lat" ColumnName="Lat" />
+          <ScalarProperty Name="Lng" ColumnName="Lng" />
+          <ScalarProperty Name="LocationStr" ColumnName="LocationStr" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -96,6 +130,11 @@
     <EntitySetMapping Name="Trips">
       <EntityTypeMapping TypeName="FlyModel.Trips">
         <MappingFragment StoreEntitySet="Trips">
+          <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+          <ScalarProperty Name="PromoCodeId" ColumnName="PromoCodeId" />
+          <ScalarProperty Name="WeAcceptOrderId" ColumnName="WeAcceptOrderId" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="TotalDistance" ColumnName="TotalDistance" />
           <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
@@ -112,6 +151,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="UsedPromoCode">
+      <EntityTypeMapping TypeName="FlyModel.UsedPromoCode">
+        <MappingFragment StoreEntitySet="UsedPromoCode">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="PromoCodeId" ColumnName="PromoCodeId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Vehicles">
       <EntityTypeMapping TypeName="FlyModel.Vehicles">
         <MappingFragment StoreEntitySet="Vehicles">
@@ -120,7 +168,6 @@
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           <ScalarProperty Name="HolderId" ColumnName="HolderId" />
           <ScalarProperty Name="PlateNo" ColumnName="PlateNo" />
-          <ScalarProperty Name="SpecsId" ColumnName="SpecsId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
@@ -164,6 +211,7 @@
     <EntitySetMapping Name="VehicleStatus">
       <EntityTypeMapping TypeName="FlyModel.VehicleStatus">
         <MappingFragment StoreEntitySet="VehicleStatus">
+          <ScalarProperty Name="VehicleQR" ColumnName="VehicleQR" />
           <ScalarProperty Name="AreaId" ColumnName="AreaId" />
           <ScalarProperty Name="InService" ColumnName="InService" />
           <ScalarProperty Name="InRide" ColumnName="InRide" />

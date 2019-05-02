@@ -12,11 +12,17 @@ using System.Web.Http.Cors;
 
 namespace Fly.Controllers
 {
- 
+
     public class BaseApiController : ApiController
     {
         // Variables
         protected RequestResponse reqResponse;
+
+        public BaseApiController()
+        {
+            reqResponse = new RequestResponse();
+
+        }
 
         #region Encryption actions
         public static string Encrypt(string clearText)
@@ -77,7 +83,7 @@ namespace Fly.Controllers
         #region Fill Errors
         protected string FillMessages(Dictionary<string, string> ValidationErrors)
         {
-            StringBuilder errorList=new StringBuilder();
+            StringBuilder errorList = new StringBuilder();
 
             foreach (var item in ValidationErrors)
                 errorList.Append(item.Value + ",");

@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<html>
+<body>
+    <div style="font-size:16px; font-weight:bold;">
+        @{
+            bool isSuccess = ViewBag.IsSuccess;
+        }
+
+        @(isSuccess ? "Error Occurred, please try again." : "Successfully payment.")
+        
+    </div>
+</body>
+</html>

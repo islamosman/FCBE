@@ -16,5 +16,11 @@ namespace Fly.DomainModel
 
 
         public int AreaId { get; set; }
+
+        public bool InService { get; set; }
+        public bool InRide { get; set; }
+        public string Long { get; set; }
+        public string Lat { get; set; }
+        public decimal BatteryStatus { get; set; }
     }
 }

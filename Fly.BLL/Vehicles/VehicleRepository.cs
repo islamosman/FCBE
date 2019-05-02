@@ -19,13 +19,27 @@ namespace Fly.BLL
             {
                 column = "Name";
             }
-           
+
 
             Expression<Func<Vehicles, bool>> predicate = SearchOnVehicles(Searchtoken);
 
             return _objectSet.Where(predicate)
-                .Include(x => x.VehicleSpecs).Include(x => x.VehicleStatus).OrderBy(column + " " + sortColumnDir).Skip(skip).Take(take)
+                //.Include(x => x.VehicleSpecs)
+                .Include(x => x.VehicleStatus).OrderBy(column + " " + sortColumnDir).Skip(skip).Take(take)
                   .ToList();
+        }
+
+        public List<Vehicles> getAllForDash()
+        {
+            return _objectSet.Include(x => x.VehicleStatus).ToList().Select(x => new Vehicles
+            {
+                Name = x.Name,
+                Lat = x.VehicleStatus.LatV,
+                Long = x.VehicleStatus.LongV,
+                InRide = x.VehicleStatus.InRide,
+                InService = x.VehicleStatus.InService,
+                PlateNo = x.PlateNo
+            }).ToList();
         }
 
         public Expression<Func<Vehicles, bool>> SearchOnVehicles(String Searchtoken)
@@ -41,7 +55,7 @@ namespace Fly.BLL
                 predicate = predicate.And(s => s.Name.Contains(Searchtoken));
                 flag = true;
             }
-            
+
             return predicate;
         }
 
@@ -72,13 +86,52 @@ namespace Fly.BLL
             {
                 if (entity.Id > 0)
                 {
-                    Attach(entity);
+                    using (VehicleStatusRepository vStatusRepo = new VehicleStatusRepository())
+                    {
+                        vStatusRepo.AddUpdate(new VehicleStatus()
+                        {
+                            AreaId = entity.VehicleStatus.AreaId,
+                            BatteryStatus = entity.VehicleStatus.BatteryStatus,
+                            InRide = entity.VehicleStatus.InRide,
+                            InService = entity.VehicleStatus.InService,
+                            LatV = entity.VehicleStatus.LatV,
+                            LongV = entity.VehicleStatus.LongV,
+                            VehicleId = entity.VehicleStatus.VehicleId,
+                            VehicleQR = entity.VehicleStatus.VehicleQR
+                        });
+
+                        vStatusRepo.Save();
+                    }
+
+                    using (VehicleSpecsRepository vSpecsRepo = new VehicleSpecsRepository())
+                    {
+                        vSpecsRepo.AddUpdate(new VehicleSpecs()
+                        {
+                            VehicleId = entity.VehicleSpecs.VehicleId,
+                            CategoryId = entity.VehicleSpecs.CategoryId,
+                            ModelId = entity.VehicleSpecs.ModelId
+                        });
+
+                        vSpecsRepo.Save();
+                    }
+
+                    Attach(new Vehicles()
+                    {
+                        Id = entity.Id,
+                        Name = entity.Name,
+                        PlateNo = entity.PlateNo,
+                        HolderId = entity.HolderId,
+                        IsActive = entity.IsActive,
+                        UniqueId = entity.UniqueId,
+                        ImageName = entity.ImageName
+                    });
                 }
                 else
                 {
                     // Generate QR
-                    entity.UniqueId = "ddd";
-                    entity.ImageName= "ddd";
+                    entity.UniqueId = RandomNumber(10);
+                    entity.ImageName = string.IsNullOrEmpty(entity.ImageName) ? "noimage" : entity.ImageName;
+                    entity.VehicleStatus.VehicleQR = entity.UniqueId;
                     Add(entity);
                 }
                 Save();
@@ -89,19 +142,28 @@ namespace Fly.BLL
 
         public override Vehicles GetById(int id)
         {
-            return _objectSet.FirstOrDefault(x => x.Id == id);
+            return _objectSet.Include(x => x.VehicleSpecs.VehiclesModel).Include(x => x.VehicleStatus).FirstOrDefault(x => x.Id == id);
         }
+
+        public RequestResponse GetByIdService(int id)
+        {
+            responseObj.ReturnedObject = _objectSet.Include(x => x.VehicleSpecs.VehiclesModel).Include(x => x.VehicleStatus).Where(x => x.Id == id).ToList();
+            return responseObj;
+        }
+
 
         public RequestResponse GetAvilable()
         {
-            responseObj.ReturnedObject = _objectSet.Where(x => x.VehicleStatus.InRide != true && x.IsActive != false).Select(x => new AvilableVehiclesModel()
+            responseObj.ReturnedObject = _objectSet.Include(x=>x.VehicleStatus).Where(x => x.VehicleStatus.InRide != true && x.VehicleStatus.InService != true && x.IsActive != false).Select(x => new AvilableVehiclesModel()
             {
                 id = x.Id,
                 Lat = x.VehicleStatus.LatV,
                 Lng = x.VehicleStatus.LongV,
                 Name = x.Name,
                 iconImageEnum = "Moto",
-                description = x.PlateNo
+                PlateNo = x.PlateNo,
+                BatteryStatus = x.VehicleStatus.BatteryStatus.ToString(),
+                QRCode = x.UniqueId
             }).ToList();
 
             responseObj.Messages.Add("k1", "Okk");
@@ -140,6 +202,16 @@ namespace Fly.BLL
                 responseObj.ErrorMessages.Add("InvalidArea", "Area required");
             }
         }
+
+        public bool IsAvilableByBarcode(string qrNumber, int vId)
+        {
+            if (_objectSet.Count(x => x.UniqueId == qrNumber && x.Id == vId && x.VehicleStatus.InRide != true) > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 
     public class TempRepository : MainRepository<TempStatus>
@@ -160,7 +232,7 @@ namespace Fly.BLL
 
         public override void Validate(TempStatus entity)
         {
-            throw new NotImplementedException();
+
         }
     }
 }

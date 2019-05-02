@@ -22,6 +22,7 @@ namespace Fly.DomainModel
         public SecurityUser()
         {
             this.SecurityUserRole = new HashSet<SecurityUserRole>();
+            this.SubscriptionV = new HashSet<SubscriptionV>();
             this.Trips = new HashSet<Trips>();
         }
     
@@ -40,8 +41,12 @@ namespace Fly.DomainModel
         public Nullable<int> CountryId { get; set; }
         public Nullable<int> CityId { get; set; }
         public string PassCode { get; set; }
+        public string IdString { get; set; }
+        public string PayMobId { get; set; }
+        public Nullable<bool> IsPaied { get; set; }
     
         public virtual ICollection<SecurityUserRole> SecurityUserRole { get; set; }
+        public virtual ICollection<SubscriptionV> SubscriptionV { get; set; }
         public virtual ICollection<Trips> Trips { get; set; }
     }
 }
