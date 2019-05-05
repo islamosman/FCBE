@@ -13,6 +13,9 @@ using Newtonsoft.Json.Serialization;
 using System.Dynamic;
 using System.Collections;
 using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
+using RestSharp;
 
 namespace JsonUtils
 {
@@ -179,6 +182,7 @@ namespace Fly.Controllers
     {
         public ActionResult Index()
         {
+           // TestAPI();//.Wait();
             Gmap.net.GoogleMapApi dd = new Gmap.net.GoogleMapApi(false);
             Gmap.net.Overlays.Polygon ssw = new Gmap.net.Overlays.Polygon("D");
             ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.042287586068877, Longitude = 31.166267037884495 });
@@ -195,6 +199,69 @@ namespace Fly.Controllers
 
             return View();
         }
+
+        private void TestAPI()
+        {
+            var dataTo = new
+            {
+                api_key = "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaWFXNXBkR2xoYkNJc0luQnliMlpwYkdWZmNHc2lPak15T0RFc0ltTnNZWE56SWpvaVRXVnlZMmhoYm5RaWZRLmt6UHZFTV9pc1RINkZWWVJGWUJ2ZDBIVDFtMWlISXZoRGJ0ckZwaWJDdHF4QmduY2xvb2dUZ3dzMG1FMlJaYmM0MFdBbHJwM0lhRGk2dkZHbW1PblVB"
+            };
+
+            var json = JsonConvert.SerializeObject(dataTo);
+            var stringContent = new StringContent(json, Encoding.UTF8,
+                        "application/json");
+
+
+            var client = new RestClient("https://accept.paymobsolutions.com/api/auth/tokens");
+            // client.Authenticator = new HttpBasicAuthenticator(username, password);
+
+            var request = new RestRequest("resource/{id}", Method.POST);
+            request.AddJsonBody(stringContent);
+            request.AddParameter("name", "value"); // adds to POST or URL querystring based on Method
+            request.AddUrlSegment("id", "123"); // replaces matching token in request.Resource
+
+            // easily add HTTP Headers
+            request.AddHeader("header", "value");
+
+
+            // execute the request
+            IRestResponse response = client.Execute(request);
+            var content = response.Content; // raw content as string
+
+
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var response2 = httpClient.PostAsJsonAsync("https://accept.paymobsolutions.com/api/auth/tokens", stringContent).Result;
+                //var response = httpClient.PostAsync("https://accept.paymobsolutions.com/api/auth/tokens","",).GetAwaiter().GetResult();
+                //var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                // Do stuff...
+            }
+
+            //using (var client = new HttpClient())
+            //{
+            //    var json = JsonConvert.SerializeObject(dataTo);
+            //    var stringContent = new StringContent(json, Encoding.UTF8,
+            //                "application/json");
+            //    var modeldd = await client.PostAsJsonAsync("https://accept.paymobsolutions.com/api/auth/tokens", stringContent);
+            //}
+
+            //using (var client = new HttpClient())
+            //{
+              
+
+            //    HttpResponseMessage response = await client.PostAsJsonAsync("https://accept.paymobsolutions.com/api/auth/tokens", dataTo);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        // Get the URI of the created resource.  
+            //        string dd = "";
+            //    }
+            //}
+
+            //return Json(new { success = "success" }, JsonRequestBehavior.AllowGet);
+        }
+
         public double distance(double lat1, double lon1, double lat2, double lon2, char unit)
         {
             if ((lat1 == lat2) && (lon1 == lon2))

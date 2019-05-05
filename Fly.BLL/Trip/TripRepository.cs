@@ -255,6 +255,7 @@ namespace Fly.BLL
             if (currentTrip != null)
             {
                 currentTrip.WeAcceptOrderId = orderId;
+                currentTrip.IsPaid = true;
                 AddUpdate(currentTrip);
             }
             else
@@ -303,6 +304,27 @@ namespace Fly.BLL
         public RequestResponse GetAllByUser(int userId)
         {
             responseObj.ReturnedObject = _objectSet.Include(x => x.Vehicles).Where(x => x.RiderId == userId).OrderByDescending(x => x.EndTime).ToList();
+            return responseObj;
+        }
+
+        public RequestResponse GetHistoryByUser(int userId)
+        {
+            List<Trips> tripsList = _objectSet.Include(x => x.Vehicles).Where(x => x.RiderId == userId).OrderByDescending(x => x.EndTime).ToList();
+
+            if (tripsList.Count > 0)
+            {
+                responseObj.ReturnedObject = tripsList.Select(x => new
+                {
+                    x.Amount,
+                    x.Duration,
+                    x.StartTime,
+                    x.EndTime,
+                    x.Vehicles.Name,
+                    x.IsPaid,
+                    x.IsDone,
+                    x.NetAmount
+                });
+            }
             return responseObj;
         }
     }

@@ -15,21 +15,23 @@ using System.CodeDom;
 using System.Web;
 using HttpUtils;
 using System.Security.Claims;
+using Fly.Models;
 
 namespace Fly.Controllers
 {
     [RoutePrefix("api/Vehicles")]
     public class VehiclesController : BaseApiController
     {
-        [Authorize(Roles = "Admin")]
-        [Route("GetVehicls")]
-        [HttpPost]
-        public IHttpActionResult GetVehicls()
-        {
-            var vs = new VehicleRepository().GetAll().ToList();
-            return Ok(new { result = vs });
-        }
+        //[Authorize(Roles = "Admin")]
+        //[Route("GetVehicls")]
+        //[HttpPost]
+        //public IHttpActionResult GetVehicls()
+        //{
+        //    var vs = new VehicleRepository().GetAll().ToList();
+        //    return Ok(new { result = vs });
+        //}
 
+        #region From Scooter
         [Route("VehiclStatus")]
         [HttpPost]
         public IHttpActionResult VehiclStatus(string status)
@@ -42,66 +44,6 @@ namespace Fly.Controllers
             return Ok(new { ss = vs.ResponseIdStr });
         }
 
-
-        [Authorize(Roles = "User")]
-        [Route("UserStatus")]
-        [HttpGet]
-        public IHttpActionResult UserStatus()
-        {
-            int userId = GetUserId();
-            if (userId == 0)
-            {
-                reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
-                return Ok(reqResponse);
-            }
-            using (SecurityUserRepository secUserRepo = new SecurityUserRepository())
-            {
-                return Ok(secUserRepo.GetStatus(userId));
-            }
-        }
-
-        [Authorize(Roles = "User")]
-        [Route("PromoCodeStatus")]
-        [HttpGet]
-        public IHttpActionResult PromoCodeStatus(string promoName)
-        {
-            //int userId = GetUserId();
-            //if (userId == 0)
-            //{
-            //    reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
-            //    return Ok(reqResponse);
-            //}
-            using (PromoCodeRepository promoRepo = new PromoCodeRepository())
-            {
-                DomainModel.PromoCode promoCode = promoRepo.GetByName(promoName);
-                if (promoCode == null)
-                {
-                    reqResponse.ErrorMessages.Add("invalid", "Invalid Promo Code!");
-                }
-                else
-                {
-                    if (promoCode.IsDeleted == true)
-                    {
-                        reqResponse.ErrorMessages.Add("invalid", "Invalid Promo Code!");
-                    }
-                    else
-                    {
-                        reqResponse.ResponseIdStr = promoCode == null ? "" : promoCode.Id.ToString();
-                    }
-                }
-                
-               
-                return Ok(reqResponse);
-            }
-        }
-
-        private string UnescapeCodes(string src)
-        {
-            //src = src.Substring(1, src.Length - 1);
-            src = src.Replace("%2C", ",");
-
-            return src;
-        }
 
         [Route("VehiclStatus1")]
         [HttpPost]
@@ -162,7 +104,46 @@ namespace Fly.Controllers
 
             //return "on";
         }
+        #endregion
 
+        #region PromoCode
+        [Authorize(Roles = "User")]
+        [Route("PromoCodeStatus")]
+        [HttpGet]
+        public IHttpActionResult PromoCodeStatus(string promoName)
+        {
+            //int userId = GetUserId();
+            //if (userId == 0)
+            //{
+            //    reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
+            //    return Ok(reqResponse);
+            //}
+            using (PromoCodeRepository promoRepo = new PromoCodeRepository())
+            {
+                DomainModel.PromoCode promoCode = promoRepo.GetByName(promoName);
+                if (promoCode == null)
+                {
+                    reqResponse.ErrorMessages.Add("invalid", "Invalid Promo Code!");
+                }
+                else
+                {
+                    if (promoCode.IsDeleted == true)
+                    {
+                        reqResponse.ErrorMessages.Add("invalid", "Invalid Promo Code!");
+                    }
+                    else
+                    {
+                        reqResponse.ResponseIdStr = promoCode == null ? "" : promoCode.Id.ToString();
+                    }
+                }
+
+
+                return Ok(reqResponse);
+            }
+        }
+        #endregion
+
+        #region Vehicls
         [Authorize(Roles = "User")]
         [Route("GetByArea")]
         [HttpPost]
@@ -188,7 +169,9 @@ namespace Fly.Controllers
             }
             // return Ok(new { IsDone = true, Messages = areaModel.farLeft.lat });
         }
+        #endregion
 
+        #region Trips
         [Route("GetTripById")]
         [HttpGet]
         public IHttpActionResult GetTripById(string tripId)
@@ -232,7 +215,9 @@ namespace Fly.Controllers
                 return Ok(tripRepo.TripRegister(data));
             }
         }
+        #endregion
 
+        #region For Clients
         [Authorize(Roles = "User")]
         [Route("GetBalance")]
         [HttpPost]
@@ -251,17 +236,43 @@ namespace Fly.Controllers
             }
         }
 
-        [Route("TripPaymentId")]
-        [HttpPost]
-        public IHttpActionResult TripPaymentId(string tripId, string orderId)
+        [Authorize(Roles = "User")]
+        [Route("UserStatus")]
+        [HttpGet]
+        public IHttpActionResult UserStatus()
         {
-            using (TripRepository tripRepo = new TripRepository())
+            int userId = GetUserId();
+            if (userId == 0)
             {
-                return Ok(tripRepo.TripPaymentId(int.Parse(tripId), int.Parse(orderId)));
+                reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
+                return Ok(reqResponse);
+            }
+            using (SecurityUserRepository secUserRepo = new SecurityUserRepository())
+            {
+                return Ok(secUserRepo.GetStatus(userId));
             }
         }
 
+        [Authorize(Roles = "User")]
+        [Route("TripHistory")]
+        [HttpGet]
+        public IHttpActionResult TripHistory()
+        {
+            int userId = GetUserId();
+            if (userId == 0)
+            {
+                reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
+                return Ok(reqResponse);
+            }
+            using (TripRepository tripRepo = new TripRepository())
+            {
+                return Ok(tripRepo.GetHistoryByUser(userId));
+            }
+        }
 
+        #endregion
+
+        #region Subscription
         [Authorize(Roles = "User")]
         [Route("Subscription")]
         [HttpPost]
@@ -274,6 +285,13 @@ namespace Fly.Controllers
                 return Ok(reqResponse);
             }
 
+            using (SecurityUserRepository secUserRepo = new SecurityUserRepository())
+            {
+                var currentUser = secUserRepo.GetById(userId);
+                data.Name = currentUser.FullName;
+                data.PhoneNumber = int.Parse(currentUser.Telephone);
+            }
+
             data.riderId = userId;
 
             if (string.IsNullOrEmpty(data.Name) || string.IsNullOrEmpty(data.PhoneNumber.ToString()) || data.PhoneNumber <= 0 || string.IsNullOrEmpty(data.Location) || string.IsNullOrEmpty(data.DateTimeStr))
@@ -283,6 +301,24 @@ namespace Fly.Controllers
                 return Ok(reqResponse);
             }
 
+            if (!string.IsNullOrEmpty(data.PromoCodeName))
+            {
+                using (PromoCodeRepository promoRepo = new PromoCodeRepository())
+                {
+                    DomainModel.PromoCode promoCode = promoRepo.GetByName(data.PromoCodeName);
+                    if (promoCode != null)
+                    {
+                        if (promoCode.IsDeleted != true)
+                        {
+                            data.PromoCodeId = promoCode.Id;
+                        }
+                    }
+
+
+                    return Ok(reqResponse);
+                }
+            }
+
             using (SubscriptionRepository subscriptionRepo = new SubscriptionRepository())
             {
                 return Ok(
@@ -290,57 +326,54 @@ namespace Fly.Controllers
                     {
                         Name = data.Name,
                         PhoneNumber = data.PhoneNumber,
-                        LocationStr=data.Location,
-                        Lat=data.Lat,
-                        Lng=data.Lng,
-                        PickDateTime=DateTime.Parse(data.DateTimeStr),
-                        DaysCount=data.DaysCount,
-                        PromoCodeId=data.PromoDodeId,
-                        UserId=data.riderId
+                        LocationStr = data.Location,
+                        Lat = data.Lat,
+                        Lng = data.Lng,
+                        PickDateTime = DateTime.Parse(data.DateTimeStr),
+                        DaysCount = data.DaysCount,
+                        PromoCodeId = data.PromoCodeId,
+                        UserId = data.riderId
                     })
                 );
             }
         }
+        #endregion
 
-        // [Authorize(Roles = "User")]
-        [Route("UploadId")]
-        [HttpPost]
-        public IHttpActionResult UploadId(TestModel test)//TestModel test //string base64image //[FromBody]
+        #region Helpers
+        private int GetUserId()
         {
+            var claims = (ClaimsIdentity)ClaimsPrincipal.Current.Identity;
 
-
-            var bytes = Convert.FromBase64String(test.base64image);//test.base64image// a.base64image 
-            Random randomObj = new Random();
-            string imagePath = Guid.NewGuid().ToString().Substring(0, (10 / 2 - 1)).ToString() + randomObj.Next(10 / 2, 10 / 2).ToString();
-
-            using (var stream = new FileStream(HttpContext.Current.Server.MapPath("~/DataImages/") + imagePath, FileMode.Create))
+            if (claims == null)
             {
-                stream.Write(bytes, 0, bytes.Length);
-                stream.Flush();
+                return 0;
             }
 
-            return Ok("Done");
-        }
-
-        [Route("UploadId1")]
-        [HttpPost]
-        public IHttpActionResult UploadId1([FromBody]TestModel test)//TestModel test //string base64image //[FromBody]
-        {
-            var bytes = Convert.FromBase64String(test.base64image);//test.base64image// a.base64image 
-            Random randomObj = new Random();
-            string imagePath = Guid.NewGuid().ToString().Substring(0, (10 / 2 - 1)).ToString() + randomObj.Next(10 / 2, 10 / 2).ToString();
-
-            using (var stream = new FileStream(HttpContext.Current.Server.MapPath("~/DataImages/") + imagePath, FileMode.Create))
+            var targetClaim = claims.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (targetClaim == null)
             {
-                stream.Write(bytes, 0, bytes.Length);
-                stream.Flush();
+                return 0;
             }
 
-            return Ok("Done");
-
-
+            return int.Parse(targetClaim.Value);
         }
 
+        private string RandomNumber(int length)
+        {
+            Random randomObj = new Random();
+            return Guid.NewGuid().ToString().Substring(0, (length / 2 - 1)).ToString() + randomObj.Next(length / 2, length / 2).ToString();
+        }
+
+        private string UnescapeCodes(string src)
+        {
+            //src = src.Substring(1, src.Length - 1);
+            src = src.Replace("%2C", ",");
+
+            return src;
+        }
+        #endregion
+
+        #region Upload ID
         //  [Authorize(Roles = "User")]
         [Route("UploadFile")]
         [HttpPost]
@@ -376,31 +409,6 @@ namespace Fly.Controllers
 
             return Ok(reqResponse);
             //return file != null ? "/uploads/" + file.FileName : null;
-        }
-
-
-        private int GetUserId()
-        {
-            var claims = (ClaimsIdentity)ClaimsPrincipal.Current.Identity;
-
-            if (claims == null)
-            {
-                return 0;
-            }
-
-            var targetClaim = claims.Claims.FirstOrDefault(c => c.Type == "UserId");
-            if (targetClaim == null)
-            {
-                return 0;
-            }
-
-            return int.Parse(targetClaim.Value);
-        }
-
-        private string RandomNumber(int length)
-        {
-            Random randomObj = new Random();
-            return Guid.NewGuid().ToString().Substring(0, (length / 2 - 1)).ToString() + randomObj.Next(length / 2, length / 2).ToString();
         }
 
         [Route("Upload")]
@@ -479,11 +487,200 @@ namespace Fly.Controllers
 
             //return Ok("Done");
         }
+        #endregion
+
+        #region Payment
+        [Route("UserPaymentId")]
+        [HttpPost]
+        public IHttpActionResult UserPaymentId(string userId, string orderId)
+        {
+            using (SecurityUserRepository secRepo = new SecurityUserRepository())
+            {
+                return Ok(secRepo.UpdatePayment(userId, orderId));
+            }
+        }
+
+        [Route("TripPaymentId")]
+        [HttpPost]
+        public IHttpActionResult TripPaymentId(string tripId, string orderId)
+        {
+            using (TripRepository tripRepo = new TripRepository())
+            {
+                return Ok(tripRepo.TripPaymentId(int.Parse(tripId), int.Parse(orderId)));
+            }
+        }
+
+
+        //[Route("Index")]
+        //[HttpPost]
+        //public IHttpActionResult Index(TestModel2 data)
+        //{
+        //    using (TempRepository bb = new TempRepository())
+        //    {
+        //        bb.AddUpdate(new DomainModel.TempStatus()
+        //        {
+        //            DataStr = data.token,
+        //            CreatedDate = DateTime.Now
+        //        });
+        //    }
+
+        //    string ff = "";
+        //    foreach (string key in HttpContext.Current.Request.Form.AllKeys)
+        //    {
+        //        ff += HttpContext.Current.Request.Form[key];
+        //    }
+
+        //    using (TempRepository bb = new TempRepository())
+        //    {
+        //        bb.AddUpdate(new DomainModel.TempStatus()
+        //        {
+        //            DataStr = ff,
+        //            CreatedDate = DateTime.Now
+        //        });
+        //    }
+
+        //    var bodyStream = new StreamReader(HttpContext.Current.Request.InputStream);
+        //    bodyStream.BaseStream.Seek(0, SeekOrigin.Begin);
+        //    var bodyText = bodyStream.ReadToEnd();
+
+
+        //    using (TempRepository bb = new TempRepository())
+        //    {
+        //        bb.AddUpdate(new DomainModel.TempStatus()
+        //        {
+        //            DataStr = bodyText,
+        //            CreatedDate = DateTime.Now
+        //        });
+        //    }
+
+        //    return Ok("Success payment, Please return to Rabbit");
+        //}
+
+        [Route("PeymentPost")]
+        [HttpPost]
+        public IHttpActionResult PeymentPost()
+        {
+            //string ff = "";
+            //foreach (string key in HttpContext.Current.Request.Form.AllKeys)
+            //{
+
+            //    ff += HttpContext.Current.Request.Form[key];
+            //}
+
+            //using (TempRepository bb = new TempRepository())
+            //{
+            //    bb.AddUpdate(new DomainModel.TempStatus()
+            //    {
+            //        DataStr = ff,
+            //        CreatedDate = DateTime.Now
+            //    });
+            //}
+
+            var bodyStream = new StreamReader(HttpContext.Current.Request.InputStream);
+            bodyStream.BaseStream.Seek(0, SeekOrigin.Begin);
+            var bodyText = bodyStream.ReadToEnd();
+            WeAcceptTockenModelContainer returnObj = JsonConvert.DeserializeObject<WeAcceptTockenModelContainer>(bodyText);
+
+            if (returnObj.obj != null)
+            {
+                if (!string.IsNullOrEmpty(returnObj.obj.token))
+                {
+                    using (SecurityUserRepository secRepo = new SecurityUserRepository())
+                    {
+                        secRepo.UpdatePaymentDone(returnObj.obj.token, returnObj.obj.order_id);
+                    }
+                }
+            }
+            else
+            {
+                WeAcceptRootObject returnMainObj = JsonConvert.DeserializeObject<WeAcceptRootObject>(bodyText);
+                if (returnMainObj.obj != null)
+                {
+                    if (returnMainObj.obj.order != null)
+                    {
+                        using (SecurityUserRepository secRepo = new SecurityUserRepository())
+                        {
+                            secRepo.UpdateRefundOrderId(returnMainObj.obj.id.ToString(), returnMainObj.obj.order.id.ToString());
+                        }
+                    }
+                }
+
+            }
+
+
+            using (TempRepository bb = new TempRepository())
+            {
+                bb.AddUpdate(new DomainModel.TempStatus()
+                {
+                    DataStr = bodyText,
+                    CreatedDate = DateTime.Now
+                });
+            }
+
+            return Ok("Success payment, Please return to Rabbit");
+        }
+
+        [Route("PeymentGet")]
+        [HttpGet]
+        public IHttpActionResult PeymentGet()
+        {
+
+
+            //string data2="";
+            //using (var stream = HttpContext.Current.Request..Content.ReadAsStreamAsync().Result)
+            //{
+            //    if (stream.CanSeek)
+            //    {
+            //        stream.Position = 0;
+            //    }
+            //    data = context.Request.Content.ReadAsStringAsync().Result;
+            //}
+
+            //string ff = "";
+            //foreach (string key in HttpContext.Current.Request.Form.AllKeys)
+            //{
+            //    ff += HttpContext.Current.Request.Form[key];
+            //}
+
+            //using (TempRepository bb = new TempRepository())
+            //{
+            //    bb.AddUpdate(new DomainModel.TempStatus()
+            //    {
+            //        DataStr = ff,
+            //        CreatedDate = DateTime.Now
+            //    });
+            //}
+
+            var bodyStream = new StreamReader(HttpContext.Current.Request.InputStream);
+            bodyStream.BaseStream.Seek(0, SeekOrigin.Begin);
+            var bodyText = bodyStream.ReadToEnd();
+
+
+            using (TempRepository bb = new TempRepository())
+            {
+                bb.AddUpdate(new DomainModel.TempStatus()
+                {
+                    DataStr = bodyText,
+                    CreatedDate = DateTime.Now
+                });
+            }
+
+            return Ok("Success payment, Please return to Rabbit");
+        }
+        #endregion
 
     }
 
-    public class TestModel
+  
+
+    public class TestModel2
     {
-        public string base64image { get; set; }
+        public int Id { get; set; }
+        public string token { get; set; }
+        public string maksed_pan { get; set; }
+        public int merchant_id { get; set; }
+        public string card_subtype { get; set; }
+        public DateTime created_at { get; set; }
+        public string order_id { get; set; }
     }
 }

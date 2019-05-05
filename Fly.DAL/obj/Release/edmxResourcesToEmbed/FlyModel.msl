@@ -42,6 +42,9 @@
     <EntitySetMapping Name="SecurityUser">
       <EntityTypeMapping TypeName="FlyModel.SecurityUser">
         <MappingFragment StoreEntitySet="SecurityUser">
+          <ScalarProperty Name="RefundPayMobId" ColumnName="RefundPayMobId" />
+          <ScalarProperty Name="TockenToP" ColumnName="TockenToP" />
+          <ScalarProperty Name="PayMobSendId" ColumnName="PayMobSendId" />
           <ScalarProperty Name="IsPaied" ColumnName="IsPaied" />
           <ScalarProperty Name="PayMobId" ColumnName="PayMobId" />
           <ScalarProperty Name="IdString" ColumnName="IdString" />

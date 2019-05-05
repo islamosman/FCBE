@@ -140,6 +140,8 @@
     <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityUser" FromRole="SecurityUser" ToRole="SecurityUserRole" />
     <NavigationProperty Name="SubscriptionV" Relationship="FlyModel.FK_SubscriptionV_SecurityUser" FromRole="SecurityUser" ToRole="SubscriptionV" />
     <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_SecurityUser" FromRole="SecurityUser" ToRole="Trips" />
+    <Property Name="PayMobSendId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TockenToP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="SecurityUserRole">
     <Key>

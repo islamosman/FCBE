@@ -56,6 +56,9 @@
     <Property Name="IdString" Type="nvarchar" MaxLength="50" />
     <Property Name="PayMobId" Type="nvarchar" MaxLength="50" />
     <Property Name="IsPaied" Type="bit" />
+    <Property Name="PayMobSendId" Type="nvarchar" MaxLength="50" />
+    <Property Name="TockenToP" Type="nvarchar(max)" />
+    <Property Name="RefundPayMobId" Type="nvarchar" MaxLength="250" />
   </EntityType>
   <EntityType Name="SecurityUserRole">
     <Key>

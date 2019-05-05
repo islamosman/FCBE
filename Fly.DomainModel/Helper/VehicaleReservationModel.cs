@@ -37,6 +37,8 @@ namespace Fly.DomainModel.Helper
         public int DaysCount { get; set; }
         public string DateTimeStr { get; set; }
 
-        public int PromoDodeId { get; set; }
+        public string PromoCodeName { get; set; }
+
+        public int? PromoCodeId { get; set; }
     }
 }

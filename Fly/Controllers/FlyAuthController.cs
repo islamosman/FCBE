@@ -45,6 +45,16 @@ namespace Fly.Controllers
             {
                 var response = client.PostAsync(System.Configuration.ConfigurationManager.AppSettings["ServiceUrl"].ToString() + "Token", content).Result;
                 var token = response.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
+
+                using (SecurityUserRepository obj = new SecurityUserRepository())
+                {
+                    SecurityUser secUserModel = obj.GetBy(loginModel.userName, loginModel.password);
+                    if (secUserModel != null)
+                    {
+                        token.UserId = secUserModel.PayMobSendId;
+                        token.Tocken = secUserModel.TockenToP;
+                    }
+                }
                 // var sss = response.Content.ReadAsStringAsync().Result;
                 //return Json(new { tock = sss });
                 return Ok(token);
@@ -165,5 +175,8 @@ namespace Fly.Controllers
 
         [JsonProperty("refresh_token")]
         public string RefreshToken { get; set; }
+
+        public string UserId { get; set; }
+        public string Tocken { get; set; }
     }
 }

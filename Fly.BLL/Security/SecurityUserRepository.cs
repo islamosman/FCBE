@@ -38,6 +38,7 @@ namespace Fly.BLL
                 }
                 else
                 {
+                    model.PayMobSendId = RandomNumber(11);
                     model.PassCode = RandomNumber(10);
                     model.SecurityUserRole.Add(new SecurityUserRole()
                     {
@@ -149,9 +150,61 @@ namespace Fly.BLL
             responseObj.ReturnedObject = new
             {
                 IdStatus = string.IsNullOrEmpty(currentUser.IdString) ? false : true,
-                VisaStatus = currentUser.IsPaied == true ? true : false
+                VisaStatus = currentUser.IsPaied == true ? true : false,
+                RefundOrderId = currentUser.RefundPayMobId
             };
             return responseObj;
         }
+
+        public RequestResponse UpdatePayment(string userPaumentId, string orderId)
+        {
+            var currentUser = _objectSet.FirstOrDefault(x => x.PayMobSendId == userPaumentId);
+            if (currentUser != null)
+            {
+                currentUser.PayMobId = orderId;
+                AddUpdate(currentUser);
+            }
+            else
+            {
+                responseObj.ErrorMessages.Add("invalidd", "Invalid Data");
+            }
+
+            return responseObj;
+        }
+
+        public RequestResponse UpdatePaymentDone(string tocken, string orderId)
+        {
+            var currentUser = _objectSet.FirstOrDefault(x => x.PayMobId == orderId);
+            if (currentUser != null)
+            {
+                currentUser.TockenToP = tocken;
+                currentUser.IsPaied = true;
+                AddUpdate(currentUser);
+            }
+            else
+            {
+                responseObj.ErrorMessages.Add("invalidd", "Invalid Data");
+            }
+
+            return responseObj;
+        }
+
+
+        public RequestResponse UpdateRefundOrderId(string transactionId, string orderId)
+        {
+            var currentUser = _objectSet.FirstOrDefault(x => x.PayMobId == orderId);
+            if (currentUser != null)
+            {
+                currentUser.RefundPayMobId = transactionId;
+                AddUpdate(currentUser);
+            }
+            else
+            {
+                responseObj.ErrorMessages.Add("invalidd", "Invalid Data");
+            }
+
+            return responseObj;
+        }
+
     }
 }
