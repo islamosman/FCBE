@@ -23,6 +23,7 @@ namespace Fly.Controllers
     {
         public IHttpActionResult Login(LoginModel loginModel)
         {
+
             if (string.IsNullOrEmpty(loginModel.userName) || string.IsNullOrEmpty(loginModel.password))
             {
                 return BadRequest(Fly.Resources.OperationLP.InvalidUserNamePassword);
@@ -81,8 +82,8 @@ namespace Fly.Controllers
                 {
                     DeviceId = regModel.device_unique_id,
                     Telephone = regModel.phone_number,
-                    Email = regModel.email,
-                    Password = Encrypt(regModel.password),
+                    Email = regModel.email.Trim(),
+                    Password = Encrypt(regModel.password.Trim()),
                     FullName = regModel.first_name + " " + regModel.last_name,
                     Gender = regModel.gender,
                     BirthDate = regModel.date_of_birth,

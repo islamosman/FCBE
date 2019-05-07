@@ -16,6 +16,7 @@ using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
 using RestSharp;
+using Fly.WebUI.Helpers;
 
 namespace JsonUtils
 {
@@ -182,7 +183,11 @@ namespace Fly.Controllers
     {
         public ActionResult Index()
         {
-           // TestAPI();//.Wait();
+            //var sade = WebUiUtility.Encrypt1("Hesham@1996");
+            //var dd2=WebUiUtility.Decrypt1("/tz6ko7p4WWMs1Mxn1fyfxovbEuXyp4mfyx+//ZTSi4=");
+            //var fft23 = WebUiUtility.Decrypt1("vN2vIGRxYkEpSTh9x0WNg5/xL/K4PwUTuiZ4VeDymGxTXheLNAzEQDDq6S+WZ4Xf");
+
+            // TestAPI();//.Wait();
             Gmap.net.GoogleMapApi dd = new Gmap.net.GoogleMapApi(false);
             Gmap.net.Overlays.Polygon ssw = new Gmap.net.Overlays.Polygon("D");
             ssw.Points.Add(new Gmap.net.Location() { Latitude = 30.042287586068877, Longitude = 31.166267037884495 });

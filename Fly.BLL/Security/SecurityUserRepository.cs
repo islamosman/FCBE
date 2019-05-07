@@ -151,7 +151,8 @@ namespace Fly.BLL
             {
                 IdStatus = string.IsNullOrEmpty(currentUser.IdString) ? false : true,
                 VisaStatus = currentUser.IsPaied == true ? true : false,
-                RefundOrderId = currentUser.RefundPayMobId
+                RefundOrderId = currentUser.RefundPayMobId,
+                Tocken = currentUser.TockenToP
             };
             return responseObj;
         }

@@ -12,64 +12,53 @@ namespace Fly.WebUI.Helpers
 {
     public static class WebUiUtility
     {
-        private static readonly byte[] initVectorBytes = Encoding.ASCII.GetBytes("tu89geji340t89u2");
+        private static readonly byte[] initVectorBytes = Encoding.ASCII.GetBytes("MAKV2SPBNI36FLY");
         // This constant is used to determine the keysize of the encryption algorithm.
         private const int keysize = 256;
         static string passPhrase = "&$#$%$";
 
         #region Encryption actions
-        public static string Encrypt(string plainText)
+        public static string Encrypt(string clearText)
         {
-            byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText.ToString());
-            using (PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null))
+            string EncryptionKey = "MAKV2SPBNI36FLY";
+            byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
+            using (Aes encryptor = Aes.Create())
             {
-                byte[] keyBytes = password.GetBytes(keysize / 8);
-                using (RijndaelManaged symmetricKey = new RijndaelManaged())
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    symmetricKey.Mode = CipherMode.CBC;
-                    using (ICryptoTransform encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes))
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
                     {
-                        using (MemoryStream memoryStream = new MemoryStream())
-                        {
-                            using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                            {
-                                cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
-                                cryptoStream.FlushFinalBlock();
-                                byte[] cipherTextBytes = memoryStream.ToArray();
-                                //By Islam Osman
-                                return Convert.ToBase64String(cipherTextBytes).Replace('+', '-').Replace('/', '_').Replace("=", "EQUAL").Replace(",", "COMMA");
-                            }
-                        }
+                        cs.Write(clearBytes, 0, clearBytes.Length);
+                        cs.Close();
                     }
+                    clearText = Convert.ToBase64String(ms.ToArray());
                 }
             }
+            return clearText;
         }
-
         public static string Decrypt(string cipherText)
         {
-            //By Islam Osman
-            cipherText = cipherText.Replace('-', '+').Replace('_', '/').Replace("EQUAL", "=").Replace("COMMA", ",");
-            byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
-            using (PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null))
+            string EncryptionKey = "MAKV2SPBNI36FLY";
+            byte[] cipherBytes = Convert.FromBase64String(cipherText);
+            using (Aes encryptor = Aes.Create())
             {
-                byte[] keyBytes = password.GetBytes(keysize / 8);
-                using (RijndaelManaged symmetricKey = new RijndaelManaged())
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    symmetricKey.Mode = CipherMode.CBC;
-                    using (ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes))
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
                     {
-                        using (MemoryStream memoryStream = new MemoryStream(cipherTextBytes))
-                        {
-                            using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
-                            {
-                                byte[] plainTextBytes = new byte[cipherTextBytes.Length];
-                                int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
-                                return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
-                            }
-                        }
+                        cs.Write(cipherBytes, 0, cipherBytes.Length);
+                        cs.Close();
                     }
+                    cipherText = Encoding.Unicode.GetString(ms.ToArray());
                 }
             }
+            return cipherText;
         }
         #endregion
 
@@ -263,7 +252,11 @@ namespace Fly.WebUI.Helpers
         }
         #endregion
 
-      
+
+
+
+
+
     }
 
     public class AttachmentUtility
