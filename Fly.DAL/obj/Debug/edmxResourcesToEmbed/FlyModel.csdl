@@ -8,7 +8,6 @@
     <EntitySet Name="SecurityUser" EntityType="FlyModel.SecurityUser" />
     <EntitySet Name="SecurityUserRole" EntityType="FlyModel.SecurityUserRole" />
     <EntitySet Name="SubscriptionV" EntityType="FlyModel.SubscriptionV" />
-    <EntitySet Name="sysdiagrams" EntityType="FlyModel.sysdiagrams" />
     <EntitySet Name="TempStatus" EntityType="FlyModel.TempStatus" />
     <EntitySet Name="TripCoordinates" EntityType="FlyModel.TripCoordinates" />
     <EntitySet Name="Trips" EntityType="FlyModel.Trips" />
@@ -137,12 +136,13 @@
     <Property Name="IdString" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="PayMobId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="IsPaied" Type="Boolean" />
-    <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityUser" FromRole="SecurityUser" ToRole="SecurityUserRole" />
-    <NavigationProperty Name="SubscriptionV" Relationship="FlyModel.FK_SubscriptionV_SecurityUser" FromRole="SecurityUser" ToRole="SubscriptionV" />
-    <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_SecurityUser" FromRole="SecurityUser" ToRole="Trips" />
     <Property Name="PayMobSendId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="TockenToP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="RefundPayMobId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="IsRefunded" Type="Boolean" />
+    <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityUser" FromRole="SecurityUser" ToRole="SecurityUserRole" />
+    <NavigationProperty Name="SubscriptionV" Relationship="FlyModel.FK_SubscriptionV_SecurityUser" FromRole="SecurityUser" ToRole="SubscriptionV" />
+    <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_SecurityUser" FromRole="SecurityUser" ToRole="Trips" />
   </EntityType>
   <EntityType Name="SecurityUserRole">
     <Key>
@@ -178,16 +178,6 @@
     <Property Name="UserId" Type="Int32" Nullable="false" />
     <Property Name="PromoCodeId" Type="Int32" />
     <NavigationProperty Name="SecurityUser" Relationship="FlyModel.FK_SubscriptionV_SecurityUser" FromRole="SubscriptionV" ToRole="SecurityUser" />
-  </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="TempStatus">
     <Key>

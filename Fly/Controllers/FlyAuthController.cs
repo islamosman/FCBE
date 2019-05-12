@@ -21,6 +21,35 @@ namespace Fly.Controllers
     [RoutePrefix("api/FlyAuth")]
     public class FlyAuthController : BaseApiController
     {
+        [HttpPost]
+        [Route("upload")]
+        public HttpResponseMessage uploadImage()
+        {
+            var request = HttpContext.Current.Request;
+
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                if (request.Files.Count > 0)
+                {
+                    var postedFile = request.Files.Get("file");
+                    var title = request.Params["title"];
+                    string root = HttpContext.Current.Server.MapPath("~/Images");
+                    root = root + "/" + postedFile.FileName;
+                    postedFile.SaveAs(root);
+                    //Save post to DB
+                    return Request.CreateResponse(HttpStatusCode.Found, new
+                    {
+                        error = false,
+                        status = "created",
+                        path = root
+                    });
+
+                }
+            }
+
+            return null;
+        }
+
         public IHttpActionResult Login(LoginModel loginModel)
         {
 

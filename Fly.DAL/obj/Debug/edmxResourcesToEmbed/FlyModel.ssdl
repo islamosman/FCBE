@@ -59,6 +59,7 @@
     <Property Name="PayMobSendId" Type="nvarchar" MaxLength="50" />
     <Property Name="TockenToP" Type="nvarchar(max)" />
     <Property Name="RefundPayMobId" Type="nvarchar" MaxLength="250" />
+    <Property Name="IsRefunded" Type="bit" />
   </EntityType>
   <EntityType Name="SecurityUserRole">
     <Key>
@@ -91,16 +92,6 @@
     <Property Name="IsCancel" Type="bit" />
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="PromoCodeId" Type="int" />
-  </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="TempStatus">
     <Key>
@@ -383,7 +374,6 @@
     <EntitySet Name="SecurityUser" EntityType="Self.SecurityUser" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SecurityUserRole" EntityType="Self.SecurityUserRole" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SubscriptionV" EntityType="Self.SubscriptionV" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TempStatus" EntityType="Self.TempStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TripCoordinates" EntityType="Self.TripCoordinates" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Trips" EntityType="Self.Trips" Schema="dbo" store:Type="Tables" />

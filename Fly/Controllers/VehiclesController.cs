@@ -157,9 +157,9 @@ namespace Fly.Controllers
             // return Ok(new { IsDone = true, Messages = areaModel.farLeft.lat });
         }
 
-
+        [Authorize(Roles = "User")]
         [Route("GetById")]
-        [HttpGet]
+        [HttpPost]
         public IHttpActionResult GetById(string vId)
         {
             using (VehicleStatusRepository vehiclesRepo = new VehicleStatusRepository())
@@ -172,6 +172,7 @@ namespace Fly.Controllers
         #endregion
 
         #region Trips
+        [Authorize(Roles = "User")]
         [Route("GetTripById")]
         [HttpGet]
         public IHttpActionResult GetTripById(string tripId)
@@ -183,7 +184,20 @@ namespace Fly.Controllers
             }
             // return Ok(new { IsDone = true, Messages = areaModel.farLeft.lat });
         }
+        [Authorize(Roles = "User")]
+        [Route("GetTripByIdPost")]
+        [HttpPost]
+        public IHttpActionResult GetTripByIdPost(string tripId)
+        {
+            using (TripRepository vehiclesRepo = new TripRepository())
+            {
+                RequestResponse returnData = vehiclesRepo.GetTripStatus(int.Parse(tripId));
+                return Ok(returnData);
+            }
+            // return Ok(new { IsDone = true, Messages = areaModel.farLeft.lat });
+        }
 
+        [Authorize(Roles = "User")]
         [Route("RateTripById")]
         [HttpGet]
         public IHttpActionResult RateTripById(string tripId, int rate, bool isRepair)
@@ -254,9 +268,43 @@ namespace Fly.Controllers
         }
 
         [Authorize(Roles = "User")]
+        [Route("UserStatusPost")]
+        [HttpPost]
+        public IHttpActionResult UserStatusPost()
+        {
+            int userId = GetUserId();
+            if (userId == 0)
+            {
+                reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
+                return Ok(reqResponse);
+            }
+            using (SecurityUserRepository secUserRepo = new SecurityUserRepository())
+            {
+                return Ok(secUserRepo.GetStatus(userId));
+            }
+        }
+
+        [Authorize(Roles = "User")]
         [Route("TripHistory")]
         [HttpGet]
         public IHttpActionResult TripHistory()
+        {
+            int userId = GetUserId();
+            if (userId == 0)
+            {
+                reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
+                return Ok(reqResponse);
+            }
+            using (TripRepository tripRepo = new TripRepository())
+            {
+                return Ok(tripRepo.GetHistoryByUser(userId));
+            }
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("TripHistoryPost")]
+        [HttpPost]
+        public IHttpActionResult TripHistoryPost()
         {
             int userId = GetUserId();
             if (userId == 0)
@@ -374,7 +422,7 @@ namespace Fly.Controllers
         #endregion
 
         #region Upload ID
-        //  [Authorize(Roles = "User")]
+       // [Authorize(Roles = "User")]
         [Route("UploadFile")]
         [HttpPost]
         public IHttpActionResult UploadFile()
@@ -490,6 +538,7 @@ namespace Fly.Controllers
         #endregion
 
         #region Payment
+        [Authorize(Roles = "User")]
         [Route("UserPaymentId")]
         [HttpPost]
         public IHttpActionResult UserPaymentId(string userId, string orderId)
@@ -500,6 +549,25 @@ namespace Fly.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
+        [Route("UserPaymentRefund")]
+        [HttpPost]
+        public IHttpActionResult UserPaymentRefund()
+        {
+            int userId = GetUserId();
+            if (userId == 0)
+            {
+                reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
+                return Ok(reqResponse);
+            }
+
+            using (SecurityUserRepository secRepo = new SecurityUserRepository())
+            {
+                return Ok(secRepo.UpdateRefundDone(userId));
+            }
+        }
+
+        [Authorize(Roles = "User")]
         [Route("TripPaymentId")]
         [HttpPost]
         public IHttpActionResult TripPaymentId(string tripId, string orderId)
@@ -671,7 +739,7 @@ namespace Fly.Controllers
 
     }
 
-  
+
 
     public class TestModel2
     {

@@ -47,6 +47,7 @@ namespace Fly.DomainModel
         public string PayMobSendId { get; set; }
         public string TockenToP { get; set; }
         public string RefundPayMobId { get; set; }
+        public Nullable<bool> IsRefunded { get; set; }
     
         public virtual ICollection<SecurityUserRole> SecurityUserRole { get; set; }
         public virtual ICollection<SubscriptionV> SubscriptionV { get; set; }

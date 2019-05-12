@@ -100,9 +100,6 @@
     <Compile Include="SubscriptionV.cs">
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagrams.cs">
-      <DependentUpon>FlyModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="TempStatus.cs">
       <DependentUpon>FlyModel.tt</DependentUpon>
     </Compile>

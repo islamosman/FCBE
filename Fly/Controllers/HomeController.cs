@@ -184,8 +184,8 @@ namespace Fly.Controllers
         public ActionResult Index()
         {
             //var sade = WebUiUtility.Encrypt1("Hesham@1996");
-            //var dd2=WebUiUtility.Decrypt1("/tz6ko7p4WWMs1Mxn1fyfxovbEuXyp4mfyx+//ZTSi4=");
-            //var fft23 = WebUiUtility.Decrypt1("vN2vIGRxYkEpSTh9x0WNg5/xL/K4PwUTuiZ4VeDymGxTXheLNAzEQDDq6S+WZ4Xf");
+            //var dd2=WebUiUtility.Decrypt("/jP53y+1Br2iPaxKNhFsSk7NA2fiR2t32ejC6XTraaQvLRe62Xc28XaMSthtg14J5YIS96PE0gPcFIM0up+wIA==");
+            //var fft23 = WebUiUtility.Decrypt("+WPIc7vw353xO323FDmap+gJWo/5P9hwPTnuc/+GNXtFjLaypbCsGZVabrfKdAjbLf02+hrCKMIDniAXk4t9bQ==");
 
             // TestAPI();//.Wait();
             Gmap.net.GoogleMapApi dd = new Gmap.net.GoogleMapApi(false);
@@ -199,6 +199,7 @@ namespace Fly.Controllers
             dd.CallJs();
             JavaScriptResult ddd = JavaScript("return '1';");
 
+            
             bool isContain = ssw.Points.Contains(new Gmap.net.Location() { Latitude = 30.022806863746357, Longitude = 31.207265853881836 });
 
 

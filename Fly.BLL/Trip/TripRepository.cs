@@ -313,15 +313,15 @@ namespace Fly.BLL
 
             if (tripsList.Count > 0)
             {
-                responseObj.ReturnedObject = tripsList.Select(x => new
+                responseObj.ReturnedObject = tripsList.ToList().Select(x => new
                 {
                     x.Amount,
                     x.Duration,
-                    x.StartTime,
-                    x.EndTime,
+                    StartTime = x.StartTime.ToString("dd/MM/yyyy hh:mm tt"),
+                    EndTime = x.EndTime.HasValue ? x.EndTime.Value.ToString("dd/MM/yyyy hh:mm tt") : "",
                     x.Vehicles.Name,
-                    x.IsPaid,
-                    x.IsDone,
+                    IsPaid = x.IsPaid == true ? true : false,
+                    IsDone = x.IsDone == true ? true : false,
                     x.NetAmount
                 });
             }

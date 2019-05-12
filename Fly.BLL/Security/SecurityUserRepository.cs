@@ -152,7 +152,9 @@ namespace Fly.BLL
                 IdStatus = string.IsNullOrEmpty(currentUser.IdString) ? false : true,
                 VisaStatus = currentUser.IsPaied == true ? true : false,
                 RefundOrderId = currentUser.RefundPayMobId,
-                Tocken = currentUser.TockenToP
+                Tocken = currentUser.TockenToP,
+                UserId = currentUser.PayMobSendId,
+                IsRefunded = currentUser.IsRefunded
             };
             return responseObj;
         }
@@ -197,6 +199,23 @@ namespace Fly.BLL
             if (currentUser != null)
             {
                 currentUser.RefundPayMobId = transactionId;
+                AddUpdate(currentUser);
+            }
+            else
+            {
+                responseObj.ErrorMessages.Add("invalidd", "Invalid Data");
+            }
+
+            return responseObj;
+        }
+
+
+        public RequestResponse UpdateRefundDone(int userId)
+        {
+            var currentUser = _objectSet.FirstOrDefault(x => x.Id == userId);
+            if (currentUser != null)
+            {
+                currentUser.IsRefunded = true;
                 AddUpdate(currentUser);
             }
             else

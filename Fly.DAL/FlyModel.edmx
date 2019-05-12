@@ -64,6 +64,7 @@
           <Property Name="PayMobSendId" Type="nvarchar" MaxLength="50" />
           <Property Name="TockenToP" Type="nvarchar(max)" />
           <Property Name="RefundPayMobId" Type="nvarchar" MaxLength="250" />
+          <Property Name="IsRefunded" Type="bit" />
         </EntityType>
         <EntityType Name="SecurityUserRole">
           <Key>
@@ -96,16 +97,6 @@
           <Property Name="IsCancel" Type="bit" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="PromoCodeId" Type="int" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="TempStatus">
           <Key>
@@ -388,7 +379,6 @@
           <EntitySet Name="SecurityUser" EntityType="Self.SecurityUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SecurityUserRole" EntityType="Self.SecurityUserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionV" EntityType="Self.SubscriptionV" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TempStatus" EntityType="Self.TempStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TripCoordinates" EntityType="Self.TripCoordinates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trips" EntityType="Self.Trips" Schema="dbo" store:Type="Tables" />
@@ -468,7 +458,6 @@
           <EntitySet Name="SecurityUser" EntityType="FlyModel.SecurityUser" />
           <EntitySet Name="SecurityUserRole" EntityType="FlyModel.SecurityUserRole" />
           <EntitySet Name="SubscriptionV" EntityType="FlyModel.SubscriptionV" />
-          <EntitySet Name="sysdiagrams" EntityType="FlyModel.sysdiagrams" />
           <EntitySet Name="TempStatus" EntityType="FlyModel.TempStatus" />
           <EntitySet Name="TripCoordinates" EntityType="FlyModel.TripCoordinates" />
           <EntitySet Name="Trips" EntityType="FlyModel.Trips" />
@@ -597,12 +586,13 @@
           <Property Name="IdString" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PayMobId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsPaied" Type="Boolean" />
-          <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityUser" FromRole="SecurityUser" ToRole="SecurityUserRole" />
-          <NavigationProperty Name="SubscriptionV" Relationship="FlyModel.FK_SubscriptionV_SecurityUser" FromRole="SecurityUser" ToRole="SubscriptionV" />
-          <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_SecurityUser" FromRole="SecurityUser" ToRole="Trips" />
           <Property Name="PayMobSendId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TockenToP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RefundPayMobId" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IsRefunded" Type="Boolean" />
+          <NavigationProperty Name="SecurityUserRole" Relationship="FlyModel.FK_SecurityUserRole_SecurityUser" FromRole="SecurityUser" ToRole="SecurityUserRole" />
+          <NavigationProperty Name="SubscriptionV" Relationship="FlyModel.FK_SubscriptionV_SecurityUser" FromRole="SecurityUser" ToRole="SubscriptionV" />
+          <NavigationProperty Name="Trips" Relationship="FlyModel.FK_Trips_SecurityUser" FromRole="SecurityUser" ToRole="Trips" />
         </EntityType>
         <EntityType Name="SecurityUserRole">
           <Key>
@@ -638,16 +628,6 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="PromoCodeId" Type="Int32" />
           <NavigationProperty Name="SecurityUser" Relationship="FlyModel.FK_SubscriptionV_SecurityUser" FromRole="SubscriptionV" ToRole="SecurityUser" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="TempStatus">
           <Key>
@@ -986,6 +966,7 @@
           <EntitySetMapping Name="SecurityUser">
             <EntityTypeMapping TypeName="FlyModel.SecurityUser">
               <MappingFragment StoreEntitySet="SecurityUser">
+                <ScalarProperty Name="IsRefunded" ColumnName="IsRefunded" />
                 <ScalarProperty Name="RefundPayMobId" ColumnName="RefundPayMobId" />
                 <ScalarProperty Name="TockenToP" ColumnName="TockenToP" />
                 <ScalarProperty Name="PayMobSendId" ColumnName="PayMobSendId" />
@@ -1040,17 +1021,6 @@
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="FlyModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
