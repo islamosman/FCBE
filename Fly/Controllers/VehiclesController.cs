@@ -141,10 +141,47 @@ namespace Fly.Controllers
                 return Ok(reqResponse);
             }
         }
+
+
+        [Authorize(Roles = "User")]
+        [Route("PromoCodeStatusPost")]
+        [HttpPost]
+        public IHttpActionResult PromoCodeStatusPost(string promoName)
+        {
+            //int userId = GetUserId();
+            //if (userId == 0)
+            //{
+            //    reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
+            //    return Ok(reqResponse);
+            //}
+            using (PromoCodeRepository promoRepo = new PromoCodeRepository())
+            {
+                DomainModel.PromoCode promoCode = promoRepo.GetByName(promoName);
+                if (promoCode == null)
+                {
+                    reqResponse.ErrorMessages.Add("invalid", "Invalid Promo Code!");
+                }
+                else
+                {
+                    if (promoCode.IsDeleted == true)
+                    {
+                        reqResponse.ErrorMessages.Add("invalid", "Invalid Promo Code!");
+                    }
+                    else
+                    {
+                        reqResponse.ResponseIdStr = promoCode == null ? "" : promoCode.Id.ToString();
+                        reqResponse.ReturnedObject = promoCode.Percentage;
+                    }
+                }
+
+
+                return Ok(reqResponse);
+            }
+        }
         #endregion
 
         #region Vehicls
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
         [Route("GetByArea")]
         [HttpPost]
         public IHttpActionResult GetByArea(AreaModel areaModel)
@@ -342,12 +379,14 @@ namespace Fly.Controllers
 
             data.riderId = userId;
 
-            if (string.IsNullOrEmpty(data.Name) || string.IsNullOrEmpty(data.PhoneNumber.ToString()) || data.PhoneNumber <= 0 || string.IsNullOrEmpty(data.Location) || string.IsNullOrEmpty(data.DateTimeStr))
+            if (string.IsNullOrEmpty(data.Name) || string.IsNullOrEmpty(data.PhoneNumber.ToString()) || data.PhoneNumber <= 0 || string.IsNullOrEmpty(data.Location) || string.IsNullOrEmpty(data.DateStr) || string.IsNullOrEmpty(data.TimeStr))
             {
                 reqResponse.ErrorMessages.Add("invalidD", "Invalid Data");
 
                 return Ok(reqResponse);
             }
+
+            data.DateTimeStr = data.DateStr + " " + data.TimeStr;
 
             if (!string.IsNullOrEmpty(data.PromoCodeName))
             {
@@ -363,7 +402,7 @@ namespace Fly.Controllers
                     }
 
 
-                    return Ok(reqResponse);
+                    // return Ok(reqResponse);
                 }
             }
 
@@ -422,7 +461,7 @@ namespace Fly.Controllers
         #endregion
 
         #region Upload ID
-       // [Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         [Route("UploadFile")]
         [HttpPost]
         public IHttpActionResult UploadFile()
