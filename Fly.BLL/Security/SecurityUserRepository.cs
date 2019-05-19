@@ -147,6 +147,13 @@ namespace Fly.BLL
         {
             SecurityUser currentUser = GetById(userId);
 
+            if (currentUser.IsPaied != true)
+            {
+                currentUser.PayMobSendId = RandomNumber(11);
+                AddUpdate(currentUser);
+                responseObj = new RequestResponse();
+            }
+
             responseObj.ReturnedObject = new
             {
                 IdStatus = string.IsNullOrEmpty(currentUser.IdString) ? false : true,
@@ -156,6 +163,7 @@ namespace Fly.BLL
                 UserId = currentUser.PayMobSendId,
                 IsRefunded = currentUser.IsRefunded
             };
+
             return responseObj;
         }
 

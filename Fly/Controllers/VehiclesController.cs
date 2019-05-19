@@ -582,6 +582,15 @@ namespace Fly.Controllers
         [HttpPost]
         public IHttpActionResult UserPaymentId(string userId, string orderId)
         {
+            if (userId[0].ToString() == "\"")
+            {
+                userId = userId.Substring(1, userId.Length - 2);
+            }
+            if (orderId[0].ToString() == "\"")
+            {
+                orderId = orderId.Substring(1, orderId.Length - 2);
+            }
+
             using (SecurityUserRepository secRepo = new SecurityUserRepository())
             {
                 return Ok(secRepo.UpdatePayment(userId, orderId));
