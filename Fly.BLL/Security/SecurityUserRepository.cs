@@ -161,7 +161,23 @@ namespace Fly.BLL
                 RefundOrderId = currentUser.RefundPayMobId,
                 Tocken = currentUser.TockenToP,
                 UserId = currentUser.PayMobSendId,
-                IsRefunded = currentUser.IsRefunded
+                IsRefunded = currentUser.IsRefunded == true ? true : false
+            };
+
+            return responseObj;
+        }
+
+
+        public RequestResponse GetInfo(int userId)
+        {
+            SecurityUser currentUser = GetById(userId);
+
+            responseObj.ReturnedObject = new
+            {
+                Name = currentUser.FullName,
+                Email = currentUser.Email,
+                Mobile = currentUser.Telephone,
+                BirthDate = currentUser.BirthDate
             };
 
             return responseObj;

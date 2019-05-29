@@ -211,30 +211,48 @@ namespace Fly.BLL
             {
                 if (currentTrip.Id > 0)
                 {
-                    double unloackAmount = double.Parse(System.Configuration.ConfigurationManager.AppSettings["unlockAmount"].ToString());
-                    double minuteAmount = double.Parse(System.Configuration.ConfigurationManager.AppSettings["minuteAmount"].ToString());
                     TimeSpan span = DateTime.Parse(currentTrip.EndTime.HasValue ? currentTrip.EndTime.ToString() : DateTime.Now.ToString())
-                        - DateTime.Parse(currentTrip.StartTime.ToString());
+                           - DateTime.Parse(currentTrip.StartTime.ToString());
                     double totalMinutes = span.TotalMinutes;
                     double totalHours = span.TotalHours;
                     double totalSecounds = span.TotalSeconds;
 
-
-                    responseObj.ReturnedObject = new
+                    if (currentTrip.IsDone)
                     {
-                        TripId = currentTrip.Id,
-                        vId = currentTrip.VehicleId,
-                        IsDone = currentTrip.IsDone,
-                        rate = currentTrip.Rate,
-                        IsCancel = currentTrip.IsCancel,
-                        StartDate = currentTrip.StartTime.ToString("dd/MM/yyyy , HH:mm:ss tt"),
-                        EndDate = currentTrip.EndTime.HasValue ? currentTrip.EndTime.Value.ToString("dd/MM/yyyy , HH:mm:ss tt") : "",
-                        Duration = Math.Round(totalMinutes, 2).ToString(),
-                        totalSecounds = totalSecounds,
-                        Amount = Math.Round(decimal.Parse((unloackAmount + (totalMinutes * minuteAmount)).ToString()), 2)
-                    };
+                        responseObj.ReturnedObject = new
+                        {
+                            TripId = currentTrip.Id,
+                            vId = currentTrip.VehicleId,
+                            IsDone = currentTrip.IsDone,
+                            rate = currentTrip.Rate,
+                            IsCancel = currentTrip.IsCancel,
+                            StartDate = currentTrip.StartTime.ToString("dd/MM/yyyy , HH:mm:ss tt"),
+                            EndDate = currentTrip.EndTime.HasValue ? currentTrip.EndTime.Value.ToString("dd/MM/yyyy , HH:mm:ss tt") : "",
+                            Duration = currentTrip.Duration.ToString(),
+                            totalSecounds = totalSecounds,
+                            Amount = Math.Round(currentTrip.NetAmount.Value, 2)
+                        };
+                    }
+                    else
+                    {
+                        double unloackAmount = double.Parse(System.Configuration.ConfigurationManager.AppSettings["unlockAmount"].ToString());
+                        double minuteAmount = double.Parse(System.Configuration.ConfigurationManager.AppSettings["minuteAmount"].ToString());
+                       
+                        responseObj.ReturnedObject = new
+                        {
+                            TripId = currentTrip.Id,
+                            vId = currentTrip.VehicleId,
+                            IsDone = currentTrip.IsDone,
+                            rate = currentTrip.Rate,
+                            IsCancel = currentTrip.IsCancel,
+                            StartDate = currentTrip.StartTime.ToString("dd/MM/yyyy , HH:mm:ss tt"),
+                            EndDate = currentTrip.EndTime.HasValue ? currentTrip.EndTime.Value.ToString("dd/MM/yyyy , HH:mm:ss tt") : "",
+                            Duration = Math.Round(totalMinutes, 2).ToString(),
+                            totalSecounds = totalSecounds,
+                            Amount = Math.Round(decimal.Parse((unloackAmount + (totalMinutes * minuteAmount)).ToString()), 2)
+                        };
 
-
+                    }
                 }
                 else
                 {

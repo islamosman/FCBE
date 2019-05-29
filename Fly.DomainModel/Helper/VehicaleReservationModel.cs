@@ -43,5 +43,6 @@ namespace Fly.DomainModel.Helper
         public string PromoCodeName { get; set; }
 
         public int? PromoCodeId { get; set; }
+        public string PayMobId { get; set; }
     }
 }

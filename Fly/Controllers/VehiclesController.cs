@@ -97,7 +97,7 @@ namespace Fly.Controllers
 
 
 
-            string result = inRide ? "on" : "off";
+            string result = inRide ? "onn" : "off";
             var resp = new HttpResponseMessage(HttpStatusCode.OK);
             resp.Content = new StringContent(result, System.Text.Encoding.UTF8, "text/plain");
             return resp;
@@ -134,6 +134,7 @@ namespace Fly.Controllers
                     else
                     {
                         reqResponse.ResponseIdStr = promoCode == null ? "" : promoCode.Id.ToString();
+                        reqResponse.ReturnedObject = promoCode.Percentage;
                     }
                 }
 
@@ -355,6 +356,22 @@ namespace Fly.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
+        [Route("UserInfo")]
+        [HttpGet]
+        public IHttpActionResult UserInfo()
+        {
+            int userId = GetUserId();
+            if (userId == 0)
+            {
+                reqResponse.ErrorMessages.Add("noUser", "Invalid Data");
+                return Ok(reqResponse);
+            }
+            using (SecurityUserRepository secUserRepo = new SecurityUserRepository())
+            {
+                return Ok(secUserRepo.GetInfo(userId));
+            }
+        }
         #endregion
 
         #region Subscription
@@ -419,7 +436,8 @@ namespace Fly.Controllers
                         PickDateTime = DateTime.Parse(data.DateTimeStr),
                         DaysCount = data.DaysCount,
                         PromoCodeId = data.PromoCodeId,
-                        UserId = data.riderId
+                        UserId = data.riderId,
+                        PayMobId=data.PayMobId
                     })
                 );
             }
@@ -707,28 +725,28 @@ namespace Fly.Controllers
                     }
                 }
             }
-            else
+
+
+            WeAcceptRootObject returnMainObj = JsonConvert.DeserializeObject<WeAcceptRootObject>(bodyText);
+            if (returnMainObj.obj != null)
             {
-                WeAcceptRootObject returnMainObj = JsonConvert.DeserializeObject<WeAcceptRootObject>(bodyText);
-                if (returnMainObj.obj != null)
+                if (returnMainObj.obj.order != null)
                 {
-                    if (returnMainObj.obj.order != null)
+                    using (SecurityUserRepository secRepo = new SecurityUserRepository())
                     {
-                        using (SecurityUserRepository secRepo = new SecurityUserRepository())
-                        {
-                            secRepo.UpdateRefundOrderId(returnMainObj.obj.id.ToString(), returnMainObj.obj.order.id.ToString());
-                        }
+                        secRepo.UpdateRefundOrderId(returnMainObj.obj.id.ToString(), returnMainObj.obj.order.id.ToString());
                     }
                 }
-
             }
+
+
 
 
             using (TempRepository bb = new TempRepository())
             {
                 bb.AddUpdate(new DomainModel.TempStatus()
                 {
-                    DataStr = bodyText,
+                    DataStr = "Post " + bodyText,
                     CreatedDate = DateTime.Now
                 });
             }
@@ -770,13 +788,40 @@ namespace Fly.Controllers
             var bodyStream = new StreamReader(HttpContext.Current.Request.InputStream);
             bodyStream.BaseStream.Seek(0, SeekOrigin.Begin);
             var bodyText = bodyStream.ReadToEnd();
+            WeAcceptTockenModelContainer returnObj = JsonConvert.DeserializeObject<WeAcceptTockenModelContainer>(bodyText);
+
+            if (returnObj.obj != null)
+            {
+                if (!string.IsNullOrEmpty(returnObj.obj.token))
+                {
+                    using (SecurityUserRepository secRepo = new SecurityUserRepository())
+                    {
+                        secRepo.UpdatePaymentDone(returnObj.obj.token, returnObj.obj.order_id);
+                    }
+                }
+            }
+
+
+            WeAcceptRootObject returnMainObj = JsonConvert.DeserializeObject<WeAcceptRootObject>(bodyText);
+            if (returnMainObj.obj != null)
+            {
+                if (returnMainObj.obj.order != null)
+                {
+                    using (SecurityUserRepository secRepo = new SecurityUserRepository())
+                    {
+                        secRepo.UpdateRefundOrderId(returnMainObj.obj.id.ToString(), returnMainObj.obj.order.id.ToString());
+                    }
+                }
+            }
+
+
 
 
             using (TempRepository bb = new TempRepository())
             {
                 bb.AddUpdate(new DomainModel.TempStatus()
                 {
-                    DataStr = bodyText,
+                    DataStr = "Post" + bodyText,
                     CreatedDate = DateTime.Now
                 });
             }
