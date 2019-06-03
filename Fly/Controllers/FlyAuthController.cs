@@ -123,7 +123,9 @@ namespace Fly.Controllers
                 {
                     SMTPEmailSender EmailProxy = new SMTPEmailSender();
 
-                    string msgBody = "Activation Code : " + reqResponse.ResponseIdStr;
+                    string msgBody = Resources.OperationLP.subscribtionMail.Replace("{0}", reqResponse.ResponseIdStr);
+                    //string msgBody = "Activation Code : " + reqResponse.ResponseIdStr;
+                    //string msgBody = string.Format(Resources.OperationLP.subscribtionMail ,reqResponse.ResponseIdStr);
 
                     EmailProxy.SendEmail("", regModel.email, "Subscription activation", msgBody, true);
                 }

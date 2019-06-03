@@ -84,6 +84,7 @@ namespace Fly.Controllers
         //[HttpGet]
         public ActionResult Index()
         {
+            
             return View(new LoginViewModel());
         }
 
@@ -136,6 +137,21 @@ namespace Fly.Controllers
             HttpContext.Session["CurrentUser"] = null;
             HttpContext.Session.RemoveAll();
             return RedirectToAction("Index", "LogIn");
+        }
+
+        public ActionResult agreement()
+        {
+            return View();
+        }
+
+        public ActionResult terms()
+        {
+            return View();
+        }
+
+        public ActionResult privacy()
+        {
+            return View();
         }
     }
 }

@@ -261,6 +261,7 @@
     <Compile Include="Controllers\LogInController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PromoCodeController.cs" />
+    <Compile Include="Controllers\SubscriptionsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VehiclesAController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
@@ -1475,6 +1476,11 @@
     <Content Include="Views\Payment\PeymentMethod.cshtml" />
     <Content Include="Views\PromoCode\Index.cshtml" />
     <Content Include="Views\PromoCode\_AddPromo.cshtml" />
+    <Content Include="Views\Subscriptions\Index.cshtml" />
+    <Content Include="Views\Subscriptions\_AddSubscription.cshtml" />
+    <Content Include="Views\LogIn\agreement.cshtml" />
+    <Content Include="Views\LogIn\terms.cshtml" />
+    <Content Include="Views\LogIn\privacy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

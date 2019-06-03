@@ -250,6 +250,24 @@ namespace Fly.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+        ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+        ///&lt;head&gt;
+        ///
+        ///&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width; initial-scale=1.0; maximum-scale=1.0;&quot; /&gt;
+        ///&lt;title&gt;Rabbit&lt;/title&gt;
+        ///
+        ///&lt;style type=&quot;text/css&quot;&gt;
+        ///
+        ///	    body{width: 100%; background-color: #f0f3f8; margin:0; padding:0; -webkit-font-smoothing: antialiased;mso-margin-top-alt:0px; mso-margin-bottom-alt:0px; mso-padding-alt: 0px 0px 0px 0 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string subscribtionMail {
+            get {
+                return ResourceManager.GetString("subscribtionMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Success.
         /// </summary>
         public static string SuccessMsg {

@@ -180,6 +180,208 @@
   <data name="StartSuccess" xml:space="preserve">
     <value>start successfully</value>
   </data>
+  <data name="subscribtionMail" xml:space="preserve">
+    <value>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+&lt;head&gt;
+
+&lt;meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" /&gt;
+&lt;title&gt;Rabbit&lt;/title&gt;
+
+&lt;style type="text/css"&gt;
+
+	    body{width: 100%; background-color: #f0f3f8; margin:0; padding:0; -webkit-font-smoothing: antialiased;mso-margin-top-alt:0px; mso-margin-bottom-alt:0px; mso-padding-alt: 0px 0px 0px 0px;}
+        
+        p,h1,h2,h3,h4{margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;}
+        
+        span.preheader{display: none; font-size: 1px;}
+        
+        html{width: 100%;}
+        
+        table{font-size: 12px;border: 0;}
+		
+		.menu-space{padding-right:25px;}
+		
+		a,a:hover { text-decoration:none; color:#FFF;}
+
+
+@media only screen and (max-width:640px)
+
+{
+	body{width:auto!important;}
+	table[class=main] {width:440px !important;}
+	table[class=two-left] {width:420px !important; margin:0px auto;}
+	table[class=full] {width:100% !important; margin:0px auto;}
+	table[class=alaine] { text-align:center;}
+	table[class=menu-space] {padding-right:0px;}
+	table[class=banner] {width:438px !important;}
+	table[class=menu] {width:438px !important; margin:0px auto; border-bottom:#e1e0e2 solid 1px;}
+	table[class=date] {width:438px !important; margin:0px auto; text-align:center;}
+	table[class=two-left-inner] {width:400px !important; margin:0px auto;}
+	table[class=menu-icon] { display:block;}
+	table[class=two-left-menu] {text-align:center;}
+
+	}
+
+@media only screen and (max-width:479px)
+{
+	body{width:auto!important;}
+	table[class=main]  {width:310px !important;}
+	table[class=two-left] {width:300px !important; margin:0px auto;}
+	table[class=full] {width:100% !important; margin:0px auto;}
+	table[class=alaine] { text-align:center;}
+	table[class=menu-space] {padding-right:0px;}
+	table[class=banner] {width:308px !important;}
+	table[class=menu] {width:308px !important; margin:0px auto; border-bottom:#e1e0e2 solid 1px;}
+	table[class=date] {width:308px !important; margin:0px auto; text-align:center;}
+	table[class=two-left-inner] {width:280px !important; margin:0px auto;}
+	table[class=menu-icon] { display:none;}
+	table[class=two-left-menu] {width:310px !important; margin:0px auto;}
+
+	
+}
+
+
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+
+&lt;body yahoo="fix" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"&gt;
+
+&lt;!--Main Table Start--&gt;
+
+&lt;table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#f0f3f8"&gt;
+  &lt;tr&gt;
+    &lt;td align="center" valign="top"&gt;
+    
+    &lt;table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+  &lt;tr&gt;
+    &lt;td align="center" valign="top"&gt;&lt;table width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="two-left-inner"&gt;
+      &lt;tr&gt;
+        &lt;td height="60" align="center" valign="top" style="font-size:60px; line-height:60px;"&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+  &lt;tr&gt;
+    &lt;td align="center" valign="top"&gt;&lt;table width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="two-left-inner"&gt;
+      &lt;tr&gt;
+        &lt;td align="center" valign="top" style="background:#FFF;"&gt;&lt;table width="260" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+          &lt;tr&gt;
+           &lt;td height="75" align="center" valign="top" style="font-size:75px; line-height:75px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top"&gt;&lt;table width="110" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+                &lt;td align="center" valign="top"&gt;&lt;a href="#"&gt;&lt;img mc:edit="tm-01" editable="true" src="http://rabbit-app.com/assets/images/logo-green.png" width="110" height="110" alt="" /&gt;&lt;/a&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+           &lt;td height="40" align="center" valign="top" style="font-size:40px; line-height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top"&gt;&lt;table width="85" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+                &lt;td height="85" align="center" valign="middle" style="background:#42d08e; -moz-border-radius: 85px; border-radius: 85px;"&gt;&lt;img mc:edit="tm-02" editable="true" src="images/tick.png" width="31" height="29" alt="" /&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td height="40" align="center" valign="top" style="font-size:40px; line-height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+     
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top" style="font-family:'Open Sans', sans-serif, Verdana; font-size:30px; color:#4b4b4c; line-height:30px; font-weight:bold;" mc:edit="tm-04" &gt;&lt;multiline&gt;Welcome&lt;/multiline&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top" style="font-family:'Open Sans', sans-serif, Verdana; font-size:13px; color:#71746f; line-height:22px; font-weight:normal;" mc:edit="tm-05" &gt;&lt;multiline&gt;Welcome to Rabbit, please find your verification code below&lt;br /&gt;
+              &lt;/multiline&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top"&gt;&lt;table width="180" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+                &lt;td height="30" align="center" valign="top"&gt;&amp;nbsp;&lt;/td&gt;
+              &lt;/tr&gt;
+              &lt;tr&gt;
+                &lt;td height="60" align="center" valign="middle" style="background:#42d08e; -moz-border-radius: 40px; border-radius: 40px; font-family:'Open Sans', Verdana, Arial; font-size:14px; font-weight:bold; text-transform:uppercase; color:#FFF; " mc:edit="tm-06" &gt;&lt;multiline&gt;&lt;a href="#" style="text-decoration:none; color:#FFF;"&gt;{0}&lt;/a&gt;&lt;/multiline&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+              &lt;td height="30" align="center" valign="top" style="font-size:30px; line-height:30px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top" style="font-family:'Open Sans', sans-serif, Verdana; font-size:13px; color:#71746f; line-height:22px; font-weight:normal;" mc:edit="tm-07" &gt;&lt;multiline&gt;Get social with Rabbit&lt;/multiline&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top"&gt;&lt;table width="85" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+                &lt;td align="center" valign="top"&gt;&lt;a href="https://www.facebook.com/rabbitapp/"&gt;&lt;img mc:edit="tm-08" editable="true" src="http://rabbit-app.com/assets/images/facebook.png" width="22" height="22" alt="" /&gt;&lt;/a&gt;&lt;/td&gt;
+                &lt;td align="center" valign="top"&gt;&lt;a href="https://www.instagram.com/rabbit_app/"&gt;&lt;img mc:edit="tm-09" editable="true" src="http://rabbit-app.com/assets/images/instagram.png" width="22" height="22" alt="" /&gt;&lt;/a&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+             &lt;td height="75" align="center" valign="top" style="font-size:75px; line-height:75px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+  &lt;tr&gt;
+    &lt;td align="center" valign="top"&gt;&lt;table width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="two-left-inner"&gt;
+      &lt;tr&gt;
+        &lt;td align="center" valign="top"&gt;&lt;table width="260" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+          &lt;tr&gt;
+            &lt;td height="40" align="center" valign="top" style="font-size:40px; line-height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top" style="font-family:'Open Sans', sans-serif, Verdana; font-size:12px; color:#4b4b4c; line-height:30px; font-weight:normal;" mc:edit="tm-11" &gt;&lt;multiline&gt;&amp;copy; 2019 Rabbit-app.com&lt;/multiline&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td align="center" valign="top" style="font-family:'Open Sans', sans-serif, Verdana; font-size:13px; color:#4b4b4c; line-height:20px; font-weight:bold;" mc:edit="tm-12"&gt;&lt;multiline&gt;Cairo, EG &lt;/multiline&gt;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"&gt;
+  &lt;tr&gt;
+    &lt;td align="center" valign="top"&gt;&lt;table width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="two-left-inner"&gt;
+      &lt;tr&gt;
+        &lt;td height="55" align="center" valign="top" style="font-size:55px; line-height:55px;"&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+    
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!--Main Table End--&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
   <data name="SuccessMsg" xml:space="preserve">
     <value>Success</value>
   </data>

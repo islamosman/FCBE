@@ -1,0 +1,120 @@
+﻿
+@using Fly.Resources
+@{
+    ViewBag.Title = "Subscriptions";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<div class="row">
+
+    <div class="col-md-12 col-xs-12">
+        <div class="panel panel-white">
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4 class="panel-title text-primary padding-top-10 text-bold">Subscriptions</h4>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <br />
+                                <div class="input-group">
+                                    <input name="searchToken" id="searchToken" placeholder="@OperationLP.TxtSearch" class="form-control" />
+
+                                    <span class="input-group-btn">
+                                        <button type="button" id="search" class="btn btn-success" onclick="search()" data-original-title="@OperationLP.BtnSearch" data-toggle="tooltip">
+
+                                            <span class="fa-search fa"></span>
+                                        </button>
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            @*<div class="col-md-2">
+                                <br />
+                                <button type="button" id="addItem" class="btn btn-primary" data-original-title="@OperationLP.BtnNew" data-toggle="tooltip">
+                                    Add
+                                    <span class="fa-plus fa"></span>
+                                </button>
+                            </div>*@
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                @Html.Action("TableStructure", "GlobalCtrl", new { area = "", @colmnCount = 6, @operationsColumnCount = 0 })
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@Html.Partial("/Views/Shared/_TableLocalize.cshtml")
+
+
+<script src="~/Scripts/DevScripts/StandardForm.js?v=1.0.0"></script>
+
+<script>
+
+    var ActionLoadData = "@Url.Action("loadData", "Subscriptions")";
+    
+    var colData = [
+    { "data": "Name", "title": "Name", "name": "Name", "autoWidth": true, "orderable": true },
+    { "data": "DaysCount", "title": "Days", "name": "DaysCount", "autoWidth": true, "orderable": true },
+    { "data": "PhoneNumber", "title": "Phone", "name": "PhoneNumber", "autoWidth": true, "orderable": true },
+    { "data": "LocationStr", "title": "Location", "name": "LocationStr", "autoWidth": true, "orderable": true },
+    { "data": "PickDateTime", "title": "Date", "name": "PickDateTime", "autoWidth": true, "orderable": true },
+    { "data": "IsDone", "title": "Done", "name": "IsDone", "autoWidth": true, "orderable": true },
+    
+     //{ "data": "Id", "name": "", "autoWidth": false, "orderable": false }
+    ];
+
+
+    deleteEnabled = false;
+    isActiveIndexEdit = 5;
+
+    operationIndex = undefined;
+    GenerateTableCustomColumn();
+
+    $("body").on("change", ".checkActivateN", function () {
+
+        $(".preloader").fadeIn();
+        $.ajax({
+            url: "@Url.Action("ChangeDone", "Subscriptions")",
+            type: 'post',
+        data: {
+            uId: $(this).attr("data-id"),
+            activeV: this.checked
+        },
+        success: function (data) {
+            Notification(1, data.message);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+        }
+    });
+
+    });
+
+</script>

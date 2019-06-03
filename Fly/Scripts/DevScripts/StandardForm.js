@@ -6,6 +6,7 @@ var LoadAtReady = true;
 var isSpecial = true;
 var isServerSide = true;
 
+var isActiveIndexEdit = undefined;
 var isActiveIndex = undefined;
 var modelHeaderTitle = "";
 
@@ -27,6 +28,7 @@ $(document).ready(function () {
 
 
 function GenerateTableCustomColumn() {
+    
     colDef = [];
     if (operationIndex != undefined) {
         colDef.push({
@@ -99,29 +101,17 @@ function GenerateTableCustomColumn() {
         });
     }
 
-    if (isActiveIndex2 != undefined) {
+  
+    if (isActiveIndexEdit != undefined) {
         colDef.push({
-            "targets": isActiveIndex2,
+            "targets": isActiveIndexEdit,
             "data": "CurrentYear",
             "render": function (data, type, full) {
-                if (data == true) {
-                    return '<i class="fa fa-check-circle-o" style="color:green;"></i>';
-                } else {
-                    return '<i class="fa fa-ban" style="color:red;"></i>';
-                }
-            }
-        });
-    }
+                if (full.IsDone == true) {
+                    return '<input type="checkbox" class="checkboxMin checkActivateN" data-id="' + full.Id + '" checked />';
 
-    if (isActiveIndex3 != undefined) {
-        colDef.push({
-            "targets": isActiveIndex3,
-            "data": "CurrentYear",
-            "render": function (data, type, full) {
-                if (data == true) {
-                    return '<i class="fa fa-check-circle-o" style="color:green;"></i>';
                 } else {
-                    return '<i class="fa fa-ban" style="color:red;"></i>';
+                    return '<input type="checkbox" class="checkboxMin checkActivateN" data-id="' + full.Id + '" />';
                 }
             }
         });
