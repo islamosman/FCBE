@@ -16,7 +16,7 @@ namespace Fly.Controllers
     public class AdminBaseController : Controller
     {
         // public SecurityMembershipProvider membershipProvider;
-        //public log4net.ILog logger;
+        public log4net.ILog logger;
         //private List<UserTenant> tenants;
         protected RequestResponse reqResponse;
         #region Handle constructor
@@ -25,7 +25,7 @@ namespace Fly.Controllers
             reqResponse = new RequestResponse();
             //Init General variables
             // membershipProvider = new SecurityMembershipProvider();
-            //logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         }
         #endregion
 
@@ -123,47 +123,44 @@ namespace Fly.Controllers
         #endregion
 
         #region Handle Exceptions
-        //======================================================================
-        //by moataz radwan 1-13-2016
-        //======================================================================     
-        //protected override void OnException(ExceptionContext filterContext)
-        //{
-        //    try
-        //    {
-        //        // logger.Info("Handle Exception start");
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            try
+            {
+                // logger.Info("Handle Exception start");
 
-        //        //====================================================
-        //        //Handle exceptions logging
-        //        //====================================================
-        //        Exception e = filterContext.Exception;
-        //        filterContext.ExceptionHandled = true;
-        //        string innerMessage = "";
-        //        if (e.InnerException != null)
-        //        {
-        //            innerMessage = e.InnerException.Message;
-        //        }
+                //====================================================
+                //Handle exceptions logging
+                //====================================================
+                Exception e = filterContext.Exception;
+                filterContext.ExceptionHandled = true;
+                string innerMessage = "";
+                if (e.InnerException != null)
+                {
+                    innerMessage = e.InnerException.Message;
+                }
 
-        //        if (filterContext.HttpContext.Request.IsAjaxRequest() && filterContext.Exception != null)
-        //        {
-        //            // logger.Error("[IsAjaxRequest]:yes,[control]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["controller"]) + ",[action]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["action"]) + ",[errormessage]:" + e.Message + "::" + e.StackTrace);
-        //            filterContext.HttpContext.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
-        //            filterContext.Result = Json(new { success = false, responseText = e.Message }, JsonRequestBehavior.AllowGet);
-        //            filterContext.ExceptionHandled = true;
-        //        }
-        //        else
-        //        {
-        //            //  logger.Error("[IsAjaxRequest]:no,[control]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["controller"]) + ",[action]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["action"]) + ",[errormessage]:" + e.Message + " - " + e.InnerException.InnerException.Message);
-        //            TempData["message"] = e.Message;
-        //            filterContext.Result = this.Redirect(Request.UrlReferrer.ToString());
-        //        }
+                //if (filterContext.HttpContext.Request.IsAjaxRequest() && filterContext.Exception != null)
+                //{
+                //    logger.Error("[IsAjaxRequest]:yes,[control]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["controller"]) + ",[action]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["action"]) + ",[errormessage]:" + e.Message + "::" + e.StackTrace);
+                //    filterContext.HttpContext.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
+                //    filterContext.Result = Json(new { success = false, responseText = e.Message }, JsonRequestBehavior.AllowGet);
+                //    filterContext.ExceptionHandled = true;
+                //}
+                //else
+                //{
+                logger.Error(e.StackTrace + " [IsAjaxRequest]:no,[control]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["controller"]) + ",[action]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["action"]) + ",[errormessage]:" + e.Message + " - " + e.InnerException.InnerException.Message);
+                // TempData["message"] = e.Message;
+                filterContext.Result = this.Redirect(Request.UrlReferrer.ToString());
+                //}
 
-        //        //logger.Info("Handle Exception end");
-        //    }
-        //    catch (Exception exp)
-        //    {
-        //        //logger.Error("[control]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["controller"]) + ",[action]:" + Convert.ToString(filterContext.Controller.ControllerContext.RouteData.Values["action"]) + ",[errormessage]:Error during handle exception:" + exp.Message);
-        //    }
-        //}
+                logger.Info("Handle Exception end");
+            }
+            catch (Exception exp)
+            {
+                logger.Error("Exception in exception : " + exp.Message);
+            }
+        }
         #endregion
     }
 }

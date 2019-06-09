@@ -60,7 +60,7 @@
                 </div>
 
 
-                @Html.Action("TableStructure", "GlobalCtrl", new { area = "", @colmnCount = 3, @operationsColumnCount = 0 })
+                @Html.Action("TableStructure", "GlobalCtrl", new { area = "", @colmnCount = 5, @operationsColumnCount = 0 })
 
             </div>
         </div>
@@ -80,6 +80,9 @@
    
     var colData = [
     { "data": "Name", "title": "Name", "name": "Name", "autoWidth": true, "orderable": true },
+    { "data": "Email", "title": "Email", "name": "Email", "autoWidth": true, "orderable": true },
+    { "data": "Telephone", "title": "Mobile", "name": "Telephone", "autoWidth": true, "orderable": true },
+    
     { "data": "Idstr", "title": "ID", "name": "Idstr", "autoWidth": true, "orderable": true },
      { "data": "Id", "name": "", "autoWidth": false, "orderable": false }
     ];
@@ -87,8 +90,8 @@
 
 
     operationIndex = undefined;
-    getTrips = 2;
-    getId = 1;
+    getTrips = 4;
+    getId = 3;
     GenerateTableCustomColumn();
 
 

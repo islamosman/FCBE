@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Owin;
 using Owin;
 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "Web.config", Watch = true)]
 [assembly: OwinStartup(typeof(Fly.Startup))]
 
 namespace Fly

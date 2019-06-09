@@ -19,9 +19,9 @@ namespace Fly.Providers
         {
             //logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             client = new SmtpClient("smtp.gmail.com", 587);
-            
-            //client.Credentials = new System.Net.NetworkCredential("rabbit201919@gmail.com", "RabbitP@$$w0rd");
-            client.Credentials = new System.Net.NetworkCredential("willsuccessmail@gmail.com", "P@$$w0rd");
+
+            client.Credentials = new System.Net.NetworkCredential("rabbit201919@gmail.com", "RabbitP@$$w0rd");
+            //client.Credentials = new System.Net.NetworkCredential("willsuccessmail@gmail.com", "P@$$w0rd");
 
             AdminEmail = "Rabbit";
             client.EnableSsl = true;

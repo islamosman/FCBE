@@ -22,9 +22,16 @@ namespace Fly.Controllers
 {
     public class VehiclesAController : AdminBaseController
     {
+        //public log4net.ILog logger;
+        //public VehiclesAController()
+        //{
+        //    logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //}
 
         public ActionResult Image(string imageId)
         {
+            //try
+            //{
             imageId = WebUI.Helpers.WebUiUtility.Decrypt(imageId);
 
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder
@@ -36,12 +43,20 @@ namespace Fly.Controllers
             };
             Image image = qrCodeEncoder.Encode(imageId);
 
+
             using (var ms = new MemoryStream())
             {
                 image.Save(ms, ImageFormat.Jpeg);
 
+                image.Dispose();
                 return File(ms.ToArray(), "image/jpeg");
             }
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.Error(ex.Message + " > " + ex.InnerException.Message + " > " + ex.StackTrace);
+            //    return null;
+            //}
         }
 
         public ActionResult Index(int? id)

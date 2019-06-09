@@ -37,10 +37,12 @@ namespace Fly.WebUI.Helpers
                     clearText = Convert.ToBase64String(ms.ToArray());
                 }
             }
-            return clearText;
+            return clearText.Replace('+', '-').Replace('/', '_').Replace("=", "EQUAL").Replace(",", "COMMA");
+            //return clearText;
         }
         public static string Decrypt(string cipherText)
         {
+            cipherText = cipherText.Replace('-', '+').Replace('_', '/').Replace("EQUAL", "=").Replace("COMMA", ",");
             string EncryptionKey = "MAKV2SPBNI36FLY";
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())

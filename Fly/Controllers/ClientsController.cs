@@ -48,7 +48,9 @@ namespace Fly.Controllers
                 {
                     r.Id,
                     Name = r.FullName,
-                    Idstr=r.IdString
+                    Idstr=r.IdString,
+                    Email=r.Email,
+                    r.Telephone
                 }).AsQueryable()
 
             };

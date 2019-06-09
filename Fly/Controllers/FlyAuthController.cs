@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
 using System.Text;
 using System.Web;
 using System.Web.Http;
@@ -21,6 +22,12 @@ namespace Fly.Controllers
     [RoutePrefix("api/FlyAuth")]
     public class FlyAuthController : BaseApiController
     {
+        public log4net.ILog logger;
+        public FlyAuthController()
+        {
+            logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        }
+
         [HttpPost]
         [Route("upload")]
         public HttpResponseMessage uploadImage()
@@ -53,53 +60,58 @@ namespace Fly.Controllers
         public IHttpActionResult Login(LoginModel loginModel)
         {
 
-            if (string.IsNullOrEmpty(loginModel.userName) || string.IsNullOrEmpty(loginModel.password))
+            try
             {
-                return BadRequest(Fly.Resources.OperationLP.InvalidUserNamePassword);
-            }
+                if (string.IsNullOrEmpty(loginModel.userName) || string.IsNullOrEmpty(loginModel.password))
+                {
+                    return BadRequest(Fly.Resources.OperationLP.InvalidUserNamePassword);
+                }
 
-            loginModel.password = Encrypt(loginModel.password);
-            var pairs = new List<KeyValuePair<string, string>>
+                loginModel.password =WebUI.Helpers.WebUiUtility.Encrypt(loginModel.password);
+                var pairs = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>( "grant_type", "password" ),
                         new KeyValuePair<string, string>( "username", loginModel.userName ),
                         new KeyValuePair<string, string> ( "Password",loginModel.password)
                     };
-            var content = new FormUrlEncodedContent(pairs);
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+                var content = new FormUrlEncodedContent(pairs);
+                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            var authorizationHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("rajeev:" + loginModel.password));
+                var authorizationHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("rajeev:" + loginModel.password));
 
 
-            using (var client = new HttpClient())
-            {
-                var response = client.PostAsync(System.Configuration.ConfigurationManager.AppSettings["ServiceUrl"].ToString() + "Token", content).Result;
-                var token = response.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls; // comparable to modern browsers
 
-                using (SecurityUserRepository obj = new SecurityUserRepository())
+                using (var client = new HttpClient())
                 {
-                    SecurityUser secUserModel = obj.GetBy(loginModel.userName, loginModel.password);
-                    if (secUserModel != null)
+                    
+                    var response = client.PostAsync(new Uri(System.Configuration.ConfigurationManager.AppSettings["ServiceUrl"].ToString() + "Token"), content).Result;
+                    var token = response.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
+                    using (SecurityUserRepository obj = new SecurityUserRepository())
                     {
-                        token.UserId = secUserModel.PayMobSendId;
-                        token.Tocken = secUserModel.TockenToP;
+                        SecurityUser secUserModel = obj.GetBy(loginModel.userName, loginModel.password);
+                        if (secUserModel != null)
+                        {
+                            token.UserId = secUserModel.PayMobSendId;
+                            token.Tocken = secUserModel.TockenToP;
+                        }
                     }
+                    // var sss = response.Content.ReadAsStringAsync().Result;
+                    //return Json(new { tock = sss });
+                    return Ok(token);
                 }
-                // var sss = response.Content.ReadAsStringAsync().Result;
-                //return Json(new { tock = sss });
-                return Ok(token);
+            }
+            catch (OperationCanceledException oce)
+            {
+                logger.Error(oce.Message + " < " + oce.InnerException.Message + " < " + oce.StackTrace + " == " + oce.Data);
+                return Ok(new { success = false, access_token = "" });
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message + " > " + ex.InnerException.Message + " > " + ex.StackTrace);
+                return Ok(new { success = false, access_token = "" });
             }
 
-            //using (var client = new HttpClient())
-            //{
-            // var ss=   HttpContext.Current.Request.Url.AbsoluteUri;
-            //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authorizationHeader);
-            //    //System.Configuration.ConfigurationManager.AppSettings["ServiceUrl"].ToString()
-            //    var tokenResponse = client.PostAsync(loginModel.urlStr + "Token", new FormUrlEncodedContent(pairs)).Result;
-            //    var token = tokenResponse.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
-
-            //    return Ok(token);
-            //}
         }
 
         [Route("Register")]
@@ -112,7 +124,7 @@ namespace Fly.Controllers
                     DeviceId = regModel.device_unique_id,
                     Telephone = regModel.phone_number,
                     Email = regModel.email.Trim(),
-                    Password = Encrypt(regModel.password.Trim()),
+                    Password = WebUI.Helpers.WebUiUtility.Encrypt(regModel.password.Trim()),
                     FullName = regModel.first_name + " " + regModel.last_name,
                     Gender = regModel.gender,
                     BirthDate = regModel.date_of_birth,
