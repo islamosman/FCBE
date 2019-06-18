@@ -2,3 +2,4 @@ E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\bin\Debug\Fly.Helper.dll
 E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\bin\Debug\Fly.Helper.pdb
 E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\obj\Debug\Fly.Helper.dll
 E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\obj\Debug\Fly.Helper.pdb
+E:\GIT\ZAPP\FLY\FCBE\Fly.Helper\obj\Debug\Fly.Helper.csprojResolveAssemblyReference.cache

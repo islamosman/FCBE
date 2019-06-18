@@ -60,8 +60,8 @@ namespace Fly.Controllers
         public IHttpActionResult Login(LoginModel loginModel)
         {
 
-            try
-            {
+            //try
+            //{
                 if (string.IsNullOrEmpty(loginModel.userName) || string.IsNullOrEmpty(loginModel.password))
                 {
                     return BadRequest(Fly.Resources.OperationLP.InvalidUserNamePassword);
@@ -80,13 +80,14 @@ namespace Fly.Controllers
                 var authorizationHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("rajeev:" + loginModel.password));
 
 
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls; // comparable to modern browsers
+                //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls; // comparable to modern browsers
 
                 using (var client = new HttpClient())
                 {
-                    
-                    var response = client.PostAsync(new Uri(System.Configuration.ConfigurationManager.AppSettings["ServiceUrl"].ToString() + "Token"), content).Result;
-                    var token = response.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
+                
+                var response = client.PostAsync(new Uri(System.Configuration.ConfigurationManager.AppSettings["ServiceUrl"].ToString() + "Token"), content).Result;
+                
+                var token = response.Content.ReadAsAsync<Token>(new[] { new JsonMediaTypeFormatter() }).Result;
                     using (SecurityUserRepository obj = new SecurityUserRepository())
                     {
                         SecurityUser secUserModel = obj.GetBy(loginModel.userName, loginModel.password);
@@ -100,17 +101,17 @@ namespace Fly.Controllers
                     //return Json(new { tock = sss });
                     return Ok(token);
                 }
-            }
-            catch (OperationCanceledException oce)
-            {
-                logger.Error(oce.Message + " < " + oce.InnerException.Message + " < " + oce.StackTrace + " == " + oce.Data);
-                return Ok(new { success = false, access_token = "" });
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex.Message + " > " + ex.InnerException.Message + " > " + ex.StackTrace);
-                return Ok(new { success = false, access_token = "" });
-            }
+            //}
+            //catch (OperationCanceledException oce)
+            //{
+            //    logger.Error(oce.Message + " < " + oce.InnerException.Message + " < " + oce.StackTrace + " == " + oce.Data);
+            //    return Ok(new { success = false, access_token = "" });
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.Error(ex.Message + " > " + ex.InnerException.Message + " > " + ex.StackTrace);
+            //    return Ok(new { success = false, access_token = "" });
+            //}
 
         }
 

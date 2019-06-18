@@ -1,0 +1,5 @@
+﻿ERROR 2019-06-13 17:54:56,054 17632ms VehiclesController     PeymentPost        - Object reference not set to an instance of an object. >  >    at Fly.Controllers.VehiclesController.PeymentPost() in E:\GIT\ZAPP\FLY\FCBE\Fly\Controllers\VehiclesController.cs:line 713
+ERROR 2019-06-13 17:55:24,351 45930ms VehiclesController     PeymentPost        - Object reference not set to an instance of an object. >  >    at Fly.Controllers.VehiclesController.PeymentPost() in E:\GIT\ZAPP\FLY\FCBE\Fly\Controllers\VehiclesController.cs:line 713
+ERROR 2019-06-13 17:56:20,518 102096ms VehiclesController     PeymentPost        - Object reference not set to an instance of an object. >  >    at Fly.Controllers.VehiclesController.PeymentPost()
+INFO  2019-06-13 18:14:04,478  7154ms VehiclesController     PeymentPost        - start
+INFO  2019-06-13 18:14:07,995 10671ms VehiclesController     PeymentPost        - 

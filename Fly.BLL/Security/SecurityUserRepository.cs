@@ -199,13 +199,30 @@ namespace Fly.BLL
             return responseObj;
         }
 
-        public RequestResponse UpdatePaymentDone(string tocken, string orderId)
+        public RequestResponse UpdatePaymentTocken(string tocken, string orderId)
         {
             var currentUser = _objectSet.FirstOrDefault(x => x.PayMobId == orderId);
             if (currentUser != null)
             {
                 currentUser.TockenToP = tocken;
-                currentUser.IsPaied = true;
+                //  currentUser.IsPaied = true;
+                AddUpdate(currentUser);
+            }
+            else
+            {
+                responseObj.ErrorMessages.Add("invalidd", "Invalid Data");
+            }
+
+            return responseObj;
+        }
+
+        public RequestResponse UpdatePaymentDone(string orderId)
+        {
+            var currentUser = _objectSet.FirstOrDefault(x => x.PayMobId == orderId);
+            if (currentUser != null)
+            {
+             //   currentUser.TockenToP = tocken;
+              currentUser.IsPaied = true;
                 AddUpdate(currentUser);
             }
             else

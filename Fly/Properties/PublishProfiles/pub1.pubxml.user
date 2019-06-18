@@ -283,22 +283,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/02/2015 09:32:26</publishTime>
     </File>
     <File Include="bin/Fly.BLL.dll">
-      <publishTime>06/03/2019 23:58:36</publishTime>
+      <publishTime>06/15/2019 21:17:07</publishTime>
     </File>
     <File Include="bin/Fly.DAL.dll">
-      <publishTime>06/03/2019 23:58:35</publishTime>
+      <publishTime>06/10/2019 14:53:05</publishTime>
     </File>
     <File Include="bin/Fly.dll">
-      <publishTime>06/04/2019 04:00:36</publishTime>
+      <publishTime>06/16/2019 01:14:47</publishTime>
     </File>
     <File Include="bin/Fly.DomainModel.dll">
-      <publishTime>06/03/2019 23:58:35</publishTime>
+      <publishTime>06/10/2019 14:53:06</publishTime>
     </File>
     <File Include="bin/Fly.Helper.dll">
-      <publishTime>06/03/2019 23:58:35</publishTime>
+      <publishTime>06/10/2019 14:53:05</publishTime>
     </File>
     <File Include="bin/Fly.Resources.dll">
-      <publishTime>06/03/2019 23:58:35</publishTime>
+      <publishTime>06/10/2019 14:53:05</publishTime>
     </File>
     <File Include="bin/Gmap.net.dll">
       <publishTime>03/19/2016 17:58:08</publishTime>

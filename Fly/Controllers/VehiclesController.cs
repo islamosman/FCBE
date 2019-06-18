@@ -16,12 +16,20 @@ using System.Web;
 using HttpUtils;
 using System.Security.Claims;
 using Fly.Models;
+using System.Web.Hosting;
+using System.Globalization;
 
 namespace Fly.Controllers
 {
     [RoutePrefix("api/Vehicles")]
     public class VehiclesController : BaseApiController
     {
+        public log4net.ILog logger;
+        public VehiclesController()
+        {
+            logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        }
+
         //[Authorize(Roles = "Admin")]
         //[Route("GetVehicls")]
         //[HttpPost]
@@ -249,6 +257,19 @@ namespace Fly.Controllers
         }
 
         [Authorize(Roles = "User")]
+        [Route("RateTripByIdPost")]
+        [HttpPost]
+        public IHttpActionResult RateTripByIdPost(string tripId, int rate, bool isRepair)
+        {
+            using (TripRepository vehiclesRepo = new TripRepository())
+            {
+                RequestResponse returnData = vehiclesRepo.UpdateTripRate(int.Parse(tripId), rate, isRepair);
+                return Ok(returnData);
+            }
+            // return Ok(new { IsDone = true, Messages = areaModel.farLeft.lat });
+        }
+
+        [Authorize(Roles = "User")]
         [Route("Reservation")]
         [HttpPost]
         public IHttpActionResult Reservation(VehicaleReservationModel data)
@@ -375,7 +396,7 @@ namespace Fly.Controllers
         #endregion
 
         #region Subscription
-        [Authorize(Roles = "User")]
+        //  [Authorize(Roles = "User")]
         [Route("Subscription")]
         [HttpPost]
         public IHttpActionResult Subscription(SubscriptionModel data)
@@ -390,20 +411,22 @@ namespace Fly.Controllers
             using (SecurityUserRepository secUserRepo = new SecurityUserRepository())
             {
                 var currentUser = secUserRepo.GetById(userId);
+                //data.Name = "ddd";
+                //data.PhoneNumber = 2525;
                 data.Name = currentUser.FullName;
                 data.PhoneNumber = int.Parse(currentUser.Telephone);
             }
 
             data.riderId = userId;
 
-            if (string.IsNullOrEmpty(data.Name) || string.IsNullOrEmpty(data.PhoneNumber.ToString()) || data.PhoneNumber <= 0 || string.IsNullOrEmpty(data.Location) || string.IsNullOrEmpty(data.DateStr) || string.IsNullOrEmpty(data.TimeStr))
+            if (string.IsNullOrEmpty(data.Name) || string.IsNullOrEmpty(data.PhoneNumber.ToString()) || data.PhoneNumber <= 0 || string.IsNullOrEmpty(data.Location) || string.IsNullOrEmpty(data.DateTimeStr))
             {
                 reqResponse.ErrorMessages.Add("invalidD", "Invalid Data");
 
                 return Ok(reqResponse);
             }
 
-            data.DateTimeStr = data.DateStr + " " + data.TimeStr;
+            data.DateTimeStr = data.DateTimeStr;// + " " + data.TimeStr;
 
             if (!string.IsNullOrEmpty(data.PromoCodeName))
             {
@@ -423,6 +446,17 @@ namespace Fly.Controllers
                 }
             }
 
+            DateTime tempDate = new DateTime();
+
+            try
+            {
+                tempDate=DateTime.ParseExact(data.DateTimeStr, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+            }
+            catch (Exception)
+            {
+               tempDate = DateTime.ParseExact(data.DateTimeStr, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            }
+            //DateTime ddd = DateTime.ParseExact(data.DateTimeStr,"dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
             using (SubscriptionRepository subscriptionRepo = new SubscriptionRepository())
             {
                 return Ok(
@@ -433,11 +467,11 @@ namespace Fly.Controllers
                         LocationStr = data.Location,
                         Lat = data.Lat,
                         Lng = data.Lng,
-                        PickDateTime = DateTime.Parse(data.DateTimeStr),
+                        PickDateTime = tempDate,
                         DaysCount = data.DaysCount,
                         PromoCodeId = data.PromoCodeId,
                         UserId = data.riderId,
-                        PayMobId=data.PayMobId
+                        PayMobId = data.PayMobId
                     })
                 );
             }
@@ -499,7 +533,8 @@ namespace Fly.Controllers
                 // var fileName = Path.GetFileName(file.FileName);
 
                 var path = Path.Combine(
-                    HttpContext.Current.Server.MapPath("~/DataImages"),
+                    HostingEnvironment.MapPath("~/DataImages/"),
+                    //  HttpContext.Current.Server.MapPath("~/DataImages"),
                     fileName
                 );
 
@@ -694,139 +729,146 @@ namespace Fly.Controllers
         [HttpPost]
         public IHttpActionResult PeymentPost()
         {
-            //string ff = "";
-            //foreach (string key in HttpContext.Current.Request.Form.AllKeys)
-            //{
-
-            //    ff += HttpContext.Current.Request.Form[key];
-            //}
-
-            //using (TempRepository bb = new TempRepository())
-            //{
-            //    bb.AddUpdate(new DomainModel.TempStatus()
-            //    {
-            //        DataStr = ff,
-            //        CreatedDate = DateTime.Now
-            //    });
-            //}
-
-            var bodyStream = new StreamReader(HttpContext.Current.Request.InputStream);
-            bodyStream.BaseStream.Seek(0, SeekOrigin.Begin);
-            var bodyText = bodyStream.ReadToEnd();
-            WeAcceptTockenModelContainer returnObj = JsonConvert.DeserializeObject<WeAcceptTockenModelContainer>(bodyText);
-
-            if (returnObj.obj != null)
+            // logger.Info("start");
+            try
             {
-                if (!string.IsNullOrEmpty(returnObj.obj.token))
+                var bodyStream = new StreamReader(HttpContext.Current.Request.InputStream);
+                bodyStream.BaseStream.Seek(0, SeekOrigin.Begin);
+                var bodyText = bodyStream.ReadToEnd();
+                //   logger.Info("Body :" + bodyText);
+                if (!string.IsNullOrEmpty(bodyText))
                 {
-                    using (SecurityUserRepository secRepo = new SecurityUserRepository())
+
+                    using (TempRepository bb = new TempRepository())
                     {
-                        secRepo.UpdatePaymentDone(returnObj.obj.token, returnObj.obj.order_id);
+                        bb.AddUpdate(new DomainModel.TempStatus()
+                        {
+                            DataStr = "Post " + bodyText,
+                            CreatedDate = DateTime.Now
+                        });
                     }
+
+
+                    WeAcceptTockenModelContainer returnObj = JsonConvert.DeserializeObject<WeAcceptTockenModelContainer>(bodyText);
+
+                    if (returnObj.obj != null)
+                    {
+                        if (!string.IsNullOrEmpty(returnObj.obj.token))
+                        {
+                            using (SecurityUserRepository secRepo = new SecurityUserRepository())
+                            {
+                                secRepo.UpdatePaymentTocken(returnObj.obj.token, returnObj.obj.order_id);
+                            }
+                        }
+                    }
+
+
+                    WeAcceptRootObject returnMainObj = JsonConvert.DeserializeObject<WeAcceptRootObject>(bodyText);
+                    if (returnMainObj.obj != null)
+                    {
+                        if (returnMainObj.obj.order != null)
+                        {
+                            logger.Info("obj.order.id : " + returnMainObj.obj.order.id.ToString());
+                            logger.Info("obj.success : " + returnMainObj.obj.success);
+                            logger.Info("obj.id : " + returnMainObj.obj.id.ToString());
+
+                            using (SecurityUserRepository secRepo = new SecurityUserRepository())
+                            {
+                                if (returnMainObj.obj.success == true)
+                                {
+                                    secRepo.UpdatePaymentDone(returnMainObj.obj.order.id.ToString());
+                                    secRepo.UpdateRefundOrderId(returnMainObj.obj.id.ToString(), returnMainObj.obj.order.id.ToString());
+                                }
+
+                            }
+                        }
+                    }
+
+                    
+                    return Ok("1 EGP has been successfully deducted from your card, please return to rabbit.");
+                }
+                else
+                {
+                    return Ok("1 EGP has been successfully deducted from your card, please return to rabbit.");
                 }
             }
-
-
-            WeAcceptRootObject returnMainObj = JsonConvert.DeserializeObject<WeAcceptRootObject>(bodyText);
-            if (returnMainObj.obj != null)
+            catch (Exception ex)
             {
-                if (returnMainObj.obj.order != null)
-                {
-                    using (SecurityUserRepository secRepo = new SecurityUserRepository())
-                    {
-                        secRepo.UpdateRefundOrderId(returnMainObj.obj.id.ToString(), returnMainObj.obj.order.id.ToString());
-                    }
-                }
+                logger.Error(ex.Message + " > " + ex.InnerException?.Message + " > " + ex.StackTrace);
+                return Ok("Pending payment, Please try again if not success");
             }
-
-
-
-
-            using (TempRepository bb = new TempRepository())
-            {
-                bb.AddUpdate(new DomainModel.TempStatus()
-                {
-                    DataStr = "Post " + bodyText,
-                    CreatedDate = DateTime.Now
-                });
-            }
-
-            return Ok("Success payment, Please return to Rabbit");
         }
 
         [Route("PeymentGet")]
         [HttpGet]
         public IHttpActionResult PeymentGet()
         {
-
-
-            //string data2="";
-            //using (var stream = HttpContext.Current.Request..Content.ReadAsStreamAsync().Result)
-            //{
-            //    if (stream.CanSeek)
-            //    {
-            //        stream.Position = 0;
-            //    }
-            //    data = context.Request.Content.ReadAsStringAsync().Result;
-            //}
-
-            //string ff = "";
-            //foreach (string key in HttpContext.Current.Request.Form.AllKeys)
-            //{
-            //    ff += HttpContext.Current.Request.Form[key];
-            //}
-
-            //using (TempRepository bb = new TempRepository())
-            //{
-            //    bb.AddUpdate(new DomainModel.TempStatus()
-            //    {
-            //        DataStr = ff,
-            //        CreatedDate = DateTime.Now
-            //    });
-            //}
-
-            var bodyStream = new StreamReader(HttpContext.Current.Request.InputStream);
-            bodyStream.BaseStream.Seek(0, SeekOrigin.Begin);
-            var bodyText = bodyStream.ReadToEnd();
-            WeAcceptTockenModelContainer returnObj = JsonConvert.DeserializeObject<WeAcceptTockenModelContainer>(bodyText);
-
-            if (returnObj.obj != null)
+            try
             {
-                if (!string.IsNullOrEmpty(returnObj.obj.token))
+                // logger.Info("start 2 ");
+
+                var bodyStream = new StreamReader(HttpContext.Current.Request.InputStream);
+                bodyStream.BaseStream.Seek(0, SeekOrigin.Begin);
+                var bodyText = bodyStream.ReadToEnd();
+                //   logger.Info("Body 2:" + bodyText);
+                if (!string.IsNullOrEmpty(bodyText))
                 {
-                    using (SecurityUserRepository secRepo = new SecurityUserRepository())
+                    using (TempRepository bb = new TempRepository())
                     {
-                        secRepo.UpdatePaymentDone(returnObj.obj.token, returnObj.obj.order_id);
+                        bb.AddUpdate(new DomainModel.TempStatus()
+                        {
+                            DataStr = "Get " + bodyText,
+                            CreatedDate = DateTime.Now
+                        });
                     }
+
+                    WeAcceptTockenModelContainer returnObj = JsonConvert.DeserializeObject<WeAcceptTockenModelContainer>(bodyText);
+
+                    if (returnObj.obj != null)
+                    {
+                        if (!string.IsNullOrEmpty(returnObj.obj.token))
+                        {
+                            using (SecurityUserRepository secRepo = new SecurityUserRepository())
+                            {
+                                secRepo.UpdatePaymentTocken(returnObj.obj.token, returnObj.obj.order_id);
+                            }
+                        }
+                    }
+
+
+                    WeAcceptRootObject returnMainObj = JsonConvert.DeserializeObject<WeAcceptRootObject>(bodyText);
+                    if (returnMainObj.obj != null)
+                    {
+                        if (returnMainObj.obj.order != null)
+                        {
+                            logger.Info("obj.order.id : " + returnMainObj.obj.order.id.ToString());
+                            logger.Info("obj.success : " + returnMainObj.obj.success);
+                            logger.Info("obj.id : " + returnMainObj.obj.id.ToString());
+                            using (SecurityUserRepository secRepo = new SecurityUserRepository())
+                            {
+                                if (returnMainObj.obj.success == true)
+                                {
+                                    secRepo.UpdatePaymentDone(returnMainObj.obj.order.id.ToString());
+                                    secRepo.UpdateRefundOrderId(returnMainObj.obj.id.ToString(), returnMainObj.obj.order.id.ToString());
+                                }
+                            }
+                        }
+                    }
+
+                  
+
+                    return Ok("1 EGP has been successfully deducted from your card, please return to rabbit.");
+                }
+                else
+                {
+                    return Ok("1 EGP has been successfully deducted from your card, please return to rabbit.");
                 }
             }
-
-
-            WeAcceptRootObject returnMainObj = JsonConvert.DeserializeObject<WeAcceptRootObject>(bodyText);
-            if (returnMainObj.obj != null)
+            catch (Exception ex)
             {
-                if (returnMainObj.obj.order != null)
-                {
-                    using (SecurityUserRepository secRepo = new SecurityUserRepository())
-                    {
-                        secRepo.UpdateRefundOrderId(returnMainObj.obj.id.ToString(), returnMainObj.obj.order.id.ToString());
-                    }
-                }
+                logger.Error(ex.Message + " > " + ex.InnerException?.Message + " > " + ex.StackTrace);
+                return Ok("Pending payment, Please try again if not success");
             }
-
-
-
-
-            using (TempRepository bb = new TempRepository())
-            {
-                bb.AddUpdate(new DomainModel.TempStatus()
-                {
-                    DataStr = "Post" + bodyText,
-                    CreatedDate = DateTime.Now
-                });
-            }
-
-            return Ok("Success payment, Please return to Rabbit");
         }
         #endregion
 
