@@ -283,22 +283,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/02/2015 09:32:26</publishTime>
     </File>
     <File Include="bin/Fly.BLL.dll">
-      <publishTime>06/15/2019 21:17:07</publishTime>
+      <publishTime>06/30/2019 13:09:52</publishTime>
     </File>
     <File Include="bin/Fly.DAL.dll">
-      <publishTime>06/10/2019 14:53:05</publishTime>
+      <publishTime>06/30/2019 13:09:49</publishTime>
     </File>
     <File Include="bin/Fly.dll">
-      <publishTime>06/16/2019 01:14:47</publishTime>
+      <publishTime>06/30/2019 13:10:03</publishTime>
     </File>
     <File Include="bin/Fly.DomainModel.dll">
-      <publishTime>06/10/2019 14:53:06</publishTime>
+      <publishTime>06/30/2019 13:09:51</publishTime>
     </File>
     <File Include="bin/Fly.Helper.dll">
-      <publishTime>06/10/2019 14:53:05</publishTime>
+      <publishTime>06/30/2019 13:09:49</publishTime>
     </File>
     <File Include="bin/Fly.Resources.dll">
-      <publishTime>06/10/2019 14:53:05</publishTime>
+      <publishTime>06/30/2019 13:09:49</publishTime>
     </File>
     <File Include="bin/Gmap.net.dll">
       <publishTime>03/19/2016 17:58:08</publishTime>
@@ -3850,7 +3850,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/17/2018 19:14:12</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/04/2019 02:00:53</publishTime>
+      <publishTime>06/18/2019 17:41:24</publishTime>
     </File>
   </ItemGroup>
 </Project>

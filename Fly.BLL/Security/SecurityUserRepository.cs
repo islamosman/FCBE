@@ -20,7 +20,7 @@ namespace Fly.BLL
         public SecurityUser GetBy(string userName, string password)
         {
             int userRoleId = int.Parse(System.Configuration.ConfigurationManager.AppSettings["UserRole"]);
-            return _objectSet.Include(x => x.SecurityUserRole.Select(s => s.SecurityRole)).FirstOrDefault(x => x.Password == password && x.SecurityUserRole.Any(s => s.RoleId == userRoleId) && (x.Email == userName || x.Telephone == userName));
+            return _objectSet.Include(x => x.SecurityUserRole.Select(s => s.SecurityRole)).FirstOrDefault(x => x.Password == password && x.IsActive == true && x.SecurityUserRole.Any(s => s.RoleId == userRoleId) && (x.Email == userName || x.Telephone == userName));
         }
 
         public override RequestResponse AddUpdate(SecurityUser model)
